@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">ZY Commerce</string>
+    <string name="product_list_title">Products</string>
+    <string name="product_detail_title">Product Details</string>
+    <string name="create_product_title">New Product</string>
+    <string name="search_hint">Search products…</string>
+    <string name="sku_label">SKU</string>
+    <string name="name_label">Name</string>
+    <string name="description_label">Description</string>
+    <string name="active_label">Active</string>
+    <string name="inactive_label">Inactive</string>
+    <string name="created_at_label">Created</string>
+    <string name="save_button">Save</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_button">Delete</string>
+    <string name="confirm_delete_message">Deactivate this product?</string>
+    <string name="error_loading">Failed to load products. Tap to retry.</string>
+    <string name="empty_products">No products found.</string>
+    <string name="product_created">Product created successfully.</string>
+    <string name="product_deleted">Product deactivated.</string>
+</resources>

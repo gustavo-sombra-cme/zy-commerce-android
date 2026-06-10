@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "wip_limit": 1,
+  "state_machine": {
+    "transitions": {
+      "planned": ["active"],
+      "active": ["blocked", "passing"],
+      "blocked": ["active"],
+      "passing": []
+    },
+    "note": "Only verify.sh may transition a feature to 'passing'"
+  },
+  "features": [
+    {
+      "id": "F01",
+      "title": "Product Catalog — List & Search",
+      "state": "active",
+      "description": "Product list screen with search, status filter chips. Calls GET /api/catalog/products.",
+      "acceptance": [
+        "Products load on app start",
+        "Search field filters results",
+        "Empty state shown when no results",
+        "Error state shown with retry button"
+      ],
+      "test_command": "./gradlew test --tests '*.ProductListViewModelTest'",
+      "added": "2026-06-09"
+    },
+    {
+      "id": "F02",
+      "title": "Product Detail",
+      "state": "planned",
+      "description": "Product detail screen showing all fields. Calls GET /api/catalog/products/{id}.",
+      "acceptance": [
+        "All product fields displayed",
+        "Delete button deactivates product and navigates back",
+        "Loading and error states handled"
+      ],
+      "test_command": "./gradlew test --tests '*.ProductDetailViewModelTest'",
+      "added": "2026-06-09"
+    },
+    {
+      "id": "F03",
+      "title": "Create Product",
+      "state": "planned",
+      "description": "FAB on list screen opens dialog. Calls POST /api/catalog/products.",
+      "acceptance": [
+        "SKU validated: uppercase, alphanumeric+hyphen+underscore only",
+        "Name required",
+        "Save disabled when invalid",
+        "New product appears in list after creation"
+      ],
+      "test_command": "./gradlew test --tests '*.CreateProductTest'",
+      "added": "2026-06-09"
+    },
+    {
+      "id": "F04",
+      "title": "Delete / Deactivate Product",
+      "state": "planned",
+      "description": "Delete from list or detail screen. Calls DELETE /api/catalog/products/{id}.",
+      "acceptance": [
+        "Confirmation dialog shown before delete",
+        "Product removed/greyed in list after deactivation",
+        "Snackbar confirmation shown"
+      ],
+      "test_command": "./gradlew test --tests '*.DeleteProductTest'",
+      "added": "2026-06-09"
+    }
+  ]
+}
