@@ -1,0 +1,451 @@
+{
+  "project": "zy-commerce-android",
+  "artifact": "feature_list",
+  "version": 1,
+  "last_updated": "2026-06-17",
+  "source_documents": [
+    "docs/mvp_requirements_ecommerce.md",
+    "docs/ecommerce-android-plan.md",
+    "docs/ARCHITECTURE.MD"
+  ],
+  "status_values": [
+    "planned",
+    "in_progress",
+    "done",
+    "blocked"
+  ],
+  "priority_values": [
+    "high",
+    "medium",
+    "low"
+  ],
+  "sprints": {
+    "sprint_1": [
+      "ST-01",
+      "ST-02",
+      "ST-03",
+      "ST-04",
+      "ST-05",
+      "ST-06",
+      "ST-10",
+      "ST-16"
+    ],
+    "sprint_2": [
+      "ST-07",
+      "ST-08",
+      "ST-09",
+      "ST-11",
+      "ST-12",
+      "ST-13",
+      "ST-14",
+      "ST-15"
+    ]
+  },
+  "features": [
+    {
+      "id": "ST-01",
+      "name": "Register account",
+      "epic": "Authentication",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 5,
+        "story_points_with_ai": 3
+      },
+      "dependencies": [],
+      "screens": [
+        "RegisterScreen"
+      ],
+      "backend_endpoints": [
+        "POST /api/auth/users/register"
+      ],
+      "definition_of_done": [
+        "Visitor can submit email and password from Android app",
+        "Successful registration shows confirmation and next-step navigation",
+        "Request/response mapping is covered by tests"
+      ]
+    },
+    {
+      "id": "ST-02",
+      "name": "Prevent duplicate account registration",
+      "epic": "Authentication",
+      "status": "planned",
+      "priority": "medium",
+      "estimate": {
+        "story_points_without_ai": 2,
+        "story_points_with_ai": 1
+      },
+      "dependencies": [
+        "ST-01"
+      ],
+      "screens": [
+        "RegisterScreen"
+      ],
+      "backend_endpoints": [
+        "POST /api/auth/users/register"
+      ],
+      "definition_of_done": [
+        "Duplicate email response is detected correctly",
+        "User sees a readable error and remains on registration screen",
+        "Field values are preserved for retry"
+      ]
+    },
+    {
+      "id": "ST-03",
+      "name": "Sign in",
+      "epic": "Authentication",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 5,
+        "story_points_with_ai": 3
+      },
+      "dependencies": [
+        "ST-01"
+      ],
+      "screens": [
+        "SignInScreen",
+        "SplashScreen"
+      ],
+      "backend_endpoints": [
+        "POST /api/auth/users/login"
+      ],
+      "definition_of_done": [
+        "Registered user can sign in successfully",
+        "JWT session is stored securely on device",
+        "Authenticated app flow becomes available after login"
+      ]
+    },
+    {
+      "id": "ST-04",
+      "name": "Show sign-in failure clearly",
+      "epic": "Authentication",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-03"
+      ],
+      "screens": [
+        "SignInScreen"
+      ],
+      "backend_endpoints": [
+        "POST /api/auth/users/login"
+      ],
+      "definition_of_done": [
+        "Invalid credentials show clear error",
+        "Inactive account shows clear error",
+        "Error mapping is covered by unit or integration tests"
+      ]
+    },
+    {
+      "id": "ST-05",
+      "name": "View current profile",
+      "epic": "Authentication",
+      "status": "planned",
+      "priority": "medium",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-03"
+      ],
+      "screens": [
+        "ProfileScreen"
+      ],
+      "backend_endpoints": [
+        "GET /api/auth/users/me"
+      ],
+      "definition_of_done": [
+        "Signed-in user can open profile screen",
+        "Profile shows user id and email",
+        "Invalid session redirects user safely to sign-in"
+      ]
+    },
+    {
+      "id": "ST-06",
+      "name": "Browse product catalog",
+      "epic": "Catalog Browsing",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 5,
+        "story_points_with_ai": 3
+      },
+      "dependencies": [],
+      "screens": [
+        "CatalogScreen"
+      ],
+      "backend_endpoints": [
+        "GET /api/catalog/products"
+      ],
+      "definition_of_done": [
+        "Visitor can open catalog without authentication",
+        "Catalog list renders backend items correctly",
+        "Empty state is shown when no products exist"
+      ]
+    },
+    {
+      "id": "ST-07",
+      "name": "Search products",
+      "epic": "Catalog Browsing",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-06"
+      ],
+      "screens": [
+        "CatalogScreen"
+      ],
+      "backend_endpoints": [
+        "GET /api/catalog/products?searchTerm="
+      ],
+      "definition_of_done": [
+        "User can submit a search term from catalog screen",
+        "Results update to matching SKU or product name entries",
+        "Search state is preserved across recomposition or rotation"
+      ]
+    },
+    {
+      "id": "ST-08",
+      "name": "Filter products by active status",
+      "epic": "Catalog Browsing",
+      "status": "planned",
+      "priority": "medium",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-06"
+      ],
+      "screens": [
+        "CatalogScreen"
+      ],
+      "backend_endpoints": [
+        "GET /api/catalog/products?isActive="
+      ],
+      "definition_of_done": [
+        "User can switch between all, active, and inactive filters",
+        "Selected filter updates catalog results correctly",
+        "Selected filter remains visible in UI state"
+      ]
+    },
+    {
+      "id": "ST-09",
+      "name": "Load additional catalog pages",
+      "epic": "Catalog Browsing",
+      "status": "planned",
+      "priority": "medium",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-06"
+      ],
+      "screens": [
+        "CatalogScreen"
+      ],
+      "backend_endpoints": [
+        "GET /api/catalog/products?pageNumber=&pageSize="
+      ],
+      "definition_of_done": [
+        "User can load next page from catalog screen",
+        "New items are appended without losing current context",
+        "Pagination behavior is covered by integration or UI tests"
+      ]
+    },
+    {
+      "id": "ST-10",
+      "name": "View product details",
+      "epic": "Catalog Browsing",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-06"
+      ],
+      "screens": [
+        "CatalogScreen",
+        "ProductDetailScreen"
+      ],
+      "backend_endpoints": [
+        "GET /api/catalog/products/{productId}"
+      ],
+      "definition_of_done": [
+        "User can open product detail from catalog list",
+        "Product detail shows sku, name, description, active status, created and updated dates when available",
+        "Not-found or load failures show a readable error state"
+      ]
+    },
+    {
+      "id": "ST-11",
+      "name": "Create a product",
+      "epic": "Product Management",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 5,
+        "story_points_with_ai": 3
+      },
+      "dependencies": [
+        "ST-03",
+        "ST-16"
+      ],
+      "screens": [
+        "CreateProductScreen"
+      ],
+      "backend_endpoints": [
+        "POST /api/catalog/products"
+      ],
+      "definition_of_done": [
+        "Authenticated user can submit SKU, name, and optional description",
+        "Successful create shows confirmation and navigates to refreshed list or detail screen",
+        "Request includes bearer authentication"
+      ]
+    },
+    {
+      "id": "ST-12",
+      "name": "Validate product creation input",
+      "epic": "Product Management",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-11"
+      ],
+      "screens": [
+        "CreateProductScreen"
+      ],
+      "backend_endpoints": [
+        "POST /api/catalog/products"
+      ],
+      "definition_of_done": [
+        "Missing or invalid SKU and name show field-level or form-level errors",
+        "No product is created until errors are fixed",
+        "Validation behavior is covered by unit tests"
+      ]
+    },
+    {
+      "id": "ST-13",
+      "name": "Prevent duplicate SKU creation",
+      "epic": "Product Management",
+      "status": "planned",
+      "priority": "medium",
+      "estimate": {
+        "story_points_without_ai": 2,
+        "story_points_with_ai": 1
+      },
+      "dependencies": [
+        "ST-11"
+      ],
+      "screens": [
+        "CreateProductScreen"
+      ],
+      "backend_endpoints": [
+        "POST /api/catalog/products"
+      ],
+      "definition_of_done": [
+        "Conflict response for existing SKU is handled correctly",
+        "User sees readable duplicate-SKU message",
+        "User can edit SKU and retry without losing other inputs"
+      ]
+    },
+    {
+      "id": "ST-14",
+      "name": "Update product details",
+      "epic": "Product Management",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 5,
+        "story_points_with_ai": 3
+      },
+      "dependencies": [
+        "ST-03",
+        "ST-10",
+        "ST-16"
+      ],
+      "screens": [
+        "ProductDetailScreen",
+        "EditProductScreen"
+      ],
+      "backend_endpoints": [
+        "PUT /api/catalog/products/{productId}"
+      ],
+      "definition_of_done": [
+        "Authenticated user can edit product name and description",
+        "SKU remains read-only and unchanged",
+        "Successful update refreshes detail state correctly"
+      ]
+    },
+    {
+      "id": "ST-15",
+      "name": "Deactivate a product",
+      "epic": "Product Management",
+      "status": "planned",
+      "priority": "medium",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-03",
+        "ST-10",
+        "ST-16"
+      ],
+      "screens": [
+        "ProductDetailScreen"
+      ],
+      "backend_endpoints": [
+        "DELETE /api/catalog/products/{productId}"
+      ],
+      "definition_of_done": [
+        "Authenticated user must confirm before deactivation",
+        "Successful deactivation updates UI to inactive state",
+        "Product disappears from active-only filtered list"
+      ]
+    },
+    {
+      "id": "ST-16",
+      "name": "Block protected actions for visitors",
+      "epic": "Access Control & UX",
+      "status": "planned",
+      "priority": "high",
+      "estimate": {
+        "story_points_without_ai": 3,
+        "story_points_with_ai": 2
+      },
+      "dependencies": [
+        "ST-03"
+      ],
+      "screens": [
+        "CatalogScreen",
+        "ProductDetailScreen",
+        "CreateProductScreen",
+        "EditProductScreen"
+      ],
+      "backend_endpoints": [],
+      "definition_of_done": [
+        "Unsigned user cannot enter protected product-management flows",
+        "Protected action redirects or prompts for sign-in",
+        "After successful sign-in, user can continue intended action where practical"
+      ]
+    }
+  ]
+}
