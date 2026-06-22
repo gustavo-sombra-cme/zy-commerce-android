@@ -4,14 +4,13 @@
 
 This document defines how to bootstrap the ZY-Commerce Android project safely at its current stage.
 
-Important current reality:
+Current reality as of 2026-06-19:
 
-- the repository does **not** yet contain an Android app scaffold
-- there is no Gradle wrapper yet
-- there is no executable `init.sh` yet
+- the repository now contains an Android Gradle scaffold
+- the Gradle wrapper is checked in
+- the `app` module exists and launches the registration flow
+- `init.sh` is the standard local verification entry point
 - the backend already exists and can run locally on macOS
-
-Because of that, this document serves as the current startup and environment guide. Once the Android project scaffold exists, it should be complemented or partially replaced by a real `init.sh`.
 
 ## Current Repository State
 
@@ -23,40 +22,69 @@ What exists now:
 - `docs/mvp_requirements_ecommerce.md`
 - `docs/ecommerce-android-plan.md`
 - `feature_list.json`
+- `docs/SETUP.MD`
 - `docs/PROGRESS.MD`
 - `docs/SESSION_HANDOFF.MD`
+- Android Gradle scaffold with modules aligned to `docs/ARCHITECTURE.MD`
+- Gradle wrapper: `./gradlew`
+- bootstrap script: `./init.sh`
+- implemented `ST-01` registration flow
 
-What does not exist yet:
+Current module scaffold:
 
-- Android Studio project structure
-- Gradle wrapper
-- app module
-- feature modules
-- tests
-- CI configuration
-- executable bootstrap script
+```text
+app/
+core/common/
+core/designsystem/
+core/network/
+core/database/
+core/storage/
+domain/auth/
+domain/catalog/
+data/auth/
+data/catalog/
+feature/auth/
+feature/catalog/
+feature/productadmin/
+```
 
-## Bootstrap Goals
+## Required Local Tooling
 
-Before feature development begins, the environment should support:
+The verified local path uses:
 
-1. reading the repository context quickly
-2. confirming the backend is available
-3. knowing how the Android client will connect to the backend
-4. scaffolding the Android project in alignment with `docs/ARCHITECTURE.MD`
-5. later running a standard verification path consistently
+- Android SDK at `/Users/gustavo.sombra/Library/Android/sdk`
+- JDK 17
+- Gradle wrapper distribution `8.11.1`
 
-## Required Reading Before Work
+If `JAVA_HOME` is not set, `init.sh` will use:
 
-Before making changes, read in this order:
+```text
+/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+```
 
-1. `AGENTS.MD`
-2. `docs/PRODUCT.MD`
-3. `docs/ARCHITECTURE.MD`
-4. `feature_list.json`
-5. `docs/ecommerce-android-plan.md`
-6. `docs/PROGRESS.MD`
-7. `docs/SESSION_HANDOFF.MD`
+## Standard Verification Path
+
+Use:
+
+```bash
+./init.sh
+```
+
+`init.sh` runs:
+
+```bash
+./gradlew test
+./gradlew lintDebug
+./gradlew assembleDebug
+```
+
+You can also run the Gradle commands directly. On this machine, use JDK 17 explicitly if the shell does not already expose it:
+
+```bash
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew test
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew lintDebug
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew assembleDebug
+```
 
 ## Backend Dependency
 
@@ -75,7 +103,7 @@ Current backend runtime target:
 
 ## Backend Startup Check
 
-Before Android integration work, confirm the backend is available.
+Before Android integration or manual registration testing, confirm the backend is available.
 
 If the backend repository and supporting scripts are present:
 
@@ -91,11 +119,7 @@ If the API is not running, start it using the backend startup path already defin
 
 ## Android-to-Backend Connection Rules
 
-Use environment-appropriate base URLs:
-
-### Android Emulator
-
-Use:
+Debug emulator builds use:
 
 ```text
 http://10.0.2.2:5015/
@@ -103,122 +127,42 @@ http://10.0.2.2:5015/
 
 Why:
 
-- `10.0.2.2` is the Android emulator alias for the host machine’s localhost
+- `10.0.2.2` is the Android emulator alias for the host machine's localhost
 
-### Physical Device On Same Network
-
-Use:
+Physical device builds on the same network should use:
 
 ```text
 http://<mac-local-ip>:5015/
 ```
 
-Requirements:
-
-- Mac and device must be on the same Wi-Fi network
-- backend must be listening and reachable from LAN
-
-### Release / Non-Local Environments
-
-Do not assume local HTTP.
-
-Use environment-specific configuration and HTTPS when non-local environments exist.
+Release / non-local environments must not assume local HTTP. Use environment-specific HTTPS configuration when those environments exist.
 
 ## Network Security Rules
 
-Because the local backend currently uses HTTP, the Android project will need:
+The debug manifest allows cleartext traffic to local development hosts only:
 
-- debug-only cleartext allowance
-- no broad cleartext allowance in release builds
-- explicit environment separation for emulator, LAN device, and future staging/prod
+- `10.0.2.2`
+- `localhost`
 
-This setup must align with `docs/ARCHITECTURE.MD`.
+Do not add broad release cleartext traffic.
 
-## What To Do Before Scaffolding The Android App
+## Current Feature State
 
-1. Confirm the docs are the current source of truth.
-2. Confirm the backend API is running or can be started.
-3. Confirm the next feature to implement from `feature_list.json`.
-4. Confirm the Android scaffold will follow the module structure in `docs/ARCHITECTURE.MD`.
+`ST-01` Register account is implemented and verified.
 
-## Recommended First Scaffold
+Current `ST-01` behavior:
 
-When implementation starts, scaffold at minimum:
+- visitor enters email and password on `RegisterScreen`
+- registration posts to `POST /api/auth/users/register`
+- response maps `userId` and `email` into the auth domain model
+- success shows confirmation and navigates to the sign-in route placeholder
 
-```text
-app/
-core/common/
-core/designsystem/
-core/network/
-core/database/
-core/storage/
-domain/auth/
-domain/catalog/
-data/auth/
-data/catalog/
-feature/auth/
-feature/catalog/
-feature/productadmin/
-```
+Out of current scope:
 
-Initial priorities:
-
-- app shell
-- navigation host
-- DI setup
-- network layer
-- session storage
-
-Do not start by implementing product-management screens before the shell, network, and auth/session foundations exist.
-
-## Planned Verification Path After Scaffold Exists
-
-Once Gradle exists, the standard baseline should become:
-
-```bash
-./gradlew test
-./gradlew lintDebug
-./gradlew assembleDebug
-```
-
-Add these as they become available:
-
-- Compose UI test tasks
-- repository/integration test tasks
-- screenshot regression tasks
-
-## Planned `init.sh` Contract
-
-When the project is scaffolded, `init.sh` should:
-
-1. confirm working directory
-2. confirm backend availability
-3. confirm required local tools exist
-4. run the standard Gradle verification path
-5. print the current active feature and any failing checks
-
-At that point, `AGENTS.MD` should be updated so `init.sh` is the standard startup path rather than this document alone.
-
-## Tooling Expectations For Future Scaffold
-
-When the Android app is created, the environment should support:
-
-- Android Studio
-- JDK compatible with the chosen Android Gradle Plugin
-- Gradle wrapper checked into the repo
-- emulator or physical device testing path
-
-Do not hardcode future AGP, Kotlin, or Compose versions in this document unless they are committed in the project build files.
-
-## Manual Startup Checklist For Now
-
-Use this until a real bootstrap script exists:
-
-1. Read the repository docs in the required order.
-2. Confirm the backend is running.
-3. Confirm the next feature from `feature_list.json`.
-4. Confirm no baseline doc inconsistency exists.
-5. Only then begin scaffolding or implementation work.
+- duplicate email-specific UX (`ST-02`)
+- actual sign-in implementation (`ST-03`)
+- session persistence
+- catalog and product-management behavior
 
 ## Definition Of A Healthy Startup State
 
@@ -228,13 +172,4 @@ The project is in a healthy startup state when:
 - backend is reachable or startup path is known
 - current active feature is clear
 - architecture constraints are known
-- there is a defined next action
-
-## Next Upgrade After This File
-
-The next bootstrap improvement should be:
-
-1. scaffold the Android project
-2. add Gradle wrapper
-3. create `init.sh`
-4. update `AGENTS.MD` to call `init.sh` directly
+- `./init.sh` passes

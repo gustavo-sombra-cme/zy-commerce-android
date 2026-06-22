@@ -150,7 +150,7 @@ If these artifacts do not exist yet, create them when implementation begins or w
 
 Current bootstrap rule:
 
-- Until a real `init.sh` exists, use `docs/SETUP.MD` as the source of truth for startup, backend checks, and environment preparation.
+- Use `init.sh` as the standard startup and verification path. Use `docs/SETUP.MD` for environment details, backend checks, and troubleshooting.
 
 ## Verification Philosophy
 

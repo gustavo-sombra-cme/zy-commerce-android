@@ -2,7 +2,7 @@
   "project": "zy-commerce-android",
   "artifact": "feature_list",
   "version": 1,
-  "last_updated": "2026-06-17",
+  "last_updated": "2026-06-19",
   "source_documents": [
     "docs/mvp_requirements_ecommerce.md",
     "docs/ecommerce-android-plan.md",
@@ -46,13 +46,15 @@
       "id": "ST-01",
       "name": "Register account",
       "epic": "Authentication",
-      "status": "planned",
+      "status": "done",
       "priority": "high",
       "estimate": {
         "story_points_without_ai": 5,
         "story_points_with_ai": 3
       },
-      "dependencies": [],
+      "dependencies": [
+
+      ],
       "screens": [
         "RegisterScreen"
       ],
@@ -63,7 +65,21 @@
         "Visitor can submit email and password from Android app",
         "Successful registration shows confirmation and next-step navigation",
         "Request/response mapping is covered by tests"
-      ]
+      ],
+      "implementation": {
+        "completed_on": "2026-06-19",
+        "summary": "Created Android Gradle scaffold, app module, core/domain/data/feature modules, and implemented registration flow through RegisterScreen, RegisterViewModel, RegisterUserUseCase, AuthRepository, Retrofit AuthApi, DTO mapping, and Hilt wiring.",
+        "verification": [
+          "JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew test",
+          "JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew lintDebug",
+          "JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew assembleDebug"
+        ],
+        "notes": [
+          "Registration posts email and password to POST /api/auth/users/register and maps userId/email response.",
+          "Successful registration shows confirmation and navigates to the sign-in route placeholder; full sign-in implementation remains ST-03.",
+          "Duplicate email UX remains ST-02 scope."
+        ]
+      }
     },
     {
       "id": "ST-02",
@@ -176,7 +192,9 @@
         "story_points_without_ai": 5,
         "story_points_with_ai": 3
       },
-      "dependencies": [],
+      "dependencies": [
+
+      ],
       "screens": [
         "CatalogScreen"
       ],
@@ -440,7 +458,9 @@
         "CreateProductScreen",
         "EditProductScreen"
       ],
-      "backend_endpoints": [],
+      "backend_endpoints": [
+
+      ],
       "definition_of_done": [
         "Unsigned user cannot enter protected product-management flows",
         "Protected action redirects or prompts for sign-in",

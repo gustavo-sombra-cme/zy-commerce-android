@@ -2,75 +2,58 @@
 
 ## Resume Summary
 
-The Android repository now has a usable first-pass harness surface and a documented bootstrap path.
+The repository now has a working Android Gradle scaffold, Gradle wrapper, app module, and implemented `ST-01` registration flow.
 
-Already in repo:
+## Current Feature State
 
-- `AGENTS.MD`
-- `docs/PRODUCT.MD`
-- `docs/ARCHITECTURE.MD`
-- `docs/mvp_requirements_ecommerce.md`
-- `docs/ecommerce-android-plan.md`
-- `feature_list.json`
-- `docs/SETUP.MD`
-- `docs/PROGRESS.MD`
-- `docs/SESSION_HANDOFF.MD`
+Done:
+
+- `ST-01` Register account
+
+Next planned story:
+
+- `ST-02` Prevent duplicate account registration
 
 ## What Was Completed
 
-- Created `AGENTS.MD` based on the Android docs and Harness Engineering guidance.
-- Created continuity artifacts and bootstrap documentation:
-  - `docs/PROGRESS.MD`
-  - `docs/SESSION_HANDOFF.MD`
-  - `docs/SETUP.MD`
-- Updated the harness so `docs/SETUP.MD` is the current bootstrap path.
-- The harness is intentionally strict about:
-  - startup workflow
-  - scope control
-  - architecture boundaries
-  - verification before completion
-  - durable repo artifacts over chat summaries
+- Created Android scaffold aligned with `docs/ARCHITECTURE.MD`.
+- Added Gradle wrapper and version catalog.
+- Added `init.sh` bootstrap script.
+- Implemented registration across Clean Architecture layers:
+  - presentation: Compose `RegisterScreen`, `RegisterViewModel`, UI state/effect
+  - domain: `RegisterUserUseCase`, `AuthRepository`, `RegisteredUser`
+  - data: Retrofit `AuthApi`, DTOs, mapper, repository implementation
+  - app/core: Hilt app, base URL provider, Retrofit/OkHttp/serialization wiring
+- Added placeholder modules for later catalog/product-admin work without implementing those stories.
+- Updated `feature_list.json` with completion evidence.
 
-## What Has Not Started Yet
+## Verification Evidence
 
-- Android project scaffold
-- Gradle setup
-- modules and packages
-- feature implementation
-- tests
-- executable `init.sh`
+Passed on 2026-06-19:
 
-## Current Bootstrap Path
+```bash
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew test
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew lintDebug
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew assembleDebug
+```
 
-Until the Android scaffold exists, use `docs/SETUP.MD` as the startup and environment guide.
+`./init.sh` is available and runs the same verification path.
 
-## Recommended Next Step
+## Important Notes
 
-Recommended next work:
+- The registration backend endpoint is `POST /api/auth/users/register`.
+- The Android request sends `email` and `password`.
+- The Android response mapper expects `userId` and `email`, matching the backend contract.
+- Successful registration navigates to a sign-in placeholder. Actual sign-in is `ST-03` and is not implemented yet.
+- Duplicate-email-specific UX belongs to `ST-02` and is not complete yet.
+- Manual emulator/backend smoke testing has not been performed in this session.
 
-1. keep `docs/PROGRESS.MD` current
-2. keep `docs/SESSION_HANDOFF.MD` current
-3. keep `docs/SETUP.MD` current when startup assumptions change
-4. scaffold the Android project structure aligned to `docs/ARCHITECTURE.MD`
-5. create `init.sh` after the Gradle wrapper and baseline tasks exist
+## Startup Path For Next Session
 
-Do not create a fake `init.sh` before the Android scaffold exists.
-
-## Required Reading Order For Next Session
-
-1. `AGENTS.MD`
-2. `docs/PRODUCT.MD`
-3. `docs/ARCHITECTURE.MD`
-4. `feature_list.json`
-5. `docs/SETUP.MD`
-6. `docs/ecommerce-android-plan.md`
-7. inspect the current active feature in `feature_list.json` before implementation
-
-## Important Constraints
-
-- Stay inside the current MVP scope.
-- Do not introduce cart, checkout, orders, payments, or roles.
-- Do not bypass `feature_list.json` dependencies.
-- Work one feature at a time.
-- Do not mark any feature done without verification evidence.
-- Treat `docs/SETUP.MD` as the bootstrap truth until a real `init.sh` replaces it.
+1. Read `AGENTS.MD`.
+2. Read `docs/PRODUCT.MD`.
+3. Read `docs/ARCHITECTURE.MD`.
+4. Read `feature_list.json`.
+5. Read `docs/SETUP.MD`.
+6. Run `./init.sh`.
+7. Select the next planned feature from `feature_list.json`.

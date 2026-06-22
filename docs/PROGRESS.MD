@@ -69,3 +69,48 @@ Risks / notes:
 - `docs/SETUP.MD` is now the current bootstrap path until a real `init.sh` exists
 - current harness assumes any authenticated user can manage products because backend roles do not yet exist
 - current repo still lacks executable verification because the Android scaffold and Gradle wrapper do not exist yet
+
+### 2026-06-19 — Android Scaffold + ST-01 Registration
+
+Completed:
+
+- created Android Gradle scaffold and checked in Gradle wrapper
+- created `app` module and architecture-aligned modules:
+  - `core/common`
+  - `core/designsystem`
+  - `core/network`
+  - `core/database`
+  - `core/storage`
+  - `domain/auth`
+  - `domain/catalog`
+  - `data/auth`
+  - `data/catalog`
+  - `feature/auth`
+  - `feature/catalog`
+  - `feature/productadmin`
+- implemented `ST-01` Register account through:
+  - `RegisterScreen`
+  - `RegisterViewModel`
+  - `RegisterUserUseCase`
+  - `AuthRepository`
+  - Retrofit `AuthApi`
+  - register request/response DTOs and mapper
+  - Hilt app/network/auth wiring
+- added registration-focused tests for:
+  - email trimming and required field validation in domain use case
+  - response DTO to domain mapping
+  - ViewModel success confirmation state
+- added `init.sh` as the standard bootstrap and verification script
+- updated `feature_list.json` to mark `ST-01` done with verification evidence
+
+Verification passed:
+
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew test`
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew lintDebug`
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew assembleDebug`
+
+Notes:
+
+- `ST-02` duplicate-email-specific handling remains planned.
+- `ST-03` sign-in remains planned; the app currently navigates to a sign-in placeholder after registration success.
+- Manual backend/emulator registration smoke testing has not been performed in this session.
