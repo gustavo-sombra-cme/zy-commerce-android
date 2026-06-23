@@ -4,8 +4,8 @@
   "version": 1,
   "last_updated": "2026-06-19",
   "source_documents": [
-    "docs/mvp_requirements_ecommerce.md",
-    "docs/ecommerce-android-plan.md",
+    "requirements/mvp_requirements_ecommerce.md",
+    "requirements/ecommerce-android-plan.md",
     "docs/ARCHITECTURE.MD"
   ],
   "status_values": [

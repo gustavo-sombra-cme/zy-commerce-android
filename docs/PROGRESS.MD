@@ -13,8 +13,8 @@ Completed so far:
 - reviewed the Android repo docs as the startup surface:
   - `docs/PRODUCT.MD`
   - `docs/ARCHITECTURE.MD`
-  - `docs/mvp_requirements_ecommerce.md`
-  - `docs/ecommerce-android-plan.md`
+  - `requirements/mvp_requirements_ecommerce.md`
+  - `requirements/ecommerce-android-plan.md`
   - `feature_list.json`
 - reviewed Harness Engineering repo guidance and examples for:
   - startup workflow
@@ -45,8 +45,8 @@ Repository state after this session:
   - `AGENTS.MD`
   - `docs/PRODUCT.MD`
   - `docs/ARCHITECTURE.MD`
-  - `docs/mvp_requirements_ecommerce.md`
-  - `docs/ecommerce-android-plan.md`
+  - `requirements/mvp_requirements_ecommerce.md`
+  - `requirements/ecommerce-android-plan.md`
   - `feature_list.json`
   - `docs/SETUP.MD`
   - `docs/PROGRESS.MD`
@@ -102,6 +102,7 @@ Completed:
   - ViewModel success confirmation state
 - added `init.sh` as the standard bootstrap and verification script
 - updated `feature_list.json` to mark `ST-01` done with verification evidence
+- added `docs/DECISIONS.MD` to consolidate durable harness and project decisions
 
 Verification passed:
 
@@ -114,3 +115,80 @@ Notes:
 - `ST-02` duplicate-email-specific handling remains planned.
 - `ST-03` sign-in remains planned; the app currently navigates to a sign-in placeholder after registration success.
 - Manual backend/emulator registration smoke testing has not been performed in this session.
+
+### 2026-06-22 — Verification Harness Consolidation
+
+Completed:
+
+- added `docs/VERIFICATION.MD` as the operational verification guide
+- moved command-level verification details out of `AGENTS.MD` and `docs/SETUP.MD`
+- updated `docs/DECISIONS.MD` so verification decisions point to `docs/VERIFICATION.MD`
+- updated startup guidance to read `docs/VERIFICATION.MD` before running checks
+
+Validation passed:
+
+- `git diff --check`
+
+### 2026-06-22 — Backend Local Harness Consolidation
+
+Completed:
+
+- added `docs/BACKEND_LOCAL.MD` as the local backend and Android connection guide
+- moved backend startup commands, local URLs, emulator/device rules, debug cleartext notes, and `ST-01` backend smoke prerequisites out of `docs/SETUP.MD` and `docs/VERIFICATION.MD`
+- updated `AGENTS.MD` startup guidance to read `docs/BACKEND_LOCAL.MD`
+- updated `docs/DECISIONS.MD` so backend decisions point to `docs/BACKEND_LOCAL.MD`
+
+Validation passed:
+
+- `git diff --check`
+
+### 2026-06-22 — Backend Installation Guide Move
+
+Completed:
+
+- moved `backend-installation-instructions.md` from the parent ZY-Commerce project into `docs/backend-installation-instructions.md`
+- updated backend local harness references to use the new docs path
+- kept backend runtime script references pointing to the parent project scripts
+
+Validation passed:
+
+- `git diff --check`
+
+### 2026-06-22 — Testing Strategy Harness Consolidation
+
+Completed:
+
+- added `docs/TESTING_STRATEGY.MD` as the source of truth for test coverage expectations and test-level ownership
+- simplified testing guidance in `docs/ARCHITECTURE.MD` to point to the new strategy file
+- simplified `docs/VERIFICATION.MD` so it focuses on commands, evidence, and failure reporting
+- updated startup, setup, decisions, and handoff docs to include the testing strategy file
+
+Validation passed:
+
+- `git diff --check`
+
+### 2026-06-23 — Backend Script Relocation
+
+Completed:
+
+- created root `scripts/` folder in the Android repository
+- moved backend helper scripts from the parent ZY-Commerce project into `scripts/`
+- updated local backend docs to use the new script paths
+- updated `scripts/backend-startup.sh` so it calls `docker-start.sh` from its own folder
+
+Validation passed:
+
+- `git diff --check`
+
+### 2026-06-23 — Requirements File Relocation
+
+Completed:
+
+- created root `requirements/` folder in the Android repository
+- moved Android plan, Android technical design, MVP requirements, and backend business baseline files from the parent ZY-Commerce project into `requirements/`
+- removed duplicate `docs/` copies for the plan and MVP requirements after confirming they matched the parent originals
+- updated Android repo references to use the new `requirements/` paths
+
+Validation passed:
+
+- `git diff --check`

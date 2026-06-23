@@ -2,7 +2,7 @@
 
 This repository is being prepared for long-running AI-assisted Android development. The goal is not to maximize short-term code output. The goal is to leave the repository in a state where the next session can continue safely, with minimal guessing, and without relying on chat history.
 
-If any rule here conflicts with `docs/PRODUCT.MD`, `docs/ARCHITECTURE.MD`, `docs/mvp_requirements_ecommerce.md`, or `docs/ecommerce-android-plan.md`, prefer those files and update this file when the operating rules need to change.
+If any rule here conflicts with `docs/PRODUCT.MD`, `docs/ARCHITECTURE.MD`, `requirements/mvp_requirements_ecommerce.md`, or `requirements/ecommerce-android-plan.md`, prefer those files and update this file when the operating rules need to change.
 
 ## Startup Workflow
 
@@ -13,10 +13,13 @@ Before writing code, complete these steps in order:
 3. Read `docs/PRODUCT.MD`.
 4. Read `docs/ARCHITECTURE.MD`.
 5. Read `feature_list.json`.
-6. Read `docs/SETUP.MD` for the current bootstrap and backend-connection path.
-7. Read `docs/ecommerce-android-plan.md` if feature scope, dependencies, or sprint order are unclear.
-8. Review recent commits with `git log --oneline -5`.
-9. Run the standard project verification path if it exists.
+6. Read `docs/SETUP.MD` for the current bootstrap path.
+7. Read `docs/BACKEND_LOCAL.MD` for local backend connection and smoke-test prerequisites.
+8. Read `docs/TESTING_STRATEGY.MD` for testing coverage expectations.
+9. Read `docs/VERIFICATION.MD` for the current verification path and evidence expectations.
+10. Read `requirements/ecommerce-android-plan.md` if feature scope, dependencies, or sprint order are unclear.
+11. Review recent commits with `git log --oneline -5`.
+12. Run the standard project verification path if it exists.
 
 If the baseline is already failing, repair that first before adding new scope.
 
@@ -27,10 +30,19 @@ The repository documentation is organized for agent readability:
 ```text
 docs/
   PRODUCT.MD                   -- Product intent, users, scope, non-goals
-  ARCHITECTURE.MD              -- Technical design, layers, modules, testing strategy
+  ARCHITECTURE.MD              -- Technical design, layers, and modules
+  SETUP.MD                     -- Current bootstrap and local tooling
+  BACKEND_LOCAL.MD             -- Local backend startup and Android connection path
+  backend-installation-instructions.md -- Backend macOS installation and run guide
+  TESTING_STRATEGY.MD          -- Test coverage model and test-level ownership
+  VERIFICATION.MD              -- Verification commands, evidence, and failure reporting
+  DECISIONS.MD                 -- Durable project and harness decisions
+
+requirements/
   mvp_requirements_ecommerce.md -- Business requirements baseline
   ecommerce-android-plan.md    -- Stories, backlog, dependencies, sprint plan
-  SETUP.MD                     -- Current bootstrap, backend startup, and environment path
+  ecommerce-android-tech-design.md -- Original Android technical design source
+  zy-commerce-backend-business-baseline.md -- Backend business baseline
 
 repo root/
   AGENTS.MD                    -- Startup rules and execution constraints
@@ -43,6 +55,11 @@ Use this hierarchy consistently:
 - `ARCHITECTURE.MD` answers how the app must be built.
 - `feature_list.json` at repo root answers what is planned, active, blocked, or done.
 - `SETUP.MD` answers how to bootstrap the repository in its current state.
+- `BACKEND_LOCAL.MD` answers how the Android app connects to the local backend.
+- `backend-installation-instructions.md` answers how to install and run the backend on macOS.
+- `TESTING_STRATEGY.MD` answers what kinds of tests should exist and where they belong.
+- `VERIFICATION.MD` answers how to verify changes and record evidence.
+- `DECISIONS.MD` records durable decisions and rationale.
 
 When behavior changes, update product docs.
 When structure or technical rules change, update architecture docs.
@@ -105,18 +122,7 @@ Required boundaries:
 - UI must not call Retrofit, Room, or repositories directly from composables.
 - DTOs and Room entities must not leak into UI.
 
-Required stack unless explicitly changed in docs first:
-
-- Kotlin
-- Jetpack Compose + Material 3
-- Clean Architecture
-- MVVM with unidirectional state flow
-- Hilt
-- Coroutines + Flow
-- Retrofit + OkHttp + Kotlinx Serialization
-- Room
-- DataStore
-- Paging 3 for product list scalability
+Required stack and rationale are recorded in `docs/ARCHITECTURE.MD` and summarized in `docs/DECISIONS.MD`. Do not introduce major new libraries or replace the stack without updating both documents.
 
 ## Scope Control Rules
 
@@ -129,7 +135,7 @@ If scope is ambiguous:
 
 1. Re-read `feature_list.json`.
 2. Re-read the relevant section in `docs/PRODUCT.MD`.
-3. Re-read the relevant story in `docs/ecommerce-android-plan.md`.
+3. Re-read the relevant story in `requirements/ecommerce-android-plan.md`.
 
 ## Required Artifacts
 
@@ -137,8 +143,17 @@ The harness currently requires:
 
 - `docs/PRODUCT.MD`
 - `docs/ARCHITECTURE.MD`
+- `requirements/mvp_requirements_ecommerce.md`
+- `requirements/ecommerce-android-plan.md`
+- `requirements/ecommerce-android-tech-design.md`
+- `requirements/zy-commerce-backend-business-baseline.md`
 - `feature_list.json`
 - `docs/SETUP.MD`
+- `docs/BACKEND_LOCAL.MD`
+- `docs/backend-installation-instructions.md`
+- `docs/TESTING_STRATEGY.MD`
+- `docs/VERIFICATION.MD`
+- `docs/DECISIONS.MD`
 
 The following should exist before or during active implementation:
 
@@ -150,25 +165,11 @@ If these artifacts do not exist yet, create them when implementation begins or w
 
 Current bootstrap rule:
 
-- Use `init.sh` as the standard startup and verification path. Use `docs/SETUP.MD` for environment details, backend checks, and troubleshooting.
+- Use `init.sh` as the standard startup and verification path. Use `docs/SETUP.MD` for local tooling, `docs/BACKEND_LOCAL.MD` for backend checks, `docs/TESTING_STRATEGY.MD` for coverage expectations, and `docs/VERIFICATION.MD` for evidence expectations.
 
 ## Verification Philosophy
 
-Completion judgment must be externalized. Do not trust the agent's internal confidence.
-
-Every feature should be verified across three layers where applicable:
-
-1. **Syntax / static layer**
-   - code compiles
-   - lint/type/static checks pass
-2. **Behavior layer**
-   - unit and integration expectations pass
-   - state transitions and error handling are correct
-3. **System layer**
-   - user-facing flow actually works in the app
-   - protected/public behavior matches requirements
-
-Do not skip directly from "code written" to "done."
+Completion judgment must be externalized. Do not trust internal confidence. Testing coverage expectations live in `docs/TESTING_STRATEGY.MD`; commands, evidence expectations, and failure reporting rules live in `docs/VERIFICATION.MD`.
 
 ## Definition Of Done
 
@@ -181,73 +182,19 @@ A feature is done only when all of the following are true:
 - Product and architecture docs were updated if the feature changed them.
 - The repository remains restartable for the next session.
 
-For Android features, the minimum verification target should usually include:
-
-- successful build path
-- relevant unit tests
-- relevant integration tests where infrastructure is involved
-- manual or automated UI verification for user-visible behavior
+For Android features, use `docs/TESTING_STRATEGY.MD` for coverage expectations and `docs/VERIFICATION.MD` for the current verification checklist and evidence format.
 
 ## Standard Verification Path
 
-When the Android Gradle project exists, the default verification path should be:
-
-```bash
-./gradlew test
-./gradlew lintDebug
-./gradlew assembleDebug
-```
-
-Add these when available and relevant:
-
-- integration-test tasks
-- screenshot regression tasks
-- Compose UI test tasks
-- emulator/manual smoke validation notes
-
-Until the Android project scaffold exists, treat documentation consistency and feature-scope correctness as the current baseline checks.
+Run `./init.sh` by default. See `docs/VERIFICATION.MD` for the underlying Gradle checks, optional additions, backend-dependent smoke checks, and evidence format.
 
 ## Error Feedback Rules
 
-When a check fails, record actionable repair information.
-
-Bad:
-
-- "Test failed."
-
-Good:
-
-- "Login screen UI test failed: sign-in success did not navigate to catalog. Check session persistence and navigation effect handling in `LoginViewModel` and sign-in route."
-
-Verification feedback should help the next agent self-correct without guessing.
+When a check fails, record actionable repair information. See `docs/VERIFICATION.MD` for failure-reporting examples.
 
 ## Multi-Agent Upgrade Path
 
-Default mode for now:
-
-- use a single implementing agent guided by this harness
-
-Upgrade to explicit role separation when tasks become risky, multi-step, or prone to premature completion.
-
-Recommended future roles:
-
-- **Planner**
-  - expands short requests into scoped execution contracts
-  - defines acceptance criteria, exclusions, and verification expectations
-- **Generator**
-  - implements exactly one scoped feature block
-- **Evaluator**
-  - verifies the output against acceptance criteria and evidence
-  - should not be the same reasoning pass that wrote the feature
-
-Use planner + generator + evaluator especially for:
-
-- auth/session work
-- catalog pagination/search/filter correctness
-- product create/update/deactivate flows
-- refactors affecting multiple modules
-
-Do not introduce multi-agent orchestration by default before the repo has enough harness surface to support it cleanly.
+Use a single implementing agent by default. Upgrade to explicit Planner, Generator, and Evaluator roles only when feature risk or complexity justifies it. The decision and trigger examples are recorded in `docs/DECISIONS.MD`.
 
 ## Session Continuity
 

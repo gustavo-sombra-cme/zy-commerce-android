@@ -264,7 +264,7 @@ This document explains what the product is and what it is meant to do.
 
 Related documents:
 
-- `mvp_requirements_ecommerce.md` defines the current MVP requirements
-- `ecommerce-android-plan.md` defines the stories, backlog, sprint plan, and risks
+- `requirements/mvp_requirements_ecommerce.md` defines the current MVP requirements
+- `requirements/ecommerce-android-plan.md` defines the stories, backlog, sprint plan, and risks
 - `ARCHITECTURE.MD` defines how the app should be built technically
 - root-level `feature_list.json` defines machine-readable implementation scope for agent-driven execution

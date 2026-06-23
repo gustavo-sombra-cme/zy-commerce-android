@@ -25,6 +25,13 @@ Next planned story:
   - data: Retrofit `AuthApi`, DTOs, mapper, repository implementation
   - app/core: Hilt app, base URL provider, Retrofit/OkHttp/serialization wiring
 - Added placeholder modules for later catalog/product-admin work without implementing those stories.
+- Added `docs/DECISIONS.MD` for durable harness and project decisions.
+- Added `docs/VERIFICATION.MD` for verification commands, evidence, smoke checks, and failure reporting.
+- Added `docs/TESTING_STRATEGY.MD` for test coverage expectations and test-level ownership.
+- Added `docs/BACKEND_LOCAL.MD` for backend startup, URLs, emulator/device connection rules, and smoke prerequisites.
+- Moved backend installation guidance into `docs/backend-installation-instructions.md`.
+- Moved backend helper scripts into `scripts/`.
+- Moved requirements and source design files into `requirements/`.
 - Updated `feature_list.json` with completion evidence.
 
 ## Verification Evidence
@@ -55,5 +62,9 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradl
 3. Read `docs/ARCHITECTURE.MD`.
 4. Read `feature_list.json`.
 5. Read `docs/SETUP.MD`.
-6. Run `./init.sh`.
-7. Select the next planned feature from `feature_list.json`.
+6. Read `docs/DECISIONS.MD`.
+7. Read `docs/BACKEND_LOCAL.MD`.
+8. Read `docs/TESTING_STRATEGY.MD`.
+9. Read `docs/VERIFICATION.MD`.
+10. Run `./init.sh`.
+11. Select the next planned feature from `feature_list.json`.

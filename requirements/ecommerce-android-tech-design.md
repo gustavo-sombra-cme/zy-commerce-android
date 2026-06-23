@@ -294,7 +294,78 @@ This keeps screen logic testable and reduces drift in AI-generated code.
 
 ## Testing Strategy
 
-Testing is a first-class architecture concern. Keep tests close to the layer that owns the behavior, and use `docs/TESTING_STRATEGY.MD` for the current unit, integration, UI, regression, and manual QA expectations. Use `docs/VERIFICATION.MD` for commands and evidence.
+### Unit Tests
+- Test use cases:
+  - `RegisterUserUseCase`
+  - `LoginUserUseCase`
+  - `GetCurrentUserUseCase`
+  - `GetProductsPageUseCase`
+  - `CreateProductUseCase`
+  - `UpdateProductDetailsUseCase`
+  - `DeactivateProductUseCase`
+- Test ViewModels:
+  - auth form states
+  - catalog search/filter/paging state
+  - product form validation and success/error states
+- Test mappers and error normalization
+- Test session restoration logic
+
+Recommended tools:
+- JUnit
+- MockK
+- Truth
+- kotlinx-coroutines-test
+- Turbine
+
+### Integration Tests
+- Retrofit + serialization using `MockWebServer`
+- Room DAO + repository integration with in-memory Room
+- DataStore persistence behavior
+- `401` handling and session clearing
+- product read-cache update flow
+
+Recommended tools:
+- MockWebServer
+- Room in-memory database
+- Hilt testing
+
+### UI Tests
+- Register success and duplicate-email error
+- Sign-in success
+- Invalid/inactive sign-in handling
+- Catalog load and empty state
+- Search/filter flow
+- Product detail rendering
+- Create product validation
+- Deactivate confirmation flow
+
+Recommended tool:
+- Compose UI Test
+
+### Regression Testing
+Regression should be a curated automated pack, not a separate tool choice.
+
+Recommended regression pack:
+- auth smoke tests
+- repository integration tests for catalog and product writes
+- UI smoke tests for:
+  - sign in
+  - browse catalog
+  - open product detail
+  - create/update/deactivate product
+- screenshot regression tests for stable screens
+
+Recommended screenshot tool:
+- Paparazzi or Shot
+
+### Manual QA Checklist
+- Emulator connects to local backend
+- Physical device connects over LAN
+- Session survives app restart
+- Invalid token clears session safely
+- Public catalog works signed out
+- Protected actions require sign-in
+- Validation and conflict messages are readable
 
 ## Deliberate MVP Simplifications
 - No refresh-token orchestration
@@ -386,5 +457,5 @@ sequenceDiagram
 - Use Clean Architecture with MVVM and unidirectional state flow.
 - Keep the MVP modular by feature and layer, but do not over-fragment beyond the proposed module set.
 - Use Retrofit/OkHttp for network, Room for catalog caching, and DataStore plus encrypted storage for session state.
-- Treat testing as a first-class architecture concern. Keep coverage expectations in `docs/TESTING_STRATEGY.MD` and verification commands in `docs/VERIFICATION.MD`.
+- Treat testing as a first-class architecture concern: many unit tests, focused integration tests, targeted Compose UI tests, and a small regression suite in CI.
 - Keep the architecture scoped to the implemented backend slice. Do not let future cart/checkout/order concerns distort the current MVP design.
