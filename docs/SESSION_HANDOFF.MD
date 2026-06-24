@@ -32,6 +32,8 @@ Next planned story:
 - Moved backend installation guidance into `docs/backend-installation-instructions.md`.
 - Moved backend helper scripts into `scripts/`.
 - Moved requirements and source design files into `requirements/`.
+- Added Planner, Implementer, Reviewer, and Evaluator role prompts under `agents/`.
+- Added `docs/AGENT_WORKFLOW.MD` for multi-agent operating rules.
 - Updated `feature_list.json` with completion evidence.
 
 ## Verification Evidence
@@ -66,5 +68,6 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradl
 7. Read `docs/BACKEND_LOCAL.MD`.
 8. Read `docs/TESTING_STRATEGY.MD`.
 9. Read `docs/VERIFICATION.MD`.
-10. Run `./init.sh`.
-11. Select the next planned feature from `feature_list.json`.
+10. Read `docs/AGENT_WORKFLOW.MD` when work may need multiple roles.
+11. Run `./init.sh`.
+12. Select the next planned feature from `feature_list.json`.

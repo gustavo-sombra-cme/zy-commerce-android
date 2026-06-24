@@ -192,3 +192,29 @@ Completed:
 Validation passed:
 
 - `git diff --check`
+
+### 2026-06-23 — Multi-Agent Role Artifacts
+
+Completed:
+
+- added `agents/` role prompts for Planner, Implementer, Reviewer, and Evaluator
+- added `docs/AGENT_WORKFLOW.MD` as the operating guide for when and how to use the roles
+- updated harness docs to use Implementer instead of the older Generator wording
+- wired the new agent artifacts into setup, decisions, and handoff docs
+
+Validation passed:
+
+- `git diff --check`
+
+### 2026-06-23 — Reviewer Role Artifact
+
+Completed:
+
+- added `agents/REVIEWER.MD` for code quality, architecture, maintainability, and test-quality review
+- updated the agent workflow from three roles to Planner, Implementer, Reviewer, and Evaluator
+- kept Evaluator as the final completion and evidence judge
+- wired Reviewer into setup, decisions, handoff, and agent docs
+
+Validation passed:
+
+- `git diff --check`

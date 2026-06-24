@@ -126,11 +126,13 @@ Reason: Features can appear done while compile, lint, unit behavior, integration
 
 Coverage expectations live in `docs/TESTING_STRATEGY.MD`; evidence format and verification commands live in `docs/VERIFICATION.MD`.
 
-## D-010 — Defer Multi-Agent Split Until The Harness Needs It
+## D-010 — Use Multi-Agent Roles For Risky Work
 
-Decision: Use a single implementing agent by default. Introduce explicit Planner, Generator, and Evaluator roles only when feature risk or complexity justifies it.
+Decision: Use a single agent by default. Introduce explicit Planner, Implementer, Reviewer, and Evaluator roles when feature risk, complexity, or code-quality risk justifies it.
 
-Reason: The repo is still early. Role separation is useful for auth/session, catalog pagination/search/filter, product write flows, and broad refactors, but it adds overhead before the harness has enough surface.
+Reason: Role separation is useful for auth/session, catalog pagination/search/filter, product write flows, backend contract uncertainty, broad refactors, code-quality review, and failing verification. It keeps planning, implementation, and completion judgment independent enough to reduce drift.
+
+Operational workflow lives in `docs/AGENT_WORKFLOW.MD`. Role prompts live in `agents/`.
 
 ## D-011 — ST-01 Completion Scope
 

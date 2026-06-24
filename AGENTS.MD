@@ -37,6 +37,13 @@ docs/
   TESTING_STRATEGY.MD          -- Test coverage model and test-level ownership
   VERIFICATION.MD              -- Verification commands, evidence, and failure reporting
   DECISIONS.MD                 -- Durable project and harness decisions
+  AGENT_WORKFLOW.MD            -- Planner, Implementer, Reviewer, Evaluator workflow
+
+agents/
+  PLANNER.MD                   -- Planning role prompt
+  IMPLEMENTER.MD               -- Implementation role prompt
+  REVIEWER.MD                  -- Code review role prompt
+  EVALUATOR.MD                 -- Evaluation role prompt
 
 requirements/
   mvp_requirements_ecommerce.md -- Business requirements baseline
@@ -154,6 +161,12 @@ The harness currently requires:
 - `docs/TESTING_STRATEGY.MD`
 - `docs/VERIFICATION.MD`
 - `docs/DECISIONS.MD`
+- `docs/AGENT_WORKFLOW.MD`
+- `agents/README.MD`
+- `agents/PLANNER.MD`
+- `agents/IMPLEMENTER.MD`
+- `agents/REVIEWER.MD`
+- `agents/EVALUATOR.MD`
 
 The following should exist before or during active implementation:
 
@@ -194,7 +207,7 @@ When a check fails, record actionable repair information. See `docs/VERIFICATION
 
 ## Multi-Agent Upgrade Path
 
-Use a single implementing agent by default. Upgrade to explicit Planner, Generator, and Evaluator roles only when feature risk or complexity justifies it. The decision and trigger examples are recorded in `docs/DECISIONS.MD`.
+Use a single implementing agent by default. Upgrade to explicit Planner, Implementer, Reviewer, and Evaluator roles when feature risk or complexity justifies it. The workflow lives in `docs/AGENT_WORKFLOW.MD`, and role prompts live in `agents/`.
 
 ## Session Continuity
 

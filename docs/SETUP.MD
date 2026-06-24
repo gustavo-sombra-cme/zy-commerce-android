@@ -104,3 +104,7 @@ The project is in a healthy startup state when:
 - current active feature is clear
 - architecture constraints are known
 - `./init.sh` passes
+
+## Agent Workflow
+
+Use a single agent for small changes. Use Planner, Implementer, Reviewer, and Evaluator for risky, ambiguous, or quality-sensitive feature work. Role prompts live in `agents/`, and operating rules live in `docs/AGENT_WORKFLOW.MD`.
