@@ -13,8 +13,8 @@ Read these before editing:
 1. `AGENTS.MD`
 2. Planner handoff or user-approved task scope
 3. `docs/ARCHITECTURE.MD`
-4. `docs/TESTING_STRATEGY.MD`
-5. `docs/VERIFICATION.MD`
+4. `.harness/docs/TESTING_STRATEGY.MD`
+5. `.harness/docs/VERIFICATION.MD`
 6. Relevant story or requirement files
 7. Existing source files in the affected modules
 
@@ -23,10 +23,10 @@ Read these before editing:
 - Keep work inside the selected feature or harness task.
 - Follow Presentation, Domain, Data, and Core module boundaries.
 - Add or update tests at the closest useful level.
-- Update `feature_list.json`, `docs/PROGRESS.MD`, and `docs/SESSION_HANDOFF.MD` when feature state or continuity changes.
+- Update `feature_list.json`, `.harness/docs/PROGRESS.MD`, and `.harness/docs/SESSION_HANDOFF.MD` when feature state or continuity changes.
 - Update product, architecture, setup, backend, testing, or verification docs when their source of truth changes.
 - Run the verification plan when feasible.
-- Hand off unresolved failures clearly to the Evaluator or next session.
+- Hand off unresolved failures clearly to the Reviewer, Evaluator, or next session.
 
 ## Implementation Rules
 
@@ -42,9 +42,33 @@ Use this shape:
 
 ```text
 Implemented:
+Summary Of Changes:
 Files Changed:
 Tests / Verification Run:
 Evidence Updated:
 Known Gaps:
-Ready For Evaluator:
+Ready For Reviewer:
+Human Approval Request: approve implementation summary to continue to Reviewer? yes | no
 ```
+
+## Stage Output File
+
+Write the Implementer handoff to:
+
+```text
+.harness/agent_outputs/implementer.md
+```
+
+Before requesting approval, display the contents of `.harness/agent_outputs/implementer.md` to the human in the terminal, Codex app, or current conversation. The Reviewer should not start until the human approves that displayed implementation summary.
+
+## Human In The Loop
+
+Before handing off to the Reviewer, present the implementation result to the human with:
+
+- a short summary of the changes completed
+- important files/modules changed
+- tests or verification that ran
+- evidence/docs updated
+- known gaps, skipped checks, or follow-up risks
+
+Do not continue to the Reviewer until the human explicitly approves moving forward.

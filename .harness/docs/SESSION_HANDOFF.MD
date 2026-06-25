@@ -25,15 +25,15 @@ Next planned story:
   - data: Retrofit `AuthApi`, DTOs, mapper, repository implementation
   - app/core: Hilt app, base URL provider, Retrofit/OkHttp/serialization wiring
 - Added placeholder modules for later catalog/product-admin work without implementing those stories.
-- Added `docs/DECISIONS.MD` for durable harness and project decisions.
-- Added `docs/VERIFICATION.MD` for verification commands, evidence, smoke checks, and failure reporting.
-- Added `docs/TESTING_STRATEGY.MD` for test coverage expectations and test-level ownership.
-- Added `docs/BACKEND_LOCAL.MD` for backend startup, URLs, emulator/device connection rules, and smoke prerequisites.
-- Moved backend installation guidance into `docs/backend-installation-instructions.md`.
+- Added `.harness/docs/DECISIONS.MD` for durable harness and project decisions.
+- Added `.harness/docs/VERIFICATION.MD` for verification commands, evidence, smoke checks, and failure reporting.
+- Added `.harness/docs/TESTING_STRATEGY.MD` for test coverage expectations and test-level ownership.
+- Added `.harness/docs/BACKEND_LOCAL.MD` for backend startup, URLs, emulator/device connection rules, and smoke prerequisites.
+- Moved backend installation guidance into `.harness/docs/backend-installation-instructions.md`.
 - Moved backend helper scripts into `scripts/`.
 - Moved requirements and source design files into `requirements/`.
-- Added Planner, Implementer, Reviewer, and Evaluator role prompts under `agents/`.
-- Added `docs/AGENT_WORKFLOW.MD` for multi-agent operating rules.
+- Added Planner, Implementer, Reviewer, and Evaluator role prompts under `.harness/agents/`.
+- Added `.harness/docs/AGENT_WORKFLOW.MD` for multi-agent operating rules.
 - Updated `feature_list.json` with completion evidence.
 
 ## Verification Evidence
@@ -63,11 +63,11 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradl
 2. Read `docs/PRODUCT.MD`.
 3. Read `docs/ARCHITECTURE.MD`.
 4. Read `feature_list.json`.
-5. Read `docs/SETUP.MD`.
-6. Read `docs/DECISIONS.MD`.
-7. Read `docs/BACKEND_LOCAL.MD`.
-8. Read `docs/TESTING_STRATEGY.MD`.
-9. Read `docs/VERIFICATION.MD`.
-10. Read `docs/AGENT_WORKFLOW.MD` when work may need multiple roles.
+5. Read `.harness/docs/SETUP.MD`.
+6. Read `.harness/docs/DECISIONS.MD`.
+7. Read `.harness/docs/BACKEND_LOCAL.MD`.
+8. Read `.harness/docs/TESTING_STRATEGY.MD`.
+9. Read `.harness/docs/VERIFICATION.MD`.
+10. Read `.harness/docs/AGENT_WORKFLOW.MD` when work may need multiple roles.
 11. Run `./init.sh`.
 12. Select the next planned feature from `feature_list.json`.

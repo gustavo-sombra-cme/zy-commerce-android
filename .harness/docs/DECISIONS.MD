@@ -11,13 +11,13 @@ Reason: This project is intended for long-running AI-assisted development. Durab
 Operational files:
 
 - `AGENTS.MD` for agent workflow rules
-- `docs/SETUP.MD` for local bootstrap and tooling
-- `docs/BACKEND_LOCAL.MD` for local backend startup and Android connection details
-- `docs/backend-installation-instructions.md` for backend macOS installation and run guidance
-- `docs/TESTING_STRATEGY.MD` for test coverage expectations and test-level ownership
-- `docs/VERIFICATION.MD` for verification commands, evidence, and failure reporting
-- `docs/PROGRESS.MD` for session history
-- `docs/SESSION_HANDOFF.MD` for next-session resume notes
+- `.harness/docs/SETUP.MD` for local bootstrap and tooling
+- `.harness/docs/BACKEND_LOCAL.MD` for local backend startup and Android connection details
+- `.harness/docs/backend-installation-instructions.md` for backend macOS installation and run guidance
+- `.harness/docs/TESTING_STRATEGY.MD` for test coverage expectations and test-level ownership
+- `.harness/docs/VERIFICATION.MD` for verification commands, evidence, and failure reporting
+- `.harness/docs/PROGRESS.MD` for session history
+- `.harness/docs/SESSION_HANDOFF.MD` for next-session resume notes
 - `requirements/` for source requirements, backlog, source design, and backend baseline
 - `feature_list.json` for feature status and evidence
 
@@ -35,12 +35,12 @@ Document responsibilities:
 - `requirements/ecommerce-android-plan.md`: stories, backlog, dependencies, sprint plan
 - `requirements/ecommerce-android-tech-design.md`: original Android technical design source
 - `requirements/zy-commerce-backend-business-baseline.md`: backend business baseline
-- `docs/SETUP.MD`: bootstrap and local tooling
-- `docs/BACKEND_LOCAL.MD`: local backend startup, URLs, Android connection path
-- `docs/backend-installation-instructions.md`: backend macOS installation and run guide
-- `docs/TESTING_STRATEGY.MD`: test coverage model and test-level ownership
-- `docs/VERIFICATION.MD`: verification commands, evidence, smoke checks, failure reporting
-- `docs/DECISIONS.MD`: durable decisions and rationale
+- `.harness/docs/SETUP.MD`: bootstrap and local tooling
+- `.harness/docs/BACKEND_LOCAL.MD`: local backend startup, URLs, Android connection path
+- `.harness/docs/backend-installation-instructions.md`: backend macOS installation and run guide
+- `.harness/docs/TESTING_STRATEGY.MD`: test coverage model and test-level ownership
+- `.harness/docs/VERIFICATION.MD`: verification commands, evidence, smoke checks, failure reporting
+- `.harness/docs/DECISIONS.MD`: durable decisions and rationale
 - `feature_list.json`: planned, active, blocked, or done feature state
 
 ## D-003 — Work One Feature At A Time
@@ -108,7 +108,7 @@ Decision: `./init.sh` is the standard local startup and verification command.
 
 Reason: The repo now has an Android scaffold and Gradle wrapper, so startup should be executable instead of documentation-only.
 
-Operational details live in `docs/SETUP.MD`. Testing strategy lives in `docs/TESTING_STRATEGY.MD`; verification details live in `docs/VERIFICATION.MD`.
+Operational details live in `.harness/docs/SETUP.MD`. Testing strategy lives in `.harness/docs/TESTING_STRATEGY.MD`; verification details live in `.harness/docs/VERIFICATION.MD`.
 
 ## D-008 — Target Local Backend Through Emulator-Friendly Debug Config
 
@@ -116,7 +116,7 @@ Decision: Debug Android builds target the local backend through the emulator-fri
 
 Reason: Emulator and physical-device networking differ, and release builds must not assume local HTTP.
 
-Backend startup, URLs, device rules, and smoke prerequisites live in `docs/BACKEND_LOCAL.MD`.
+Backend startup, URLs, device rules, and smoke prerequisites live in `.harness/docs/BACKEND_LOCAL.MD`.
 
 ## D-009 — Externalize Verification Evidence
 
@@ -124,7 +124,7 @@ Decision: Completion requires evidence, not internal confidence.
 
 Reason: Features can appear done while compile, lint, unit behavior, integration behavior, or manual smoke paths are still failing.
 
-Coverage expectations live in `docs/TESTING_STRATEGY.MD`; evidence format and verification commands live in `docs/VERIFICATION.MD`.
+Coverage expectations live in `.harness/docs/TESTING_STRATEGY.MD`; evidence format and verification commands live in `.harness/docs/VERIFICATION.MD`.
 
 ## D-010 — Use Multi-Agent Roles For Risky Work
 
@@ -132,7 +132,7 @@ Decision: Use a single agent by default. Introduce explicit Planner, Implementer
 
 Reason: Role separation is useful for auth/session, catalog pagination/search/filter, product write flows, backend contract uncertainty, broad refactors, code-quality review, and failing verification. It keeps planning, implementation, and completion judgment independent enough to reduce drift.
 
-Operational workflow lives in `docs/AGENT_WORKFLOW.MD`. Role prompts live in `agents/`.
+Operational workflow lives in `.harness/docs/AGENT_WORKFLOW.MD`. Role prompts live in `.harness/agents/`. Human approval is required before each handoff between roles. Runtime handoff outputs live under `.harness/agent_outputs/` and are cleared after a feature is complete.
 
 ## D-011 — ST-01 Completion Scope
 
@@ -150,6 +150,6 @@ Implemented behavior:
 
 ## D-012 — Separate Testing Strategy From Verification Commands
 
-Decision: Keep test coverage expectations in `docs/TESTING_STRATEGY.MD` and command/evidence rules in `docs/VERIFICATION.MD`.
+Decision: Keep test coverage expectations in `.harness/docs/TESTING_STRATEGY.MD` and command/evidence rules in `.harness/docs/VERIFICATION.MD`.
 
 Reason: Testing strategy changes at a different pace than local verification commands. Separating them keeps coverage decisions easy to find without duplicating command details.

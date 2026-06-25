@@ -1,6 +1,6 @@
 # VERIFICATION.MD — ZY-Commerce Android
 
-This file is the operational verification guide for the Android repository. Use it to decide what to run, what evidence to record, and what to do when checks fail. Use `docs/TESTING_STRATEGY.MD` for test coverage expectations.
+This file is the operational verification guide for the Android repository. Use it to decide what to run, what evidence to record, and what to do when checks fail. Use `.harness/docs/TESTING_STRATEGY.MD` for test coverage expectations.
 
 ## Standard Path
 
@@ -32,7 +32,7 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradl
 
 ## Feature Completion Evidence
 
-A feature is not done until verification evidence is recorded in `feature_list.json` and/or `docs/PROGRESS.MD`.
+A feature is not done until verification evidence is recorded in `feature_list.json` and/or `.harness/docs/PROGRESS.MD`.
 
 For Android features, record:
 
@@ -48,18 +48,18 @@ For Android features, record:
 Use three layers where applicable:
 
 1. Syntax / static checks: compilation, Gradle configuration, and Android lint.
-2. Behavior checks: the relevant unit, integration, or UI tests from `docs/TESTING_STRATEGY.MD`.
+2. Behavior checks: the relevant unit, integration, or UI tests from `.harness/docs/TESTING_STRATEGY.MD`.
 3. System checks: backend connectivity and emulator/device smoke testing when user-facing or backend-dependent behavior changes.
 
 Do not skip from code-written to done without evidence.
 
 ## Backend-Dependent Checks
 
-Backend availability checks, startup commands, local URLs, and Android connection rules live in `docs/BACKEND_LOCAL.MD`. Run those checks before manual backend or emulator smoke testing.
+Backend availability checks, startup commands, local URLs, and Android connection rules live in `.harness/docs/BACKEND_LOCAL.MD`. Run those checks before manual backend or emulator smoke testing.
 
 ## Current Manual Smoke Expectations
 
-Current backend-dependent smoke prerequisites and `ST-01` registration expectations live in `docs/BACKEND_LOCAL.MD`. Record results here only when the expected verification shape changes.
+Current backend-dependent smoke prerequisites and `ST-01` registration expectations live in `.harness/docs/BACKEND_LOCAL.MD`. Record results here only when the expected verification shape changes.
 
 ## Failure Reporting
 

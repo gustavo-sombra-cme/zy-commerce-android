@@ -40,12 +40,36 @@ Use Planner, Implementer, Reviewer, and Evaluator when work has any of these tra
 3. Reviewer checks code quality, maintainability, architecture practices, and regression risk.
 4. Evaluator checks scope, evidence, verification, docs, and restartability.
 
-Each role prompt lives in `agents/`:
+Each role prompt lives in `.harness/agents/`:
 
-- `agents/PLANNER.MD`
-- `agents/IMPLEMENTER.MD`
-- `agents/REVIEWER.MD`
-- `agents/EVALUATOR.MD`
+- `.harness/agents/PLANNER.MD`
+- `.harness/agents/IMPLEMENTER.MD`
+- `.harness/agents/REVIEWER.MD`
+- `.harness/agents/EVALUATOR.MD`
+
+## Runtime Output Files
+
+Each role must write its stage output to a runtime file before asking for Human-in-the-Loop approval:
+
+- Planner: `.harness/agent_outputs/planner.md`
+- Implementer: `.harness/agent_outputs/implementer.md`
+- Reviewer: `.harness/agent_outputs/reviewer.md`
+- Evaluator: `.harness/agent_outputs/evaluator.md`
+
+The role must display the file contents to the human in the terminal, Codex app, or current conversation before asking for approval.
+
+These files are ignored by git. When a feature or harness task is finished, delete them or clear their contents so the next feature starts with empty handoff state.
+
+## Human In The Loop
+
+Every role handoff requires explicit human approval before the next role begins. Do not assume approval from silence or from a successful previous step.
+
+Required approval gates:
+
+- Planner -> Implementer: human approves the plan summary and details.
+- Implementer -> Reviewer: human approves the implementation summary and change details.
+- Reviewer -> Evaluator: human approves the review result after issues are addressed or accepted.
+- Evaluator -> Next action: human approves the final evaluation result and any next step.
 
 ## Planner Handoff Requirements
 
@@ -58,6 +82,7 @@ The Planner should provide:
 - verification plan
 - documentation updates
 - risks or user questions
+- explicit human approval request to continue to Implementer
 
 ## Implementer Handoff Requirements
 
@@ -69,6 +94,7 @@ The Implementer should provide:
 - evidence updated
 - known gaps
 - anything the Reviewer or Evaluator should inspect closely
+- explicit human approval request to continue to Reviewer
 
 ## Reviewer Review Requirements
 
@@ -79,7 +105,10 @@ The Reviewer should provide:
 - test-quality concerns
 - security or privacy concerns
 - suggested fixes before final evaluation
+- findings grouped by Critical, High, Medium, Low, and Info
+- whether issues were addressed or explicitly accepted
 - whether the change is ready for Evaluator review
+- explicit human approval request to continue to Evaluator
 
 ## Evaluator Completion Requirements
 
@@ -90,10 +119,11 @@ The Evaluator should consider Reviewer findings before passing work. The Evaluat
 - relevant tests or verification ran
 - evidence is recorded
 - docs match the current behavior
-- the repo can be restarted from `AGENTS.MD` and `docs/SETUP.MD`
+- the repo can be restarted from `AGENTS.MD` and `.harness/docs/SETUP.MD`
+- final evaluation summary was presented to the human
 
 ## Evidence
 
-Feature completion evidence belongs in `feature_list.json` and/or `docs/PROGRESS.MD`.
+Feature completion evidence belongs in `feature_list.json` and/or `.harness/docs/PROGRESS.MD`.
 
-Operational verification commands and failure reporting live in `docs/VERIFICATION.MD`.
+Operational verification commands and failure reporting live in `.harness/docs/VERIFICATION.MD`.

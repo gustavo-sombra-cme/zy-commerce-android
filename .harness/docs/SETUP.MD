@@ -24,14 +24,14 @@ What exists now:
 - `requirements/ecommerce-android-tech-design.md`
 - `requirements/zy-commerce-backend-business-baseline.md`
 - `feature_list.json`
-- `docs/SETUP.MD`
-- `docs/PROGRESS.MD`
-- `docs/SESSION_HANDOFF.MD`
-- `docs/DECISIONS.MD`
-- `docs/VERIFICATION.MD`
-- `docs/TESTING_STRATEGY.MD`
-- `docs/BACKEND_LOCAL.MD`
-- `docs/backend-installation-instructions.md`
+- `.harness/docs/SETUP.MD`
+- `.harness/docs/PROGRESS.MD`
+- `.harness/docs/SESSION_HANDOFF.MD`
+- `.harness/docs/DECISIONS.MD`
+- `.harness/docs/VERIFICATION.MD`
+- `.harness/docs/TESTING_STRATEGY.MD`
+- `.harness/docs/BACKEND_LOCAL.MD`
+- `.harness/docs/backend-installation-instructions.md`
 - Android Gradle scaffold with modules aligned to `docs/ARCHITECTURE.MD`
 - Gradle wrapper: `./gradlew`
 - bootstrap script: `./init.sh`
@@ -71,11 +71,11 @@ If `JAVA_HOME` is not set, `init.sh` will use:
 
 ## Standard Verification Path
 
-Use `./init.sh` for the standard local verification path. Test coverage expectations live in `docs/TESTING_STRATEGY.MD`; command details, evidence format, and optional smoke checks live in `docs/VERIFICATION.MD`.
+Use `./init.sh` for the standard local verification path. Test coverage expectations live in `.harness/docs/TESTING_STRATEGY.MD`; command details, evidence format, and optional smoke checks live in `.harness/docs/VERIFICATION.MD`.
 
 ## Backend Dependency
 
-The Android app depends on the local ZY-Commerce backend for the current MVP. Backend startup, URLs, emulator/device connection rules, and debug network security details live in `docs/BACKEND_LOCAL.MD`.
+The Android app depends on the local ZY-Commerce backend for the current MVP. Backend startup, URLs, emulator/device connection rules, and debug network security details live in `.harness/docs/BACKEND_LOCAL.MD`.
 
 ## Current Feature State
 
@@ -107,4 +107,4 @@ The project is in a healthy startup state when:
 
 ## Agent Workflow
 
-Use a single agent for small changes. Use Planner, Implementer, Reviewer, and Evaluator for risky, ambiguous, or quality-sensitive feature work. Role prompts live in `agents/`, and operating rules live in `docs/AGENT_WORKFLOW.MD`.
+Use a single agent for small changes. Use Planner, Implementer, Reviewer, and Evaluator for risky, ambiguous, or quality-sensitive feature work. Role prompts live in `.harness/agents/`, and operating rules live in `.harness/docs/AGENT_WORKFLOW.MD`. Every role handoff requires human approval. Runtime handoff output files live under `.harness/agent_outputs/` and are ignored by git.

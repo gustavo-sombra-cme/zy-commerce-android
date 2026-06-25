@@ -22,7 +22,7 @@ Current local backend targets:
 
 Backend installation guidance now lives in this Android repository:
 
-- `docs/backend-installation-instructions.md`
+- `.harness/docs/backend-installation-instructions.md`
 
 Backend runtime scripts live in this Android repository:
 

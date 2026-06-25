@@ -1,6 +1,6 @@
 # TESTING_STRATEGY.MD — ZY-Commerce Android
 
-This file defines what kinds of tests the Android app should grow and where each kind belongs. Use `docs/VERIFICATION.MD` for the commands to run and the evidence to record.
+This file defines what kinds of tests the Android app should grow and where each kind belongs. Use `.harness/docs/VERIFICATION.MD` for the commands to run and the evidence to record.
 
 ## Purpose
 
@@ -73,7 +73,7 @@ For the current MVP backlog:
 - Catalog stories should prioritize repository integration, paging/search/filter state, cache behavior, empty/error states, and UI list behavior.
 - Product-admin stories should prioritize form validation, protected-action handling, create/update/deactivate repository behavior, and confirmation flows.
 
-A story can be complete without every test level when the missing level is not relevant yet, but the gap must be recorded in `feature_list.json` or `docs/PROGRESS.MD`.
+A story can be complete without every test level when the missing level is not relevant yet, but the gap must be recorded in `feature_list.json` or `.harness/docs/PROGRESS.MD`.
 
 ## Regression Pack
 
@@ -90,7 +90,7 @@ Do not add broad regression coverage before the underlying feature is stable eno
 
 ## Manual QA Focus
 
-Manual testing is mainly for device, backend, and UX confidence. Before manual backend or emulator smoke testing, use `docs/BACKEND_LOCAL.MD`.
+Manual testing is mainly for device, backend, and UX confidence. Before manual backend or emulator smoke testing, use `.harness/docs/BACKEND_LOCAL.MD`.
 
 Current manual QA concerns:
 
@@ -104,6 +104,6 @@ Current manual QA concerns:
 
 ## Relationship To Verification
 
-`docs/TESTING_STRATEGY.MD` answers what kinds of tests should exist.
+`.harness/docs/TESTING_STRATEGY.MD` answers what kinds of tests should exist.
 
-`docs/VERIFICATION.MD` answers how to run checks, what evidence to record, and how to report failures.
+`.harness/docs/VERIFICATION.MD` answers how to run checks, what evidence to record, and how to report failures.

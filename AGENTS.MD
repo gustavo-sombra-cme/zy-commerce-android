@@ -13,10 +13,10 @@ Before writing code, complete these steps in order:
 3. Read `docs/PRODUCT.MD`.
 4. Read `docs/ARCHITECTURE.MD`.
 5. Read `feature_list.json`.
-6. Read `docs/SETUP.MD` for the current bootstrap path.
-7. Read `docs/BACKEND_LOCAL.MD` for local backend connection and smoke-test prerequisites.
-8. Read `docs/TESTING_STRATEGY.MD` for testing coverage expectations.
-9. Read `docs/VERIFICATION.MD` for the current verification path and evidence expectations.
+6. Read `.harness/docs/SETUP.MD` for the current bootstrap path.
+7. Read `.harness/docs/BACKEND_LOCAL.MD` for local backend connection and smoke-test prerequisites.
+8. Read `.harness/docs/TESTING_STRATEGY.MD` for testing coverage expectations.
+9. Read `.harness/docs/VERIFICATION.MD` for the current verification path and evidence expectations.
 10. Read `requirements/ecommerce-android-plan.md` if feature scope, dependencies, or sprint order are unclear.
 11. Review recent commits with `git log --oneline -5`.
 12. Run the standard project verification path if it exists.
@@ -39,7 +39,7 @@ docs/
   DECISIONS.MD                 -- Durable project and harness decisions
   AGENT_WORKFLOW.MD            -- Planner, Implementer, Reviewer, Evaluator workflow
 
-agents/
+.harness/agents/
   PLANNER.MD                   -- Planning role prompt
   IMPLEMENTER.MD               -- Implementation role prompt
   REVIEWER.MD                  -- Code review role prompt
@@ -129,7 +129,7 @@ Required boundaries:
 - UI must not call Retrofit, Room, or repositories directly from composables.
 - DTOs and Room entities must not leak into UI.
 
-Required stack and rationale are recorded in `docs/ARCHITECTURE.MD` and summarized in `docs/DECISIONS.MD`. Do not introduce major new libraries or replace the stack without updating both documents.
+Required stack and rationale are recorded in `docs/ARCHITECTURE.MD` and summarized in `.harness/docs/DECISIONS.MD`. Do not introduce major new libraries or replace the stack without updating both documents.
 
 ## Scope Control Rules
 
@@ -155,34 +155,34 @@ The harness currently requires:
 - `requirements/ecommerce-android-tech-design.md`
 - `requirements/zy-commerce-backend-business-baseline.md`
 - `feature_list.json`
-- `docs/SETUP.MD`
-- `docs/BACKEND_LOCAL.MD`
-- `docs/backend-installation-instructions.md`
-- `docs/TESTING_STRATEGY.MD`
-- `docs/VERIFICATION.MD`
-- `docs/DECISIONS.MD`
-- `docs/AGENT_WORKFLOW.MD`
-- `agents/README.MD`
-- `agents/PLANNER.MD`
-- `agents/IMPLEMENTER.MD`
-- `agents/REVIEWER.MD`
-- `agents/EVALUATOR.MD`
+- `.harness/docs/SETUP.MD`
+- `.harness/docs/BACKEND_LOCAL.MD`
+- `.harness/docs/backend-installation-instructions.md`
+- `.harness/docs/TESTING_STRATEGY.MD`
+- `.harness/docs/VERIFICATION.MD`
+- `.harness/docs/DECISIONS.MD`
+- `.harness/docs/AGENT_WORKFLOW.MD`
+- `.harness/agents/README.MD`
+- `.harness/agents/PLANNER.MD`
+- `.harness/agents/IMPLEMENTER.MD`
+- `.harness/agents/REVIEWER.MD`
+- `.harness/agents/EVALUATOR.MD`
 
 The following should exist before or during active implementation:
 
-- `docs/PROGRESS.MD` — session continuity log
-- `docs/SESSION_HANDOFF.MD` — short resume notes for next session
+- `.harness/docs/PROGRESS.MD` — session continuity log
+- `.harness/docs/SESSION_HANDOFF.MD` — short resume notes for next session
 - `init.sh` or an equivalent setup/verification script once the Android project scaffold exists
 
 If these artifacts do not exist yet, create them when implementation begins or when they are needed to preserve continuity.
 
 Current bootstrap rule:
 
-- Use `init.sh` as the standard startup and verification path. Use `docs/SETUP.MD` for local tooling, `docs/BACKEND_LOCAL.MD` for backend checks, `docs/TESTING_STRATEGY.MD` for coverage expectations, and `docs/VERIFICATION.MD` for evidence expectations.
+- Use `init.sh` as the standard startup and verification path. Use `.harness/docs/SETUP.MD` for local tooling, `.harness/docs/BACKEND_LOCAL.MD` for backend checks, `.harness/docs/TESTING_STRATEGY.MD` for coverage expectations, and `.harness/docs/VERIFICATION.MD` for evidence expectations.
 
 ## Verification Philosophy
 
-Completion judgment must be externalized. Do not trust internal confidence. Testing coverage expectations live in `docs/TESTING_STRATEGY.MD`; commands, evidence expectations, and failure reporting rules live in `docs/VERIFICATION.MD`.
+Completion judgment must be externalized. Do not trust internal confidence. Testing coverage expectations live in `.harness/docs/TESTING_STRATEGY.MD`; commands, evidence expectations, and failure reporting rules live in `.harness/docs/VERIFICATION.MD`.
 
 ## Definition Of Done
 
@@ -191,31 +191,31 @@ A feature is done only when all of the following are true:
 - Target behavior is implemented.
 - The implementation remains inside the selected feature scope.
 - Required verification actually ran.
-- Evidence is recorded in `feature_list.json` and/or `docs/PROGRESS.MD`.
+- Evidence is recorded in `feature_list.json` and/or `.harness/docs/PROGRESS.MD`.
 - Product and architecture docs were updated if the feature changed them.
 - The repository remains restartable for the next session.
 
-For Android features, use `docs/TESTING_STRATEGY.MD` for coverage expectations and `docs/VERIFICATION.MD` for the current verification checklist and evidence format.
+For Android features, use `.harness/docs/TESTING_STRATEGY.MD` for coverage expectations and `.harness/docs/VERIFICATION.MD` for the current verification checklist and evidence format.
 
 ## Standard Verification Path
 
-Run `./init.sh` by default. See `docs/VERIFICATION.MD` for the underlying Gradle checks, optional additions, backend-dependent smoke checks, and evidence format.
+Run `./init.sh` by default. See `.harness/docs/VERIFICATION.MD` for the underlying Gradle checks, optional additions, backend-dependent smoke checks, and evidence format.
 
 ## Error Feedback Rules
 
-When a check fails, record actionable repair information. See `docs/VERIFICATION.MD` for failure-reporting examples.
+When a check fails, record actionable repair information. See `.harness/docs/VERIFICATION.MD` for failure-reporting examples.
 
 ## Multi-Agent Upgrade Path
 
-Use a single implementing agent by default. Upgrade to explicit Planner, Implementer, Reviewer, and Evaluator roles when feature risk or complexity justifies it. The workflow lives in `docs/AGENT_WORKFLOW.MD`, and role prompts live in `agents/`.
+Use a single implementing agent by default. Upgrade to explicit Planner, Implementer, Reviewer, and Evaluator roles when feature risk or complexity justifies it. The workflow lives in `.harness/docs/AGENT_WORKFLOW.MD`, and role prompts live in `.harness/agents/`. Human-in-the-loop approval is required before each role hands off to the next role. Runtime handoff outputs live under `.harness/agent_outputs/` and are cleared after feature completion.
 
 ## Session Continuity
 
 Before ending a session:
 
 1. Update `feature_list.json`.
-2. Update `docs/PROGRESS.MD` if it exists.
-3. Update `docs/SESSION_HANDOFF.MD` if it exists.
+2. Update `.harness/docs/PROGRESS.MD` if it exists.
+3. Update `.harness/docs/SESSION_HANDOFF.MD` if it exists.
 4. Record unresolved blockers, risks, or follow-ups.
 5. Leave the repository clean enough that the next session can start from the standard path immediately.
 

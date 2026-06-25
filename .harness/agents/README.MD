@@ -11,4 +11,4 @@ Roles:
 - `REVIEWER.MD`: reviews code quality, architecture practices, maintainability, and regression risk.
 - `EVALUATOR.MD`: checks scope completion, verification evidence, docs, and restartability before completion.
 
-Operational workflow lives in `docs/AGENT_WORKFLOW.MD`.
+Operational workflow lives in `.harness/docs/AGENT_WORKFLOW.MD`.

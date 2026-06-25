@@ -294,7 +294,7 @@ This keeps screen logic testable and reduces drift in AI-generated code.
 
 ## Testing Strategy
 
-Testing is a first-class architecture concern. Keep tests close to the layer that owns the behavior, and use `docs/TESTING_STRATEGY.MD` for the current unit, integration, UI, regression, and manual QA expectations. Use `docs/VERIFICATION.MD` for commands and evidence.
+Testing is a first-class architecture concern. Keep tests close to the layer that owns the behavior, and use `.harness/docs/TESTING_STRATEGY.MD` for the current unit, integration, UI, regression, and manual QA expectations. Use `.harness/docs/VERIFICATION.MD` for commands and evidence.
 
 ## Deliberate MVP Simplifications
 - No refresh-token orchestration
@@ -386,5 +386,5 @@ sequenceDiagram
 - Use Clean Architecture with MVVM and unidirectional state flow.
 - Keep the MVP modular by feature and layer, but do not over-fragment beyond the proposed module set.
 - Use Retrofit/OkHttp for network, Room for catalog caching, and DataStore plus encrypted storage for session state.
-- Treat testing as a first-class architecture concern. Keep coverage expectations in `docs/TESTING_STRATEGY.MD` and verification commands in `docs/VERIFICATION.MD`.
+- Treat testing as a first-class architecture concern. Keep coverage expectations in `.harness/docs/TESTING_STRATEGY.MD` and verification commands in `.harness/docs/VERIFICATION.MD`.
 - Keep the architecture scoped to the implemented backend slice. Do not let future cart/checkout/order concerns distort the current MVP design.
