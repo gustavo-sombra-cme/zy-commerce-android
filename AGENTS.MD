@@ -13,13 +13,14 @@ Before writing code, complete these steps in order:
 3. Read `docs/PRODUCT.MD`.
 4. Read `docs/ARCHITECTURE.MD`.
 5. Read `feature_list.json`.
-6. Read `.harness/docs/SETUP.MD` for the current bootstrap path.
-7. Read `.harness/docs/BACKEND_LOCAL.MD` for local backend connection and smoke-test prerequisites.
-8. Read `.harness/docs/TESTING_STRATEGY.MD` for testing coverage expectations.
-9. Read `.harness/docs/VERIFICATION.MD` for the current verification path and evidence expectations.
-10. Read `requirements/ecommerce-android-plan.md` if feature scope, dependencies, or sprint order are unclear.
-11. Review recent commits with `git log --oneline -5`.
-12. Run the standard project verification path if it exists.
+6. Read `.harness/docs/PROGRESS.MD` for the current active feature or harness task.
+7. Read `.harness/docs/SETUP.MD` for the current bootstrap path.
+8. Read `.harness/docs/BACKEND_LOCAL.MD` for local backend connection and smoke-test prerequisites.
+9. Read `.harness/docs/TESTING_STRATEGY.MD` for testing coverage expectations.
+10. Read `.harness/docs/VERIFICATION.MD` for the current verification path and evidence expectations.
+11. Read `requirements/ecommerce-android-plan.md` if feature scope, dependencies, or sprint order are unclear.
+12. Review recent commits with `git log --oneline -5`.
+13. Run the standard project verification path if it exists.
 
 If the baseline is already failing, repair that first before adding new scope.
 
@@ -31,6 +32,14 @@ The repository documentation is organized for agent readability:
 docs/
   PRODUCT.MD                   -- Product intent, users, scope, non-goals
   ARCHITECTURE.MD              -- Technical design, layers, and modules
+
+.harness/agents/
+  PLANNER.MD                   -- Planning role prompt
+  IMPLEMENTER.MD               -- Implementation role prompt
+  REVIEWER.MD                  -- Code review role prompt
+  EVALUATOR.MD                 -- Evaluation role prompt
+
+.harness/docs/
   SETUP.MD                     -- Current bootstrap and local tooling
   BACKEND_LOCAL.MD             -- Local backend startup and Android connection path
   backend-installation-instructions.md -- Backend macOS installation and run guide
@@ -38,12 +47,9 @@ docs/
   VERIFICATION.MD              -- Verification commands, evidence, and failure reporting
   DECISIONS.MD                 -- Durable project and harness decisions
   AGENT_WORKFLOW.MD            -- Planner, Implementer, Reviewer, Evaluator workflow
-
-.harness/agents/
-  PLANNER.MD                   -- Planning role prompt
-  IMPLEMENTER.MD               -- Implementation role prompt
-  REVIEWER.MD                  -- Code review role prompt
-  EVALUATOR.MD                 -- Evaluation role prompt
+  PROGRESS.MD                  -- Active feature or harness task tracker
+  HISTORY.MD                   -- Completed feature and harness history, newest first
+  SESSION_HANDOFF.MD           -- Minimal restart note for the next session
 
 requirements/
   mvp_requirements_ecommerce.md -- Business requirements baseline
@@ -67,10 +73,15 @@ Use this hierarchy consistently:
 - `TESTING_STRATEGY.MD` answers what kinds of tests should exist and where they belong.
 - `VERIFICATION.MD` answers how to verify changes and record evidence.
 - `DECISIONS.MD` records durable decisions and rationale.
+- `PROGRESS.MD` tracks the active feature or active harness task only.
+- `HISTORY.MD` preserves completed feature and harness history in newest-first order.
+- `SESSION_HANDOFF.MD` keeps a minimal next-session restart note only.
 
 When behavior changes, update product docs.
 When structure or technical rules change, update architecture docs.
 When progress changes, update `feature_list.json` and session continuity artifacts.
+Keep active feature notes in `.harness/docs/PROGRESS.MD`.
+Keep completed feature and harness history in `.harness/docs/HISTORY.MD`, with the newest record first.
 
 ## Current Project Context
 
@@ -170,8 +181,9 @@ The harness currently requires:
 
 The following should exist before or during active implementation:
 
-- `.harness/docs/PROGRESS.MD` — session continuity log
-- `.harness/docs/SESSION_HANDOFF.MD` — short resume notes for next session
+- `.harness/docs/PROGRESS.MD` — active feature or active harness task tracker
+- `.harness/docs/HISTORY.MD` — completed feature and harness history, newest first
+- `.harness/docs/SESSION_HANDOFF.MD` — minimal restart note for the next session
 - `init.sh` or an equivalent setup/verification script once the Android project scaffold exists
 
 If these artifacts do not exist yet, create them when implementation begins or when they are needed to preserve continuity.
@@ -191,7 +203,8 @@ A feature is done only when all of the following are true:
 - Target behavior is implemented.
 - The implementation remains inside the selected feature scope.
 - Required verification actually ran.
-- Evidence is recorded in `feature_list.json` and/or `.harness/docs/PROGRESS.MD`.
+- Evidence is recorded in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
+- When a feature or harness task is done, its completed progress summary is archived at the top of `.harness/docs/HISTORY.MD` and `.harness/docs/PROGRESS.MD` is reset to the template for the next active item.
 - Product and architecture docs were updated if the feature changed them.
 - The repository remains restartable for the next session.
 
@@ -214,10 +227,11 @@ Use a single implementing agent by default. Upgrade to explicit Planner, Impleme
 Before ending a session:
 
 1. Update `feature_list.json`.
-2. Update `.harness/docs/PROGRESS.MD` if it exists.
-3. Update `.harness/docs/SESSION_HANDOFF.MD` if it exists.
-4. Record unresolved blockers, risks, or follow-ups.
-5. Leave the repository clean enough that the next session can start from the standard path immediately.
+2. Update `.harness/docs/PROGRESS.MD` for the active feature or task if it exists.
+3. If the feature or harness task is done, move its completed progress summary to the top of `.harness/docs/HISTORY.MD` and reset `.harness/docs/PROGRESS.MD` to the template.
+4. Update `.harness/docs/SESSION_HANDOFF.MD` if it exists.
+5. Record unresolved blockers, risks, or follow-ups.
+6. Leave the repository clean enough that the next session can start from the standard path immediately.
 
 If a feature is partially complete:
 

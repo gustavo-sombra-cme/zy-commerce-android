@@ -16,14 +16,15 @@ Operational files:
 - `.harness/docs/backend-installation-instructions.md` for backend macOS installation and run guidance
 - `.harness/docs/TESTING_STRATEGY.MD` for test coverage expectations and test-level ownership
 - `.harness/docs/VERIFICATION.MD` for verification commands, evidence, and failure reporting
-- `.harness/docs/PROGRESS.MD` for session history
-- `.harness/docs/SESSION_HANDOFF.MD` for next-session resume notes
+- `.harness/docs/PROGRESS.MD` for the active feature or harness task
+- `.harness/docs/HISTORY.MD` for completed feature and harness history, newest first
+- `.harness/docs/SESSION_HANDOFF.MD` for a minimal next-session restart note
 - `requirements/` for source requirements, backlog, source design, and backend baseline
 - `feature_list.json` for feature status and evidence
 
 ## D-002 — Use The Existing Documentation Hierarchy
 
-Decision: Keep product, architecture, setup, progress, handoff, and feature status in separate documents instead of one large file.
+Decision: Keep product, architecture, setup, active progress, archived history, handoff, and feature status in separate documents instead of one large file.
 
 Reason: Each document answers a different question and can stay focused.
 
@@ -41,6 +42,8 @@ Document responsibilities:
 - `.harness/docs/TESTING_STRATEGY.MD`: test coverage model and test-level ownership
 - `.harness/docs/VERIFICATION.MD`: verification commands, evidence, smoke checks, failure reporting
 - `.harness/docs/DECISIONS.MD`: durable decisions and rationale
+- `.harness/docs/PROGRESS.MD`: active feature or active harness task only
+- `.harness/docs/HISTORY.MD`: completed feature and harness archive, newest first
 - `feature_list.json`: planned, active, blocked, or done feature state
 
 ## D-003 — Work One Feature At A Time
@@ -53,7 +56,8 @@ Implications:
 
 - Do not silently implement dependent stories.
 - Do not mark a story done without verification evidence.
-- Record feature progress in `feature_list.json` and continuity docs.
+- Record active feature progress in `feature_list.json` and `.harness/docs/PROGRESS.MD`.
+- When the feature is done, archive the completed progress summary at the top of `.harness/docs/HISTORY.MD` and reset `.harness/docs/PROGRESS.MD` to its template.
 
 ## D-004 — Use Clean Architecture Boundaries
 

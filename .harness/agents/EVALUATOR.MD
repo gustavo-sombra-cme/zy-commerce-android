@@ -26,7 +26,8 @@ Read these before evaluating:
 - Check architecture boundaries and module ownership.
 - Check that tests match the risk and changed behavior.
 - Run or confirm required verification commands.
-- Confirm evidence is recorded in `feature_list.json` and/or `.harness/docs/PROGRESS.MD`.
+- Confirm evidence is recorded in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
+- Confirm completed work was archived at the top of `.harness/docs/HISTORY.MD` and `.harness/docs/PROGRESS.MD` was reset when the feature or harness task is done.
 - Confirm continuity docs are updated when needed.
 - Report blocking findings before summaries.
 

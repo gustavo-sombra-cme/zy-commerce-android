@@ -124,6 +124,8 @@ The Evaluator should consider Reviewer findings before passing work. The Evaluat
 
 ## Evidence
 
-Feature completion evidence belongs in `feature_list.json` and/or `.harness/docs/PROGRESS.MD`.
+Feature completion evidence belongs in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
+
+When a feature or harness task is complete, archive its completed progress summary at the top of `.harness/docs/HISTORY.MD` and clear `.harness/docs/PROGRESS.MD` back to the template for the next active item.
 
 Operational verification commands and failure reporting live in `.harness/docs/VERIFICATION.MD`.

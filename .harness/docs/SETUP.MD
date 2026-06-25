@@ -26,6 +26,7 @@ What exists now:
 - `feature_list.json`
 - `.harness/docs/SETUP.MD`
 - `.harness/docs/PROGRESS.MD`
+- `.harness/docs/HISTORY.MD`
 - `.harness/docs/SESSION_HANDOFF.MD`
 - `.harness/docs/DECISIONS.MD`
 - `.harness/docs/VERIFICATION.MD`
@@ -104,6 +105,8 @@ The project is in a healthy startup state when:
 - docs are internally consistent
 - backend is reachable or startup path is known
 - current active feature is clear
+- `.harness/docs/PROGRESS.MD` only reflects the active feature or active harness task
+- completed work has been archived into `.harness/docs/HISTORY.MD` in newest-first order
 - architecture constraints are known
 - `./init.sh` passes
 
