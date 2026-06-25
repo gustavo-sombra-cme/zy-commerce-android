@@ -4,7 +4,7 @@
 
 This document defines how to bootstrap the ZY-Commerce Android project safely at its current stage.
 
-Current reality as of 2026-06-19:
+Current reality as of 2026-06-25:
 
 - the repository now contains an Android Gradle scaffold
 - the Gradle wrapper is checked in
@@ -35,7 +35,8 @@ What exists now:
 - Android Gradle scaffold with modules aligned to `docs/ARCHITECTURE.MD`
 - Gradle wrapper: `./gradlew`
 - bootstrap script: `./init.sh`
-- implemented `ST-01` registration flow
+- implemented and verified `ST-01` registration flow
+- implemented and verified `ST-02` duplicate-email registration handling
 
 Current module scaffold:
 
@@ -79,18 +80,19 @@ The Android app depends on the local ZY-Commerce backend for the current MVP. Ba
 
 ## Current Feature State
 
-`ST-01` Register account is implemented and verified.
+`ST-01` Register account and `ST-02` Prevent duplicate account registration are implemented and verified.
 
-Current `ST-01` behavior:
+Current registration behavior:
 
 - visitor enters email and password on `RegisterScreen`
 - registration posts to `POST /api/auth/users/register`
 - response maps `userId` and `email` into the auth domain model
 - success shows confirmation and navigates to the sign-in route placeholder
+- duplicate-email `409 Conflict` responses show readable email-specific feedback without clearing entered values
+- backend `Email` and `Password` validation errors render under the matching fields
 
 Out of current scope:
 
-- duplicate email-specific UX (`ST-02`)
 - actual sign-in implementation (`ST-03`)
 - session persistence
 - catalog and product-management behavior

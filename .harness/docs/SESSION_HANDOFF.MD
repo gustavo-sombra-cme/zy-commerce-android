@@ -2,17 +2,18 @@
 
 ## Resume Summary
 
-The repository now has a working Android Gradle scaffold, Gradle wrapper, app module, and implemented `ST-01` registration flow.
+The repository now has a working Android Gradle scaffold, a verified `ST-01` registration flow, and a verified `ST-02` duplicate-email registration flow.
 
 ## Current Feature State
 
 Done:
 
 - `ST-01` Register account
+- `ST-02` Prevent duplicate account registration
 
 Next planned story:
 
-- `ST-02` Prevent duplicate account registration
+- `ST-03` Sign in
 
 ## What Was Completed
 
@@ -54,8 +55,10 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradl
 - The Android request sends `email` and `password`.
 - The Android response mapper expects `userId` and `email`, matching the backend contract.
 - Successful registration navigates to a sign-in placeholder. Actual sign-in is `ST-03` and is not implemented yet.
-- Duplicate-email-specific UX belongs to `ST-02` and is not complete yet.
-- Manual emulator/backend smoke testing has not been performed in this session.
+- `ST-02` now maps registration `409 Conflict` to duplicate-email-specific feedback and preserves entered values on retry.
+- `ST-02` now parses `400 Bad Request` validation payloads and shows `Email` / `Password` messages under the matching fields.
+- `ST-02` passed Reviewer and Evaluator stages and is marked done.
+- Manual emulator/backend smoke testing has not been performed in this session; automated ST-02 repository and ViewModel coverage plus `./init.sh` passed.
 
 ## Startup Path For Next Session
 

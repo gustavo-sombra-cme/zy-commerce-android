@@ -1,6 +1,7 @@
 package com.zippyyum.commerce.feature.auth
 
 import com.google.common.truth.Truth.assertThat
+import com.zippyyum.commerce.core.common.AppError
 import com.zippyyum.commerce.core.common.AppResult
 import com.zippyyum.commerce.domain.auth.AuthRepository
 import com.zippyyum.commerce.domain.auth.RegisterUserUseCase
@@ -44,12 +45,73 @@ class RegisterViewModelTest {
         assertThat(viewModel.uiState.value.isSubmitting).isFalse()
     }
 
-    private class FakeAuthRepository : AuthRepository {
+    @Test
+    fun `submit shows duplicate email feedback and preserves form values`() = runTest(dispatcher) {
+        val repository = FakeAuthRepository(
+            result = AppResult.Failure(AppError.Conflict("That email is already registered.")),
+        )
+        val viewModel = RegisterViewModel(RegisterUserUseCase(repository))
+
+        viewModel.onEmailChanged("user@example.com")
+        viewModel.onPasswordChanged("Password123")
+        viewModel.submit()
+        dispatcher.scheduler.advanceUntilIdle()
+
+        with(viewModel.uiState.value) {
+            assertThat(email).isEqualTo("user@example.com")
+            assertThat(password).isEqualTo("Password123")
+            assertThat(emailError).isEqualTo("That email is already registered.")
+            assertThat(message).isEqualTo("Sign in or use a different email address.")
+            assertThat(isSubmitting).isFalse()
+        }
+    }
+
+    @Test
+    fun `submit shows backend validation errors under matching fields`() = runTest(dispatcher) {
+        val repository = FakeAuthRepository(
+            result = AppResult.Failure(
+                AppError.Validation(
+                    mapOf(
+                        "email" to listOf("Email is invalid."),
+                        "password" to listOf(
+                            "The length of 'Password' must be at least 8 characters. You entered 6 characters.",
+                        ),
+                    ),
+                ),
+            ),
+        )
+        val viewModel = RegisterViewModel(RegisterUserUseCase(repository))
+
+        viewModel.onEmailChanged("bad-email")
+        viewModel.onPasswordChanged("secret")
+        viewModel.submit()
+        dispatcher.scheduler.advanceUntilIdle()
+
+        with(viewModel.uiState.value) {
+            assertThat(email).isEqualTo("bad-email")
+            assertThat(password).isEqualTo("secret")
+            assertThat(emailError).isEqualTo("Email is invalid.")
+            assertThat(passwordError).isEqualTo(
+                "The length of 'Password' must be at least 8 characters. You entered 6 characters.",
+            )
+            assertThat(message).isNull()
+            assertThat(isSubmitting).isFalse()
+        }
+    }
+
+    private class FakeAuthRepository(
+        private val result: AppResult<RegisteredUser> = AppResult.Success(
+            RegisteredUser("user-1", "user@example.com"),
+        ),
+    ) : AuthRepository {
         var email: String? = null
 
         override suspend fun register(email: String, password: String): AppResult<RegisteredUser> {
             this.email = email
-            return AppResult.Success(RegisteredUser("user-1", email))
+            return when (result) {
+                is AppResult.Success -> AppResult.Success(RegisteredUser(result.value.userId, email))
+                is AppResult.Failure -> result
+            }
         }
     }
 }

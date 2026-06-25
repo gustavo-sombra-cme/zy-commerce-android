@@ -14,3 +14,8 @@ data class RegisterUserResponseDto(
     @SerialName("userId") val userId: String,
     @SerialName("email") val email: String,
 )
+
+@Serializable
+data class ValidationErrorResponseDto(
+    @SerialName("errors") val errors: Map<String, List<String>> = emptyMap(),
+)

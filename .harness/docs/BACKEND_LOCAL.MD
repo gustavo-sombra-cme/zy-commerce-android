@@ -86,9 +86,9 @@ The debug manifest allows cleartext traffic only for local development hosts:
 
 Do not add broad release cleartext traffic.
 
-## ST-01 Registration Smoke Prerequisites
+## Registration Smoke Prerequisites
 
-Before manually testing `ST-01` registration:
+Before manually testing registration:
 
 1. Start or verify the backend.
 2. Confirm the Android app is using the emulator base URL for emulator testing.
@@ -96,9 +96,9 @@ Before manually testing `ST-01` registration:
 4. Submit a unique email and password from `RegisterScreen`.
 5. Confirm the backend returns `userId` and `email`.
 6. Confirm the app shows success and routes to the sign-in placeholder.
+7. Submit an already-registered email and confirm the app stays on registration, preserves entered values, and shows duplicate-email feedback under the email field.
 
 Known related follow-ups:
 
-- duplicate-email-specific UX belongs to `ST-02`
 - actual sign-in belongs to `ST-03`
 - session persistence is not implemented yet

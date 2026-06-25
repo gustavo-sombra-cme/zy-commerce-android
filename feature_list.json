@@ -2,7 +2,7 @@
   "project": "zy-commerce-android",
   "artifact": "feature_list",
   "version": 1,
-  "last_updated": "2026-06-19",
+  "last_updated": "2026-06-25",
   "source_documents": [
     "requirements/mvp_requirements_ecommerce.md",
     "requirements/ecommerce-android-plan.md",
@@ -52,9 +52,7 @@
         "story_points_without_ai": 5,
         "story_points_with_ai": 3
       },
-      "dependencies": [
-
-      ],
+      "dependencies": [],
       "screens": [
         "RegisterScreen"
       ],
@@ -77,7 +75,7 @@
         "notes": [
           "Registration posts email and password to POST /api/auth/users/register and maps userId/email response.",
           "Successful registration shows confirmation and navigates to the sign-in route placeholder; full sign-in implementation remains ST-03.",
-          "Duplicate email UX remains ST-02 scope."
+          "Duplicate email UX is completed by ST-02."
         ]
       }
     },
@@ -85,7 +83,7 @@
       "id": "ST-02",
       "name": "Prevent duplicate account registration",
       "epic": "Authentication",
-      "status": "planned",
+      "status": "done",
       "priority": "medium",
       "estimate": {
         "story_points_without_ai": 2,
@@ -104,7 +102,20 @@
         "Duplicate email response is detected correctly",
         "User sees a readable error and remains on registration screen",
         "Field values are preserved for retry"
-      ]
+      ],
+      "implementation": {
+        "completed_on": "2026-06-25",
+        "summary": "Handled duplicate-email registration failures by mapping registration 409 Conflict responses to duplicate-email feedback, preserving entered form values, and rendering the message under the email field. Also mapped backend 400 validation errors for Email and Password to field-level registration errors.",
+        "verification": [
+          "./gradlew :data:auth:test :feature:auth:test",
+          "./init.sh"
+        ],
+        "notes": [
+          "Repository tests cover 409 conflict mapping and 400 validation payload parsing.",
+          "RegisterViewModel tests cover duplicate-email feedback, preserved form values, and field-level backend validation feedback.",
+          "Manual backend/emulator smoke testing was not run; automated repository and ViewModel coverage was used for this pass."
+        ]
+      }
     },
     {
       "id": "ST-03",
@@ -192,9 +203,7 @@
         "story_points_without_ai": 5,
         "story_points_with_ai": 3
       },
-      "dependencies": [
-
-      ],
+      "dependencies": [],
       "screens": [
         "CatalogScreen"
       ],
@@ -458,9 +467,7 @@
         "CreateProductScreen",
         "EditProductScreen"
       ],
-      "backend_endpoints": [
-
-      ],
+      "backend_endpoints": [],
       "definition_of_done": [
         "Unsigned user cannot enter protected product-management flows",
         "Protected action redirects or prompts for sign-in",

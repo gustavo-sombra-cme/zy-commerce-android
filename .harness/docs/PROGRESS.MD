@@ -258,3 +258,60 @@ Validation passed:
 ### Validation
 - path reference scan completed for old harness locations
 - `git diff --check` completed successfully
+
+### 2026-06-25 — ST-02 Duplicate Email Registration Handling
+
+Completed:
+
+- started `ST-02` as the active in-progress feature in `feature_list.json`
+- updated auth registration conflict mapping so registration `409 Conflict` returns a duplicate-email-specific app error
+- updated auth registration validation mapping so `400 Bad Request` parses backend `errors` payloads into field-level app validation errors
+- updated `RegisterViewModel` so duplicate-email failures:
+  - keep the user on the registration screen
+  - preserve entered email and password values
+  - show a readable email-specific error
+  - show a retry/sign-in guidance message
+- updated `RegisterViewModel` so backend `Email` and `Password` validation failures render under the matching fields
+- added repository-level test coverage for auth conflict mapping
+- added repository-level test coverage for backend validation payload parsing
+- added ViewModel test coverage for duplicate-email feedback, preserved form state, and field-level backend validation feedback
+- wrote Planner and Implementer runtime handoffs under `.harness/agent_outputs/`
+
+Verification passed:
+
+- `./gradlew :data:auth:test :feature:auth:test`
+- `./init.sh`
+
+Notes:
+
+- `ST-02` is not marked done yet because Reviewer and Evaluator stages are still pending.
+- Manual backend/emulator smoke testing was not required for this pass because the backend business baseline already documents duplicate email as `409 Conflict`.
+
+
+### 2026-06-25 — ST-02 Reviewer and Evaluator Completion
+
+Completed:
+
+- completed Reviewer stage with no Critical, High, Medium, or Low findings
+- completed Evaluator stage after standard verification passed
+- marked `ST-02` as `done` in `feature_list.json`
+- updated restart docs so `ST-02` no longer appears as future duplicate-email work
+
+Verification passed:
+
+- `./gradlew :data:auth:test :feature:auth:test`
+- `git diff --check`
+- `./init.sh`
+
+Notes:
+
+- Manual backend/emulator smoke testing was not run. The accepted coverage for this pass is repository-level error mapping tests, ViewModel state tests, and the standard Gradle verification path.
+- Reviewer residual risk is limited to future auth endpoints: `AuthRepositoryImpl` currently maps auth `409` to duplicate-email copy because registration is the only exposed auth operation.
+
+
+### 2026-06-25 — ST-02 Human Approval
+
+Completed:
+
+- human approved the final Evaluator pass result for `ST-02`
+- cleared ignored runtime handoff files under `.harness/agent_outputs/` for the next feature

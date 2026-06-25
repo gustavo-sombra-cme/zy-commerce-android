@@ -66,7 +66,8 @@ class RegisterViewModel @Inject constructor(
                 )
                 is AppError.Conflict -> state.copy(
                     isSubmitting = false,
-                    message = error.message ?: "That account could not be created.",
+                    emailError = error.message ?: "That email is already registered.",
+                    message = "Sign in or use a different email address.",
                 )
                 AppError.NetworkUnavailable -> state.copy(
                     isSubmitting = false,

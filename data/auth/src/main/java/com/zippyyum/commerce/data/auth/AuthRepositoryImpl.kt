@@ -6,10 +6,12 @@ import com.zippyyum.commerce.domain.auth.AuthRepository
 import com.zippyyum.commerce.domain.auth.RegisteredUser
 import java.io.IOException
 import javax.inject.Inject
+import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 
 class AuthRepositoryImpl @Inject constructor(
     private val authApi: AuthApi,
+    private val json: Json,
 ) : AuthRepository {
     override suspend fun register(email: String, password: String): AppResult<RegisteredUser> = try {
         val response = authApi.register(RegisterUserRequestDto(email = email, password = password))
@@ -23,11 +25,22 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     private fun HttpException.toAppError(): AppError = when (code()) {
-        400, 422 -> AppError.Validation(emptyMap())
-        409 -> AppError.Conflict(message())
+        400, 422 -> AppError.Validation(parseValidationErrors())
+        409 -> AppError.Conflict("That email is already registered.")
         401 -> AppError.Unauthorized
         403 -> AppError.Forbidden
         404 -> AppError.NotFound
         else -> AppError.Unknown(message())
+    }
+
+    private fun HttpException.parseValidationErrors(): Map<String, List<String>> {
+        val responseBody = response()?.errorBody()?.string().orEmpty()
+        if (responseBody.isBlank()) return emptyMap()
+
+        return runCatching {
+            json.decodeFromString<ValidationErrorResponseDto>(responseBody)
+                .errors
+                .mapKeys { (field, _) -> field.lowercase() }
+        }.getOrElse { emptyMap() }
     }
 }
