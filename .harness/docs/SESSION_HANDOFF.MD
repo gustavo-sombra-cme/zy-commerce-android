@@ -14,6 +14,10 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 
 ## Active Feature
 
+- None currently active.
+
+## Next Planned Feature
+
 - `ST-03` Sign in
 
 ## What Changed Most Recently
