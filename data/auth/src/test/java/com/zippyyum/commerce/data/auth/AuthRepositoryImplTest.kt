@@ -3,6 +3,10 @@ package com.zippyyum.commerce.data.auth
 import com.google.common.truth.Truth.assertThat
 import com.zippyyum.commerce.core.common.AppError
 import com.zippyyum.commerce.core.common.AppResult
+import com.zippyyum.commerce.core.storage.SessionStorage
+import com.zippyyum.commerce.core.storage.StoredSession
+import com.zippyyum.commerce.domain.auth.UserSession
+import java.time.Instant
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -19,13 +23,17 @@ class AuthRepositoryImplTest {
                     throw HttpException(
                         Response.error<RegisterUserResponseDto>(
                             409,
-                            """{"message":"Duplicate email"}"""
-                                .toResponseBody("application/json".toMediaType()),
+                            "{\"message\":\"Duplicate email\"}".toResponseBody("application/json".toMediaType()),
                         ),
                     )
                 }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto {
+                    error("Not used in this test")
+                }
             },
             json = testJson,
+            sessionStorage = FakeSessionStorage(),
         )
 
         val result = runCatching {
@@ -61,8 +69,13 @@ class AuthRepositoryImplTest {
                         ),
                     )
                 }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto {
+                    error("Not used in this test")
+                }
             },
             json = testJson,
+            sessionStorage = FakeSessionStorage(),
         )
 
         val result = runCatching {
@@ -81,6 +94,177 @@ class AuthRepositoryImplTest {
                 ),
             ),
         )
+    }
+
+    @Test
+    fun `login stores returned session`() {
+        val sessionStorage = FakeSessionStorage()
+        val repository = AuthRepositoryImpl(
+            authApi = object : AuthApi {
+                override suspend fun register(request: RegisterUserRequestDto): RegisterUserResponseDto {
+                    error("Not used in this test")
+                }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto = LoginUserResponseDto(
+                    userId = "user-1",
+                    email = request.email,
+                    accessToken = "jwt-token",
+                    tokenType = "Bearer",
+                    expiresAt = "2030-01-01T00:00:00Z",
+                )
+            },
+            json = testJson,
+            sessionStorage = sessionStorage,
+        )
+
+        val result = runCatching {
+            kotlinx.coroutines.runBlocking {
+                repository.login("user@example.com", "Password123")
+            }
+        }.getOrThrow()
+
+        assertThat(result).isEqualTo(
+            AppResult.Success(
+                UserSession(
+                    userId = "user-1",
+                    email = "user@example.com",
+                    accessToken = "jwt-token",
+                    tokenType = "Bearer",
+                    expiresAt = Instant.parse("2030-01-01T00:00:00Z"),
+                ),
+            ),
+        )
+        assertThat(sessionStorage.storedSession).isEqualTo(
+            StoredSession(
+                userId = "user-1",
+                email = "user@example.com",
+                accessToken = "jwt-token",
+                tokenType = "Bearer",
+                expiresAt = "2030-01-01T00:00:00Z",
+            ),
+        )
+    }
+
+    @Test
+    fun `get active session clears expired session`() {
+        val sessionStorage = FakeSessionStorage(
+            storedSession = StoredSession(
+                userId = "user-1",
+                email = "user@example.com",
+                accessToken = "jwt-token",
+                tokenType = "Bearer",
+                expiresAt = "2000-01-01T00:00:00Z",
+            ),
+        )
+        val repository = AuthRepositoryImpl(
+            authApi = object : AuthApi {
+                override suspend fun register(request: RegisterUserRequestDto): RegisterUserResponseDto {
+                    error("Not used in this test")
+                }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto {
+                    error("Not used in this test")
+                }
+            },
+            json = testJson,
+            sessionStorage = sessionStorage,
+        )
+
+        val result = runCatching {
+            kotlinx.coroutines.runBlocking {
+                repository.getActiveSession()
+            }
+        }.getOrThrow()
+
+        assertThat(result).isNull()
+        assertThat(sessionStorage.storedSession).isNull()
+        assertThat(sessionStorage.clearCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `get active session clears unreadable stored session`() {
+        val sessionStorage = FakeSessionStorage(
+            getSessionFailure = IllegalStateException("Keystore entry invalidated."),
+        )
+        val repository = AuthRepositoryImpl(
+            authApi = object : AuthApi {
+                override suspend fun register(request: RegisterUserRequestDto): RegisterUserResponseDto {
+                    error("Not used in this test")
+                }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto {
+                    error("Not used in this test")
+                }
+            },
+            json = testJson,
+            sessionStorage = sessionStorage,
+        )
+
+        val result = runCatching {
+            kotlinx.coroutines.runBlocking {
+                repository.getActiveSession()
+            }
+        }.getOrThrow()
+
+        assertThat(result).isNull()
+        assertThat(sessionStorage.clearCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `get active session clears malformed expiration session`() {
+        val sessionStorage = FakeSessionStorage(
+            storedSession = StoredSession(
+                userId = "user-1",
+                email = "user@example.com",
+                accessToken = "jwt-token",
+                tokenType = "Bearer",
+                expiresAt = "not-a-date",
+            ),
+        )
+        val repository = AuthRepositoryImpl(
+            authApi = object : AuthApi {
+                override suspend fun register(request: RegisterUserRequestDto): RegisterUserResponseDto {
+                    error("Not used in this test")
+                }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto {
+                    error("Not used in this test")
+                }
+            },
+            json = testJson,
+            sessionStorage = sessionStorage,
+        )
+
+        val result = runCatching {
+            kotlinx.coroutines.runBlocking {
+                repository.getActiveSession()
+            }
+        }.getOrThrow()
+
+        assertThat(result).isNull()
+        assertThat(sessionStorage.storedSession).isNull()
+        assertThat(sessionStorage.clearCount).isEqualTo(1)
+    }
+
+    private class FakeSessionStorage(
+        var storedSession: StoredSession? = null,
+        private val getSessionFailure: Throwable? = null,
+    ) : SessionStorage {
+        var clearCount: Int = 0
+
+        override fun saveSession(session: StoredSession) {
+            storedSession = session
+        }
+
+        override fun getSession(): StoredSession? {
+            getSessionFailure?.let { throw it }
+            return storedSession
+        }
+
+        override fun clearSession() {
+            clearCount += 1
+            storedSession = null
+        }
     }
 
     private companion object {

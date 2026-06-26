@@ -6,48 +6,46 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 
 ## Current Objective
 
-- Implement `ST-03` sign in.
+- Start `ST-04` show sign-in failure clearly.
 
 ## Current Status
 
-- Ready to start.
+- `ST-03` accepted and closed out; ready for the next feature.
 
 ## Active Feature
 
-- None currently active.
+- None.
 
 ## Next Planned Feature
 
-- `ST-03` Sign in
+- `ST-04` Show sign-in failure clearly
 
 ## What Changed Most Recently
 
-- Harness ownership was tightened so startup docs, decisions, archive history, and lifecycle checks have sharper boundaries.
-- `feature_list.json` remains the durable feature state and verification evidence source.
-- `docs/RELIABILITY.MD`, `.harness/docs/clean-state-checklist.md`, `scripts/harness-benchmark.sh`, and `scripts/cleanup-scanner.sh` are now part of the startup surface.
+- Completed `ST-03` sign in through reviewer and evaluator workflow stages.
+- Hardened session restore so invalid persisted session data is cleared and treated as signed out.
+- Accepted the temporary authenticated placeholder copy and existing skipped smoke gaps as low residual risk.
+- Archived the active progress entry and reset `.harness/docs/PROGRESS.MD` for the next feature.
 
 ## Verification Snapshot
 
-- `./init.sh` passes.
-- Current standard checks are `./gradlew test`, `./gradlew lintDebug`, and `./gradlew assembleDebug`.
-- Lifecycle checks now also include `bash scripts/harness-benchmark.sh` and `bash scripts/cleanup-scanner.sh` when the feature touches restartability, backend wiring, or verification maturity.
-- Manual backend/emulator smoke testing has not yet been rerun for the next feature.
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test` passed.
+- `./init.sh` passed, including full Gradle verification, lint, assemble, and cleanup scanner.
+- Manual backend/emulator smoke testing was still skipped for sign-in and session restoration when `ST-03` was accepted.
 
 ## Blockers / Risks
 
-- Local backend must be running before backend-dependent auth smoke checks.
-- Sign-in API contract should be confirmed against the backend before finalizing UI and session behavior.
+- `ST-03` still has accepted residual risk: no backend/device smoke after sign-in implementation, no fresh full `./init.sh` after the final session-restore hardening fix, and placeholder authenticated copy that overstates current capability.
+- `ST-04` scope should stay focused on clearer sign-in failure messaging rather than protected-action gating or profile work.
 
 ## Recommended Next Step
 
-- Implement the `ST-03` sign-in flow across presentation, domain, and data layers, then add the matching verification evidence.
+- Plan and implement `ST-04` sign-in failure clarity, reusing the existing sign-in screen and ViewModel flow.
 
 ## Files Likely Needed Next
 
 - `feature_list.json`
 - `.harness/docs/PROGRESS.MD`
-- `.harness/docs/BACKEND_LOCAL.MD`
-- `.harness/docs/TESTING_STRATEGY.MD`
-- `.harness/docs/VERIFICATION.MD`
-- `docs/ARCHITECTURE.MD`
-- `requirements/ecommerce-android-plan.md`
+- `feature/auth/src/main/java/com/zippyyum/commerce/feature/auth/`
+- `data/auth/src/main/java/com/zippyyum/commerce/data/auth/`
+- `.harness/docs/HISTORY.MD`

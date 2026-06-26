@@ -6,6 +6,7 @@ import com.zippyyum.commerce.core.common.AppResult
 import com.zippyyum.commerce.domain.auth.AuthRepository
 import com.zippyyum.commerce.domain.auth.RegisterUserUseCase
 import com.zippyyum.commerce.domain.auth.RegisteredUser
+import com.zippyyum.commerce.domain.auth.UserSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -113,5 +114,13 @@ class RegisterViewModelTest {
                 is AppResult.Failure -> result
             }
         }
+
+        override suspend fun login(email: String, password: String): AppResult<UserSession> {
+            error("Not used in this test")
+        }
+
+        override suspend fun getActiveSession(): UserSession? = null
+
+        override suspend fun clearSession() = Unit
     }
 }

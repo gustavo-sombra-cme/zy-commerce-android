@@ -8,6 +8,31 @@ Use `.harness/docs/PROGRESS.MD` for the active feature only.
 
 ## Archived History
 
+### 2026-06-26 — ST-03 Sign in
+
+Completed:
+
+- added sign-in support to the auth domain, data layer, and app navigation flow
+- implemented secure persisted session storage plus splash-based session restore
+- added sign-in and splash presentation flows with auth-focused tests
+- hardened session restore so unreadable or malformed persisted session data is cleared and treated as signed out
+- completed reviewer and evaluator workflow stages, then accepted the remaining low-risk placeholder copy as-is
+
+Validation:
+
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test`
+- `./init.sh`
+
+Accepted residual risk:
+
+- manual backend or emulator smoke testing was not rerun for sign-in happy path or session restoration
+- app-level assemble and a fresh full `./init.sh` were not rerun after the final session-restore hardening fix
+- the authenticated placeholder copy still overstates what is available after sign-in, and that wording was explicitly accepted as temporary scaffolding
+
+Next feature:
+
+- `ST-04` Show sign-in failure clearly
+
 ### 2026-06-25 — Harness Ownership Cleanup
 
 Completed:

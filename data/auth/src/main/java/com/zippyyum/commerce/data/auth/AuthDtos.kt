@@ -16,6 +16,21 @@ data class RegisterUserResponseDto(
 )
 
 @Serializable
+data class LoginUserRequestDto(
+    @SerialName("email") val email: String,
+    @SerialName("password") val password: String,
+)
+
+@Serializable
+data class LoginUserResponseDto(
+    @SerialName("userId") val userId: String,
+    @SerialName("email") val email: String,
+    @SerialName("accessToken") val accessToken: String,
+    @SerialName("tokenType") val tokenType: String,
+    @SerialName("expiresAt") val expiresAt: String,
+)
+
+@Serializable
 data class ValidationErrorResponseDto(
     @SerialName("errors") val errors: Map<String, List<String>> = emptyMap(),
 )

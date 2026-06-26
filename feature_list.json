@@ -2,7 +2,7 @@
   "project": "zy-commerce-android",
   "artifact": "feature_list",
   "version": 1,
-  "last_updated": "2026-06-25",
+  "last_updated": "2026-06-26",
   "source_documents": [
     "requirements/mvp_requirements_ecommerce.md",
     "requirements/ecommerce-android-plan.md",
@@ -121,7 +121,7 @@
       "id": "ST-03",
       "name": "Sign in",
       "epic": "Authentication",
-      "status": "planned",
+      "status": "done",
       "priority": "high",
       "estimate": {
         "story_points_without_ai": 5,
@@ -141,7 +141,22 @@
         "Registered user can sign in successfully",
         "JWT session is stored securely on device",
         "Authenticated app flow becomes available after login"
-      ]
+      ],
+      "implementation": {
+        "completed_on": "2026-06-26",
+        "summary": "Implemented the first pass of sign-in across domain, data, storage, app navigation, and feature-auth, including secure persisted session restore via splash flow.",
+        "verification": [
+          "JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test",
+          "./init.sh"
+        ],
+        "notes": [
+          "Manual backend or emulator smoke testing has not been rerun yet for sign-in happy path or session restoration.",
+          "Reviewer and evaluator passes completed, and the current implementation was accepted with low residual risk.",
+          "Session restore now clears unreadable or malformed persisted session data and falls back to the sign-in flow.",
+          "The authenticated placeholder copy in MainActivity was accepted as temporary scaffolding for later protected-action stories.",
+          "Sign-in failure specificity and protected-action gating remain separate follow-up stories ST-04 and ST-16."
+        ]
+      }
     },
     {
       "id": "ST-04",

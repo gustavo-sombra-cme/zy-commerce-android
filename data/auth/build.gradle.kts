@@ -24,6 +24,7 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:network"))
+    implementation(project(":core:storage"))
     implementation(project(":domain:auth"))
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

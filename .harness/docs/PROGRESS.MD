@@ -12,7 +12,7 @@ When the active work is complete:
 
 - Feature or task ID:
 - Feature or task name:
-- Status: `planned | in_progress | blocked | done`
+- Status:
 - Started on:
 - Last updated on:
 

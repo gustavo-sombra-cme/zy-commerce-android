@@ -22,8 +22,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.zippyyum.commerce.core.designsystem.ZyCommerceTheme
 import com.zippyyum.commerce.feature.auth.RegisterRoute
+import com.zippyyum.commerce.feature.auth.SignInRoute
+import com.zippyyum.commerce.feature.auth.SplashRoute
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
+private const val ROUTE_SPLASH = "splash"
+private const val ROUTE_REGISTER = "register"
+private const val ROUTE_SIGN_IN = "sign-in"
+private const val ROUTE_AUTHENTICATED_HOME = "authenticated-home"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -45,28 +52,62 @@ fun ZyCommerceApp(navController: NavHostController = rememberNavController()) {
     Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "register",
+            startDestination = ROUTE_SPLASH,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable("register") {
-                RegisterRoute(
-                    onRegistrationComplete = {
-                        scope.launch { snackbarHostState.showSnackbar("Account created. Sign in is next.") }
-                        navController.navigate("sign-in")
+            composable(ROUTE_SPLASH) {
+                SplashRoute(
+                    onAuthenticated = {
+                        navController.navigate(ROUTE_AUTHENTICATED_HOME) {
+                            popUpTo(ROUTE_SPLASH) { inclusive = true }
+                        }
                     },
-                    onSignInClick = { navController.navigate("sign-in") },
+                    onSignInRequired = {
+                        navController.navigate(ROUTE_SIGN_IN) {
+                            popUpTo(ROUTE_SPLASH) { inclusive = true }
+                        }
+                    },
                 )
             }
-            composable("sign-in") {
-                PlaceholderScreen("Sign in")
+            composable(ROUTE_SIGN_IN) {
+                SignInRoute(
+                    onSignInComplete = {
+                        scope.launch { snackbarHostState.showSnackbar("Signed in successfully.") }
+                        navController.navigate(ROUTE_AUTHENTICATED_HOME) {
+                            popUpTo(ROUTE_SIGN_IN) { inclusive = true }
+                        }
+                    },
+                    onRegisterClick = { navController.navigate(ROUTE_REGISTER) },
+                )
+            }
+            composable(ROUTE_REGISTER) {
+                RegisterRoute(
+                    onRegistrationComplete = {
+                        scope.launch { snackbarHostState.showSnackbar("Account created. Sign in is ready.") }
+                        navController.navigate(ROUTE_SIGN_IN) {
+                            popUpTo(ROUTE_SIGN_IN) { inclusive = true }
+                        }
+                    },
+                    onSignInClick = {
+                        navController.navigate(ROUTE_SIGN_IN) {
+                            popUpTo(ROUTE_SIGN_IN) { inclusive = true }
+                        }
+                    },
+                )
+            }
+            composable(ROUTE_AUTHENTICATED_HOME) {
+                AuthenticatedHomeScreen()
             }
         }
     }
 }
 
 @Composable
-private fun PlaceholderScreen(title: String) {
+private fun AuthenticatedHomeScreen() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = title, style = MaterialTheme.typography.headlineSmall)
+        Text(
+            text = "You are signed in. Protected ZY-Commerce actions are now available to the authenticated app flow.",
+            style = MaterialTheme.typography.headlineSmall,
+        )
     }
 }
