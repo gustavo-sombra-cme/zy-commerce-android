@@ -4,6 +4,8 @@
 
 This document provides a concise quality snapshot for the current Android repository state. It complements `evaluator-rubric.md` and `feature_list.json`.
 
+Last updated: 2026-06-26
+
 ## Scoring Summary
 
 | Dimension | Grade | Notes |
@@ -11,9 +13,9 @@ This document provides a concise quality snapshot for the current Android reposi
 | Harness Structure | A- | Strong startup, continuity, and ownership model with capstone-style evaluation artifacts now present |
 | Build And Verification Path | B+ | Clear Gradle path through `./init.sh`; runtime-aware verification is still maturing |
 | Architecture Discipline | A- | Clean Architecture boundaries are explicit and align with the module plan |
-| Authentication Slice | B+ | Registration and duplicate-email handling are implemented and covered; sign-in is still pending |
-| Backend Contract Confidence | B | Current auth contract is partially exercised, but broader contract coverage is still thin |
-| Testing Strategy | B+ | Good story-level guidance and useful auth tests; UI and end-to-end automation are still limited |
+| Authentication Slice | A- | Registration, duplicate-email handling, sign-in, and session restore are implemented with targeted tests |
+| Backend Contract Confidence | B | Current auth contract is partially exercised, but backend/device smoke coverage and broader catalog confidence are still thin |
+| Testing Strategy | B+ | Good story-level guidance and useful auth tests; UI, backend smoke, and end-to-end automation are still limited |
 | Reliability Discipline | B | Reliability docs, cleanup scanner, and benchmark script exist, but later phases should deepen Android-specific runtime checks |
 | Restartability | A- | The repository can restart from harness docs and `./init.sh` without relying on chat history |
 
@@ -34,7 +36,8 @@ Current overall grade: **B+**
 
 - `ST-01` Register account is implemented
 - `ST-02` duplicate-email registration handling is implemented
-- auth repository, DTO mapping, and ViewModel error handling have targeted tests
+- `ST-03` Sign in is implemented with secure persisted session restore through the splash flow
+- auth repository, DTO mapping, ViewModel behavior, and session-restore handling have targeted tests
 
 ### Verification Surface
 
@@ -44,7 +47,8 @@ Current overall grade: **B+**
 
 ## Current Gaps
 
-- sign-in and session persistence are not implemented yet
+- manual backend/emulator smoke testing has not been rerun for sign-in or session restoration
+- `ST-04` sign-in failure clarity is the next planned auth improvement
 - catalog and product-admin modules are largely placeholder surfaces
 - reliability and cleanup automation are still more harness-aware than app-runtime-aware
 - there is no automated emulator smoke or end-to-end Android UI regression path yet
@@ -56,6 +60,6 @@ Current overall grade: **B+**
 - `docs/ARCHITECTURE.MD` for boundary expectations
 - `.harness/docs/VERIFICATION.MD` for the standard verification path
 
-## Phase 1 Note
+## Snapshot Note
 
-This quality snapshot was added as part of Phase 1 to close the gap with WalkingLabs `project-06` evaluation artifacts. Later phases should revise this document after reliability and runtime-aware verification improve.
+This is a dated quality snapshot, not the canonical feature-state source. Use `feature_list.json` for current story status and revise this document after major feature, reliability, or runtime-verification changes.

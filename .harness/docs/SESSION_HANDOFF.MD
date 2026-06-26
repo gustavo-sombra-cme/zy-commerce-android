@@ -10,7 +10,7 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 
 ## Current Status
 
-- `ST-03` accepted and closed out; ready for the next feature.
+- `ST-03` accepted and closed out; harness drift cleanup and Evaluator cycle-closure workflow updates completed; ready for the next feature.
 
 ## Active Feature
 
@@ -26,16 +26,22 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 - Hardened session restore so invalid persisted session data is cleared and treated as signed out.
 - Accepted the temporary authenticated placeholder copy and existing skipped smoke gaps as low residual risk.
 - Archived the active progress entry and reset `.harness/docs/PROGRESS.MD` for the next feature.
+- Refreshed quality/evaluator snapshots and added `.harness/harness_manifest.json` as the required-file source for harness scripts.
+- Updated cleanup scanning so the reset progress template and `None.` active-feature handoff are accepted as clean.
+- Added `scripts/close-cycle.sh` so future Evaluator-approved passes can close the cycle with one approved command.
+- Updated Evaluator and agent workflow docs to route feature completion through the closure script.
 
 ## Verification Snapshot
 
 - `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test` passed.
-- `./init.sh` passed, including full Gradle verification, lint, assemble, and cleanup scanner.
+- `bash scripts/verify-fast.sh` passed with cleanup scanner clean and zero warnings.
+- `scripts/close-cycle.sh` without required arguments fails safely and prints usage.
+- `./init.sh` passed on 2026-06-26 after the harness cleanup, including full Gradle verification, lint, assemble, and cleanup scanner.
 - Manual backend/emulator smoke testing was still skipped for sign-in and session restoration when `ST-03` was accepted.
 
 ## Blockers / Risks
 
-- `ST-03` still has accepted residual risk: no backend/device smoke after sign-in implementation, no fresh full `./init.sh` after the final session-restore hardening fix, and placeholder authenticated copy that overstates current capability.
+- `ST-03` still has accepted residual risk: no backend/device smoke after sign-in implementation and placeholder authenticated copy that overstates current capability.
 - `ST-04` scope should stay focused on clearer sign-in failure messaging rather than protected-action gating or profile work.
 
 ## Recommended Next Step

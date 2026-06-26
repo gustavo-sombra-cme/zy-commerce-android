@@ -4,6 +4,8 @@
 
 Use this rubric when evaluating whether a feature or harness task is truly complete. This is an Android-specific scoring guide, not a replacement for story evidence in `feature_list.json`.
 
+Last updated: 2026-06-26
+
 ## Scoring Model
 
 Use a 1-5 scale:
@@ -33,12 +35,12 @@ Use a 1-5 scale:
 
 ## Current Baseline Snapshot
 
-As of 2026-06-25:
+As of 2026-06-26:
 
-- `ST-01` and `ST-02` are implemented and verified.
-- `ST-03` Sign in is the next planned feature.
+- `ST-01`, `ST-02`, and `ST-03` are implemented and verified through targeted auth checks.
+- `ST-04` Show sign-in failure clearly is the next planned feature.
 - Catalog and product-admin modules still contain placeholders.
-- Session persistence, automated Android UI regression, and backend contract replay are not yet complete.
+- Manual backend/emulator smoke for sign-in and session restoration, automated Android UI regression, and backend contract replay are not yet complete.
 
 ## Current Repository Assessment
 
@@ -47,11 +49,11 @@ As of 2026-06-25:
 | Scope Control | 4 | Strong feature list and harness discipline; product scope still partially repeated in `AGENTS.MD` |
 | Build And Static Checks | 4 | Standard Gradle verification path exists through `./init.sh` |
 | Architecture Boundaries | 4 | Clean Architecture rules are explicit; some modules are still placeholders |
-| Backend Contract Confidence | 3 | Auth contract is partially exercised; broader catalog/session confidence is still future work |
-| Error Mapping Quality | 4 | Registration and duplicate-email error mapping are intentionally handled |
-| Test Depth | 4 | Domain, repository, and ViewModel coverage exist for the current auth slice |
-| User-Facing Behavior | 3 | Registration path is present; sign-in and broader catalog UX are still incomplete |
-| Session Persistence Readiness | 2 | Architecture expectations exist, but session implementation is not complete yet |
+| Backend Contract Confidence | 3 | Auth contract is partially exercised; broader catalog confidence and backend/device smoke are still future work |
+| Error Mapping Quality | 4 | Registration, duplicate-email, and session-restore error handling are intentionally handled; clearer sign-in failure messaging remains `ST-04` |
+| Test Depth | 4 | Domain, repository, ViewModel, and session-restore coverage exist for the current auth slice |
+| User-Facing Behavior | 3 | Registration and sign-in paths are present; sign-in failure clarity and broader catalog UX are still incomplete |
+| Session Persistence Readiness | 4 | Secure persisted session restore exists; backend/device smoke and invalid-token recovery paths still need deeper coverage |
 | Documentation Alignment | 4 | Product, architecture, reliability, and harness docs are present and better scoped |
 | Evidence Quality | 4 | `feature_list.json` includes real verification evidence for completed stories |
 | Restartability | 4 | Startup path, cleanup scanner, and continuity artifacts are in place |
@@ -59,18 +61,13 @@ As of 2026-06-25:
 
 ## Overall Baseline
 
-Current baseline: **3.7 / 5**
+Current baseline: **3.9 / 5**
 
 Interpretation:
 
 - The harness is solid and clearly above a minimal setup.
-- The biggest remaining quality gaps are session persistence readiness, broader backend confidence, and runtime-aware verification depth.
+- The biggest remaining quality gaps are backend/device smoke coverage, broader catalog confidence, and runtime-aware verification depth.
 
-## Phase 1 Exit Criteria
+## Snapshot Rule
 
-Phase 1 should be considered complete when:
-
-- `evaluator-rubric.md` and `quality-document.md` exist
-- `AGENTS.MD` and `init.sh` recognize the new artifacts if they are required
-- focused structural verification passes
-- the new artifacts stay Android-specific and point to existing source-of-truth docs without requiring a separate quick-reference file
+This rubric may include a dated repository assessment, but `feature_list.json` remains the canonical source for story status and verification evidence. Update this snapshot after significant feature, verification, or harness changes.

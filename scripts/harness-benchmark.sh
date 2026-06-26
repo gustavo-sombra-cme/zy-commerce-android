@@ -8,18 +8,18 @@ echo "=== Harness Benchmark ==="
 missing=0
 warnings=0
 
-required_files=(
-  "AGENTS.MD"
-  "docs/PRODUCT.MD"
-  "docs/ARCHITECTURE.MD"
-  "docs/RELIABILITY.MD"
-  "feature_list.json"
-  ".harness/docs/SETUP.MD"
-  ".harness/docs/VERIFICATION.MD"
-  ".harness/docs/clean-state-checklist.md"
-  "scripts/cleanup-scanner.sh"
-  "scripts/backend-API-check.sh"
-)
+read_manifest_files() {
+  ruby -rjson -e '
+    key = ARGV.fetch(0)
+    data = JSON.parse(File.read(".harness/harness_manifest.json"))
+    data.fetch(key).each { |file| puts file }
+  ' "$1"
+}
+
+required_files=()
+while IFS= read -r file; do
+  required_files+=("$file")
+done < <(read_manifest_files "benchmark_required_files")
 
 for file in "${required_files[@]}"; do
   if [[ -f "$file" ]]; then

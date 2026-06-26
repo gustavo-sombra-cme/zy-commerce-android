@@ -19,31 +19,18 @@ fi
 
 echo "Using JAVA_HOME=$JAVA_HOME"
 
-required_files=(
-  "AGENTS.MD"
-  "docs/PRODUCT.MD"
-  "docs/ARCHITECTURE.MD"
-  "docs/RELIABILITY.MD"
-  "feature_list.json"
-  "evaluator-rubric.md"
-  "quality-document.md"
-  ".harness/docs/SETUP.MD"
-  ".harness/docs/BACKEND_LOCAL.MD"
-  ".harness/docs/TESTING_STRATEGY.MD"
-  ".harness/docs/VERIFICATION.MD"
-  ".harness/docs/DECISIONS.MD"
-  ".harness/docs/PROGRESS.MD"
-  ".harness/docs/HISTORY.MD"
-  ".harness/docs/SESSION_HANDOFF.MD"
-  ".harness/docs/clean-state-checklist.md"
-  ".harness/docs/AGENT_WORKFLOW.MD"
-  ".harness/agents/PLANNER.MD"
-  ".harness/agents/IMPLEMENTER.MD"
-  ".harness/agents/REVIEWER.MD"
-  ".harness/agents/EVALUATOR.MD"
-  "scripts/harness-benchmark.sh"
-  "scripts/cleanup-scanner.sh"
-)
+read_manifest_files() {
+  ruby -rjson -e '
+    key = ARGV.fetch(0)
+    data = JSON.parse(File.read(".harness/harness_manifest.json"))
+    data.fetch(key).each { |file| puts file }
+  ' "$1"
+}
+
+required_files=()
+while IFS= read -r file; do
+  required_files+=("$file")
+done < <(read_manifest_files "startup_required_files")
 
 echo "Checking required harness files..."
 missing_files=0

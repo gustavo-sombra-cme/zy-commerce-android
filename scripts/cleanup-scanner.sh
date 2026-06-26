@@ -8,26 +8,18 @@ echo "=== Cleanup Scanner ==="
 issues=0
 warnings=0
 
-required_files=(
-  "AGENTS.MD"
-  "docs/PRODUCT.MD"
-  "docs/ARCHITECTURE.MD"
-  "docs/RELIABILITY.MD"
-  "feature_list.json"
-  ".harness/docs/SETUP.MD"
-  ".harness/docs/BACKEND_LOCAL.MD"
-  ".harness/docs/TESTING_STRATEGY.MD"
-  ".harness/docs/VERIFICATION.MD"
-  ".harness/docs/DECISIONS.MD"
-  ".harness/docs/PROGRESS.MD"
-  ".harness/docs/HISTORY.MD"
-  ".harness/docs/SESSION_HANDOFF.MD"
-  ".harness/docs/clean-state-checklist.md"
-  "app/build.gradle.kts"
-  "app/src/debug/AndroidManifest.xml"
-  "app/src/debug/res/xml/debug_network_security_config.xml"
-  "scripts/backend-API-check.sh"
-)
+read_manifest_files() {
+  ruby -rjson -e '
+    key = ARGV.fetch(0)
+    data = JSON.parse(File.read(".harness/harness_manifest.json"))
+    data.fetch(key).each { |file| puts file }
+  ' "$1"
+}
+
+required_files=()
+while IFS= read -r file; do
+  required_files+=("$file")
+done < <(read_manifest_files "cleanup_required_files")
 
 for file in "${required_files[@]}"; do
   if [[ -f "$file" ]]; then
@@ -114,14 +106,15 @@ if [[ "$in_progress_count" -eq 1 ]]; then
     echo "[OK] SESSION_HANDOFF.MD active feature matches feature_list.json: $active_id"
   fi
 else
-  if [[ -n "$progress_id" || "$progress_status" != "planned | in_progress | blocked | done" ]]; then
+  if [[ -n "$progress_id" ]] || [[ -n "$progress_status" && "$progress_status" != "planned | in_progress | blocked | done" ]]; then
     echo "[WARN] No active feature in feature_list.json, but PROGRESS.MD is not at the template state"
     warnings=$((warnings + 1))
   else
     echo "[OK] PROGRESS.MD is at template state with no active feature"
   fi
 
-  if [[ "$handoff_active" == "None currently active." || -z "$handoff_active" ]]; then
+  handoff_active_normalized="$(printf "%s" "$handoff_active" | tr '[:upper:]' '[:lower:]')"
+  if [[ -z "$handoff_active_normalized" || "$handoff_active_normalized" == "none" || "$handoff_active_normalized" == "none." || "$handoff_active_normalized" == "none currently active" || "$handoff_active_normalized" == "none currently active." ]]; then
     echo "[OK] SESSION_HANDOFF.MD reports no active feature"
   else
     echo "[FAIL] SESSION_HANDOFF.MD reports an active feature even though feature_list.json has none: '$handoff_active'"
@@ -221,9 +214,14 @@ else
   echo "[INFO] Session/token persistence checks skipped: current scope does not require them yet"
 fi
 
+runtime_outputs=()
+while IFS= read -r file; do
+  runtime_outputs+=("$file")
+done < <(read_manifest_files "runtime_agent_outputs")
+
 stale_outputs=()
-for output in .harness/agent_outputs/planner.md .harness/agent_outputs/implementer.md .harness/agent_outputs/reviewer.md .harness/agent_outputs/evaluator.md; do
-  if [[ -s "$output" ]]; then
+for output in "${runtime_outputs[@]}"; do
+  if [[ -f "$output" && -n "$(tr -d '[:space:]' < "$output")" ]]; then
     stale_outputs+=("$output")
   fi
 done

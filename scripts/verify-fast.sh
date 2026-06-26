@@ -5,20 +5,18 @@ cd "$(dirname "$0")/.."
 
 echo "=== Fast Startup Verification ==="
 
-required_files=(
-  "AGENTS.MD"
-  "docs/PRODUCT.MD"
-  "docs/ARCHITECTURE.MD"
-  "docs/RELIABILITY.MD"
-  "feature_list.json"
-  "evaluator-rubric.md"
-  "quality-document.md"
-  ".harness/docs/SETUP.MD"
-  ".harness/docs/VERIFICATION.MD"
-  ".harness/docs/TESTING_STRATEGY.MD"
-  ".harness/docs/clean-state-checklist.md"
-  "scripts/cleanup-scanner.sh"
-)
+read_manifest_files() {
+  ruby -rjson -e '
+    key = ARGV.fetch(0)
+    data = JSON.parse(File.read(".harness/harness_manifest.json"))
+    data.fetch(key).each { |file| puts file }
+  ' "$1"
+}
+
+required_files=()
+while IFS= read -r file; do
+  required_files+=("$file")
+done < <(read_manifest_files "fast_required_files")
 
 missing_files=0
 for file in "${required_files[@]}"; do

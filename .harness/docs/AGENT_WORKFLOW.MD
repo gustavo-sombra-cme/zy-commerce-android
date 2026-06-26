@@ -122,6 +122,8 @@ The Evaluator should consider Reviewer findings before passing work. The Evaluat
 - the repo can be restarted from `AGENTS.MD` and `.harness/docs/SETUP.MD`
 - final evaluation summary was presented to the human
 
+After a `pass` decision, the Evaluator must request explicit human approval for cycle closure. If approved, run `scripts/close-cycle.sh --approved ...` instead of manually updating every state file.
+
 ## Evidence
 
 Feature completion evidence belongs in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
@@ -129,3 +131,24 @@ Feature completion evidence belongs in `feature_list.json` and the active featur
 When a feature or harness task is complete, archive its completed progress summary at the top of `.harness/docs/HISTORY.MD` and clear `.harness/docs/PROGRESS.MD` back to the template for the next active item.
 
 Operational verification commands and failure reporting live in `.harness/docs/VERIFICATION.MD`.
+
+## Cycle Closure
+
+Cycle closure happens only after the Evaluator has produced a `pass` result and the human has approved closure.
+
+Use:
+
+```text
+scripts/close-cycle.sh --approved --feature <ID> --summary "<completion summary>" --verification "<command or evidence>" --note "<residual risk or skipped check>"
+```
+
+The closure script owns these repeated mechanical actions:
+
+- mark the approved feature `done` in `feature_list.json`
+- record completion summary, verification, and notes in `feature_list.json`
+- archive the completion at the top of `.harness/docs/HISTORY.MD`
+- reset `.harness/docs/PROGRESS.MD` to the template
+- rewrite `.harness/docs/SESSION_HANDOFF.MD` for the next planned feature
+- empty runtime files listed under `runtime_agent_outputs` in `.harness/harness_manifest.json`
+
+Run `bash scripts/verify-fast.sh` after closure. The cycle is not complete until that check passes or a remaining issue is recorded as a blocker.

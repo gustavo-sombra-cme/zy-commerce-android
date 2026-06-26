@@ -110,6 +110,7 @@ The harness currently requires:
 - `requirements/ecommerce-android-tech-design.md`
 - `requirements/zy-commerce-backend-business-baseline.md`
 - `feature_list.json`
+- `.harness/harness_manifest.json`
 - `.harness/docs/SETUP.MD`
 - `.harness/docs/BACKEND_LOCAL.MD`
 - `.harness/docs/backend-installation-instructions.md`
@@ -181,6 +182,14 @@ Before ending a session:
 4. Update `.harness/docs/SESSION_HANDOFF.MD` if it exists.
 5. Record unresolved blockers, risks, or follow-ups.
 6. Leave the repository clean enough that the next session can start from the standard path immediately.
+
+For Evaluator-approved feature completion, prefer the scripted closure path over hand-editing repeated state files:
+
+```bash
+scripts/close-cycle.sh --approved --feature <ID> --summary "..." --verification "..." --note "..."
+```
+
+Run `bash scripts/verify-fast.sh` after closure.
 
 If a feature is partially complete:
 

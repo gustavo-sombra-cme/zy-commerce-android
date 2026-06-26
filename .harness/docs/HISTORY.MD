@@ -8,6 +8,47 @@ Use `.harness/docs/PROGRESS.MD` for the active feature only.
 
 ## Archived History
 
+### 2026-06-26 — Evaluator Cycle Closure Workflow
+
+Completed:
+
+- added `scripts/close-cycle.sh` as the single Evaluator-approved closure command for marking a feature done, writing completion evidence, archiving history, resetting progress, rewriting handoff, and emptying runtime agent outputs
+- updated `.harness/agents/EVALUATOR.MD` so a `pass` decision asks for human approval before running cycle closure
+- updated `.harness/docs/AGENT_WORKFLOW.MD` and `AGENTS.MD` to route completion cleanup through the closure script instead of repeated hand edits
+- added closure-related required files to `.harness/harness_manifest.json`
+
+Validation:
+
+- `bash -n scripts/close-cycle.sh && bash -n init.sh && bash -n scripts/verify-fast.sh && bash -n scripts/cleanup-scanner.sh && bash -n scripts/harness-benchmark.sh`
+- `scripts/close-cycle.sh` without required arguments fails safely and prints usage
+- `git diff --check`
+- `bash scripts/verify-fast.sh`
+
+Next feature:
+
+- `ST-04` Show sign-in failure clearly
+
+### 2026-06-26 — Harness Drift Cleanup
+
+Completed:
+
+- refreshed `quality-document.md` and `evaluator-rubric.md` so dated snapshots match `ST-03` being complete and `ST-04` being next
+- added `.harness/harness_manifest.json` as the central required-file manifest for startup, fast verification, cleanup, benchmark, and runtime role-output checks
+- updated `init.sh`, `scripts/verify-fast.sh`, `scripts/cleanup-scanner.sh`, and `scripts/harness-benchmark.sh` to read required files from the manifest
+- made `scripts/cleanup-scanner.sh` accept the reset progress template and common no-active-feature handoff wording
+- made runtime agent-output checks ignore whitespace-only files
+
+Validation:
+
+- `bash -n init.sh && bash -n scripts/verify-fast.sh && bash -n scripts/cleanup-scanner.sh && bash -n scripts/harness-benchmark.sh`
+- `git diff --check`
+- `bash scripts/verify-fast.sh`
+- `./init.sh`
+
+Next feature:
+
+- `ST-04` Show sign-in failure clearly
+
 ### 2026-06-26 — ST-03 Sign in
 
 Completed:

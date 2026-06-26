@@ -19,6 +19,7 @@ Operational details live in:
 - `.harness/docs/PROGRESS.MD`
 - `.harness/docs/HISTORY.MD`
 - `.harness/docs/SESSION_HANDOFF.MD`
+- `.harness/harness_manifest.json`
 - `feature_list.json`
 
 ## D-002 — Keep Documentation Ownership Split By Question
@@ -39,6 +40,7 @@ Ownership summary:
 - `.harness/docs/PROGRESS.MD`: active feature or harness task only
 - `.harness/docs/HISTORY.MD`: completed feature and harness archive
 - `.harness/docs/SESSION_HANDOFF.MD`: short next-session restart note
+- `.harness/harness_manifest.json`: required-file sets consumed by harness scripts
 - `feature_list.json`: feature state and durable verification evidence
 
 ## D-003 — Work One Feature At A Time
