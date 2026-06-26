@@ -12,110 +12,53 @@ Before writing code, complete these steps in order:
 2. Read this file completely.
 3. Read `docs/PRODUCT.MD`.
 4. Read `docs/ARCHITECTURE.MD`.
-5. Read `feature_list.json`.
-6. Read `.harness/docs/PROGRESS.MD` for the current active feature or harness task.
-7. Read `.harness/docs/SETUP.MD` for the current bootstrap path.
-8. Read `.harness/docs/BACKEND_LOCAL.MD` for local backend connection and smoke-test prerequisites.
+5. Read `docs/RELIABILITY.MD`.
+6. Read `feature_list.json`.
+7. Read `.harness/docs/PROGRESS.MD` for the current active feature or harness task.
+8. Read `.harness/docs/SETUP.MD` for the current bootstrap path.
 9. Read `.harness/docs/TESTING_STRATEGY.MD` for testing coverage expectations.
 10. Read `.harness/docs/VERIFICATION.MD` for the current verification path and evidence expectations.
-11. Read `requirements/ecommerce-android-plan.md` if feature scope, dependencies, or sprint order are unclear.
-12. Review recent commits with `git log --oneline -5`.
-13. Run the standard project verification path if it exists.
+11. Read `.harness/docs/BACKEND_LOCAL.MD` when backend-dependent behavior or smoke checks are relevant.
+12. Read `requirements/ecommerce-android-plan.md` if feature scope, dependencies, or sprint order are unclear.
+13. Review recent commits with `git log --oneline -5`.
+14. Run the standard project verification path if it exists.
 
 If the baseline is already failing, repair that first before adding new scope.
 
-## Docs Hierarchy
+## Harness Map
 
-The repository documentation is organized for agent readability:
+Use the harness files by question, not by habit:
 
-```text
-docs/
-  PRODUCT.MD                   -- Product intent, users, scope, non-goals
-  ARCHITECTURE.MD              -- Technical design, layers, and modules
+- Product intent or feature meaning: `docs/PRODUCT.MD`
+- Architecture boundaries or stack rules: `docs/ARCHITECTURE.MD`
+- Reliability, clean-state, benchmark, or lifecycle checks: `docs/RELIABILITY.MD`
+- Planned or completed feature state and verification evidence: `feature_list.json`
+- Bootstrap steps and local tooling: `.harness/docs/SETUP.MD`
+- Backend startup and Android connection rules: `.harness/docs/BACKEND_LOCAL.MD`
+- Test coverage expectations: `.harness/docs/TESTING_STRATEGY.MD`
+- Verification commands and evidence format: `.harness/docs/VERIFICATION.MD`
+- Durable project or harness decisions: `.harness/docs/DECISIONS.MD`
+- Active feature only: `.harness/docs/PROGRESS.MD`
+- Completed feature or harness history: `.harness/docs/HISTORY.MD`
+- Next-session restart note only: `.harness/docs/SESSION_HANDOFF.MD`
+- Multi-agent operating flow: `.harness/docs/AGENT_WORKFLOW.MD`
+- Role prompts: `.harness/agents/`
 
-.harness/agents/
-  PLANNER.MD                   -- Planning role prompt
-  IMPLEMENTER.MD               -- Implementation role prompt
-  REVIEWER.MD                  -- Code review role prompt
-  EVALUATOR.MD                 -- Evaluation role prompt
+Keep ownership sharp:
 
-.harness/docs/
-  SETUP.MD                     -- Current bootstrap and local tooling
-  BACKEND_LOCAL.MD             -- Local backend startup and Android connection path
-  backend-installation-instructions.md -- Backend macOS installation and run guide
-  TESTING_STRATEGY.MD          -- Test coverage model and test-level ownership
-  VERIFICATION.MD              -- Verification commands, evidence, and failure reporting
-  DECISIONS.MD                 -- Durable project and harness decisions
-  AGENT_WORKFLOW.MD            -- Planner, Implementer, Reviewer, Evaluator workflow
-  PROGRESS.MD                  -- Active feature or harness task tracker
-  HISTORY.MD                   -- Completed feature and harness history, newest first
-  SESSION_HANDOFF.MD           -- Minimal restart note for the next session
+- Update product docs when behavior changes.
+- Update architecture docs when structure or technical rules change.
+- Update `docs/RELIABILITY.MD`, `.harness/docs/VERIFICATION.MD`, or `.harness/docs/clean-state-checklist.md` when lifecycle or verification rules change.
+- Update `feature_list.json` when feature status or evidence changes.
+- Keep only the active item in `.harness/docs/PROGRESS.MD`.
+- Keep completed summaries in `.harness/docs/HISTORY.MD`, newest first.
+- Keep `.harness/docs/SESSION_HANDOFF.MD` short and restart-oriented.
 
-requirements/
-  mvp_requirements_ecommerce.md -- Business requirements baseline
-  ecommerce-android-plan.md    -- Stories, backlog, dependencies, sprint plan
-  ecommerce-android-tech-design.md -- Original Android technical design source
-  zy-commerce-backend-business-baseline.md -- Backend business baseline
+## Product Scope
 
-repo root/
-  AGENTS.MD                    -- Startup rules and execution constraints
-  feature_list.json            -- Feature state source of truth
-```
+`docs/PRODUCT.MD` is the source of truth for current MVP scope, out-of-scope boundaries, intended users, and success criteria.
 
-Use this hierarchy consistently:
-
-- `PRODUCT.MD` answers what the app is for and what features mean.
-- `ARCHITECTURE.MD` answers how the app must be built.
-- `feature_list.json` at repo root answers what is planned, active, blocked, or done.
-- `SETUP.MD` answers how to bootstrap the repository in its current state.
-- `BACKEND_LOCAL.MD` answers how the Android app connects to the local backend.
-- `backend-installation-instructions.md` answers how to install and run the backend on macOS.
-- `TESTING_STRATEGY.MD` answers what kinds of tests should exist and where they belong.
-- `VERIFICATION.MD` answers how to verify changes and record evidence.
-- `DECISIONS.MD` records durable decisions and rationale.
-- `PROGRESS.MD` tracks the active feature or active harness task only.
-- `HISTORY.MD` preserves completed feature and harness history in newest-first order.
-- `SESSION_HANDOFF.MD` keeps a minimal next-session restart note only.
-
-When behavior changes, update product docs.
-When structure or technical rules change, update architecture docs.
-When progress changes, update `feature_list.json` and session continuity artifacts.
-Keep active feature notes in `.harness/docs/PROGRESS.MD`.
-Keep completed feature and harness history in `.harness/docs/HISTORY.MD`, with the newest record first.
-
-## Current Project Context
-
-This Android app currently targets a narrow MVP backed by the existing ZY-Commerce backend.
-
-In scope now:
-
-- account registration
-- sign in
-- current signed-in user profile
-- public product catalog list
-- product search
-- product active/inactive filter
-- product pagination
-- product detail
-- authenticated product create
-- authenticated product update
-- authenticated product deactivation
-
-Out of scope unless explicitly approved:
-
-- shopping cart
-- checkout
-- orders
-- payments
-- pricing engine
-- inventory management
-- product images
-- categories
-- reviews
-- shipping flows
-- roles and permissions
-- refresh-token architecture
-- product reactivation
+Do not restate or extend product scope in this file. If scope changes, update `docs/PRODUCT.MD` first.
 
 ## Working Rules
 
@@ -161,6 +104,7 @@ The harness currently requires:
 
 - `docs/PRODUCT.MD`
 - `docs/ARCHITECTURE.MD`
+- `docs/RELIABILITY.MD`
 - `requirements/mvp_requirements_ecommerce.md`
 - `requirements/ecommerce-android-plan.md`
 - `requirements/ecommerce-android-tech-design.md`
@@ -171,6 +115,9 @@ The harness currently requires:
 - `.harness/docs/backend-installation-instructions.md`
 - `.harness/docs/TESTING_STRATEGY.MD`
 - `.harness/docs/VERIFICATION.MD`
+- `.harness/docs/clean-state-checklist.md`
+- `evaluator-rubric.md`
+- `quality-document.md`
 - `.harness/docs/DECISIONS.MD`
 - `.harness/docs/AGENT_WORKFLOW.MD`
 - `.harness/agents/README.MD`
@@ -190,7 +137,7 @@ If these artifacts do not exist yet, create them when implementation begins or w
 
 Current bootstrap rule:
 
-- Use `init.sh` as the standard startup and verification path. Use `.harness/docs/SETUP.MD` for local tooling, `.harness/docs/BACKEND_LOCAL.MD` for backend checks, `.harness/docs/TESTING_STRATEGY.MD` for coverage expectations, and `.harness/docs/VERIFICATION.MD` for evidence expectations.
+- Use `init.sh` as the standard startup and verification path. Use `.harness/docs/SETUP.MD` for local tooling, `.harness/docs/BACKEND_LOCAL.MD` for backend checks, `.harness/docs/TESTING_STRATEGY.MD` for coverage expectations, `.harness/docs/VERIFICATION.MD` for evidence expectations, and `.harness/docs/clean-state-checklist.md` plus `docs/RELIABILITY.MD` for lifecycle discipline.
 
 ## Verification Philosophy
 
@@ -213,6 +160,8 @@ For Android features, use `.harness/docs/TESTING_STRATEGY.MD` for coverage expec
 ## Standard Verification Path
 
 Run `./init.sh` by default. See `.harness/docs/VERIFICATION.MD` for the underlying Gradle checks, optional additions, backend-dependent smoke checks, and evidence format.
+
+For a fast pre-edit startup-surface check, use `bash scripts/verify-fast.sh`.
 
 ## Error Feedback Rules
 

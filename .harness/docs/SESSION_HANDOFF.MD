@@ -22,14 +22,15 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 
 ## What Changed Most Recently
 
-- `ST-01` registration and `ST-02` duplicate-email handling are implemented and verified.
-- The Android Gradle scaffold, `init.sh`, and harness docs are in place.
-- `feature_list.json` contains the current feature state and recorded evidence for completed work.
+- Harness ownership was tightened so startup docs, decisions, archive history, and lifecycle checks have sharper boundaries.
+- `feature_list.json` remains the durable feature state and verification evidence source.
+- `docs/RELIABILITY.MD`, `.harness/docs/clean-state-checklist.md`, `scripts/harness-benchmark.sh`, and `scripts/cleanup-scanner.sh` are now part of the startup surface.
 
 ## Verification Snapshot
 
 - `./init.sh` passes.
 - Current standard checks are `./gradlew test`, `./gradlew lintDebug`, and `./gradlew assembleDebug`.
+- Lifecycle checks now also include `bash scripts/harness-benchmark.sh` and `bash scripts/cleanup-scanner.sh` when the feature touches restartability, backend wiring, or verification maturity.
 - Manual backend/emulator smoke testing has not yet been rerun for the next feature.
 
 ## Blockers / Risks

@@ -1,23 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
-echo "ZY-Commerce Android bootstrap"
-echo "Working directory: $(pwd)"
-
-if [[ -z "${JAVA_HOME:-}" ]]; then
-  if [[ -d "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home" ]]; then
-    export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
-  fi
-fi
-
-if [[ -z "${JAVA_HOME:-}" ]]; then
-  echo "JAVA_HOME is not set. Install or select JDK 17 before running Gradle." >&2
-  exit 1
-fi
-
-echo "Using JAVA_HOME=$JAVA_HOME"
+echo "=== Fast Startup Verification ==="
 
 required_files=(
   "AGENTS.MD"
@@ -28,24 +14,12 @@ required_files=(
   "evaluator-rubric.md"
   "quality-document.md"
   ".harness/docs/SETUP.MD"
-  ".harness/docs/BACKEND_LOCAL.MD"
-  ".harness/docs/TESTING_STRATEGY.MD"
   ".harness/docs/VERIFICATION.MD"
-  ".harness/docs/DECISIONS.MD"
-  ".harness/docs/PROGRESS.MD"
-  ".harness/docs/HISTORY.MD"
-  ".harness/docs/SESSION_HANDOFF.MD"
+  ".harness/docs/TESTING_STRATEGY.MD"
   ".harness/docs/clean-state-checklist.md"
-  ".harness/docs/AGENT_WORKFLOW.MD"
-  ".harness/agents/PLANNER.MD"
-  ".harness/agents/IMPLEMENTER.MD"
-  ".harness/agents/REVIEWER.MD"
-  ".harness/agents/EVALUATOR.MD"
-  "scripts/harness-benchmark.sh"
   "scripts/cleanup-scanner.sh"
 )
 
-echo "Checking required harness files..."
 missing_files=0
 for file in "${required_files[@]}"; do
   if [[ -f "$file" ]]; then
@@ -57,7 +31,7 @@ for file in "${required_files[@]}"; do
 done
 
 if [[ "$missing_files" -ne 0 ]]; then
-  echo "Harness bootstrap failed because required files are missing." >&2
+  echo "Fast verification failed because required startup-surface files are missing." >&2
   exit 1
 fi
 
@@ -80,10 +54,7 @@ else
 end
 '
 
-echo "Running standard Gradle verification..."
-./gradlew test
-./gradlew lintDebug
-./gradlew assembleDebug
-
-echo "Running harness cleanup scanner..."
+echo "Running cleanup scanner..."
 bash scripts/cleanup-scanner.sh
+
+echo "=== Fast startup verification passed. ==="

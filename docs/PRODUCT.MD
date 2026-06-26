@@ -1,5 +1,7 @@
 # PRODUCT — ZY-Commerce Android App (MVP)
 
+This document is the source of truth for product scope and product boundaries in the Android repository.
+
 ## Product Summary
 
 ZY-Commerce Android is the mobile client for the ZY-Commerce platform. The current MVP is designed to provide a simple but usable mobile experience for user access and product catalog management, backed by the existing ZY-Commerce backend.

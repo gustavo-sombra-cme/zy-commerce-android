@@ -1,6 +1,6 @@
 # TESTING_STRATEGY.MD — ZY-Commerce Android
 
-This file defines what kinds of tests the Android app should grow and where each kind belongs. Use `.harness/docs/VERIFICATION.MD` for the commands to run and the evidence to record.
+This file defines what kinds of tests the Android app should grow and where each kind belongs. Use `.harness/docs/VERIFICATION.MD` for the commands to run and the evidence to record, and `docs/RELIABILITY.MD` for lifecycle and runtime expectations around those checks.
 
 ## Purpose
 
@@ -107,3 +107,5 @@ Current manual QA concerns:
 `.harness/docs/TESTING_STRATEGY.MD` answers what kinds of tests should exist.
 
 `.harness/docs/VERIFICATION.MD` answers how to run checks, what evidence to record, and how to report failures.
+
+`docs/RELIABILITY.MD` answers how those checks fit into clean startup, clean finish, session and storage expectations, and harness lifecycle discipline.

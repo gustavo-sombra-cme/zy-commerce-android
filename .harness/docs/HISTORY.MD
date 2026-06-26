@@ -8,6 +8,29 @@ Use `.harness/docs/PROGRESS.MD` for the active feature only.
 
 ## Archived History
 
+### 2026-06-25 — Harness Ownership Cleanup
+
+Completed:
+
+- slimmed `AGENTS.MD` so it stays focused on startup, rules, and ownership boundaries
+- rebuilt `.harness/docs/SETUP.MD` as bootstrap and tooling guidance only
+- trimmed `.harness/docs/DECISIONS.MD` back to durable project and harness decisions
+- added `docs/RELIABILITY.MD` for lifecycle, benchmark, cleanup, and clean-state expectations
+- added `.harness/docs/clean-state-checklist.md`
+- added `scripts/harness-benchmark.sh` and `scripts/cleanup-scanner.sh`
+- strengthened `init.sh` to validate harness files and report the active or next feature dynamically
+
+Moved out of decisions and into archive:
+
+- `ST-01` intentionally ended at registration success plus navigation to a sign-in placeholder because sign-in itself belongs to `ST-03`
+- registration implementation details remain tracked through `feature_list.json` evidence plus the `2026-06-19 — Android Scaffold + ST-01 Registration` archive entry below
+
+Validation:
+
+- harness ownership paths updated to reference `docs/RELIABILITY.MD`, `.harness/docs/clean-state-checklist.md`, and the new lifecycle scripts
+- `feature_list.json` intentionally kept lean and unchanged
+- no feature implementation state was moved out of the archive into startup docs
+
 ### 2026-06-25 — Harness Folder Consolidation
 
 Changes:

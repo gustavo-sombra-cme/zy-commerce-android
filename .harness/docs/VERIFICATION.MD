@@ -1,6 +1,6 @@
 # VERIFICATION.MD — ZY-Commerce Android
 
-This file is the operational verification guide for the Android repository. Use it to decide what to run, what evidence to record, and what to do when checks fail. Use `.harness/docs/TESTING_STRATEGY.MD` for test coverage expectations.
+This file is the operational verification guide for the Android repository. Use it to decide what to run, what evidence to record, and what to do when checks fail. Use `.harness/docs/TESTING_STRATEGY.MD` for test coverage expectations and `docs/RELIABILITY.MD` for lifecycle and runtime expectations.
 
 ## Standard Path
 
@@ -10,7 +10,17 @@ Use the repository bootstrap script for normal verification:
 ./init.sh
 ```
 
-`init.sh` confirms the repository root, selects the local JDK 17 path when possible, prints active feature status, and runs the Gradle checks below.
+`init.sh` confirms the repository root, validates required harness files, selects the local JDK 17 path when possible, prints the active or next feature, runs the Gradle checks below, and executes the cleanup scanner.
+
+## Fast Path
+
+Use this when you need a quick startup-surface check before editing or before a longer full verification run:
+
+```bash
+bash scripts/verify-fast.sh
+```
+
+`scripts/verify-fast.sh` is intentionally lighter than `init.sh`. It checks the startup surface, confirms feature-state readability, and runs the cleanup scanner without running the full Gradle suite.
 
 ## Gradle Checks
 
@@ -39,7 +49,7 @@ When the feature is complete, move the finished progress summary to the top of `
 For Android features, record:
 
 - exact commands run
-- pass/fail outcome
+- pass or fail outcome
 - notable warnings or skipped checks
 - relevant test coverage added or updated
 - manual smoke results when user-facing behavior is involved
@@ -49,9 +59,9 @@ For Android features, record:
 
 Use three layers where applicable:
 
-1. Syntax / static checks: compilation, Gradle configuration, and Android lint.
+1. Syntax or static checks: compilation, Gradle configuration, and Android lint.
 2. Behavior checks: the relevant unit, integration, or UI tests from `.harness/docs/TESTING_STRATEGY.MD`.
-3. System checks: backend connectivity and emulator/device smoke testing when user-facing or backend-dependent behavior changes.
+3. System checks: backend connectivity and emulator or device smoke testing when user-facing or backend-dependent behavior changes.
 
 Do not skip from code-written to done without evidence.
 
@@ -59,9 +69,22 @@ Do not skip from code-written to done without evidence.
 
 Backend availability checks, startup commands, local URLs, and Android connection rules live in `.harness/docs/BACKEND_LOCAL.MD`. Run those checks before manual backend or emulator smoke testing.
 
+## Lifecycle Checks
+
+Use these additional lifecycle checks when harness maturity or restartability changed:
+
+```bash
+bash scripts/cleanup-scanner.sh
+bash scripts/harness-benchmark.sh
+```
+
+The benchmark should stay lightweight. It may run a cheap backend-availability check, local-network sanity checks, and a focused targeted verification command for the active or next feature when that mapping exists.
+
+Use `.harness/docs/clean-state-checklist.md` before finishing risky sessions or harness refactors.
+
 ## Current Manual Smoke Expectations
 
-Current backend-dependent smoke prerequisites and `ST-01` registration expectations live in `.harness/docs/BACKEND_LOCAL.MD`. Record results here only when the expected verification shape changes.
+Current backend-dependent smoke prerequisites and `ST-01` registration expectations live in `.harness/docs/BACKEND_LOCAL.MD`. Use `docs/RELIABILITY.MD` for what reliable smoke evidence should contain. Record results here only when the expected verification shape changes.
 
 ## Failure Reporting
 

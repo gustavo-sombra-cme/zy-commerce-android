@@ -2,44 +2,55 @@
 
 ## Purpose
 
-This document defines how to bootstrap the ZY-Commerce Android project safely at its current stage.
+This document defines how to bootstrap the ZY-Commerce Android project safely on a local machine.
 
-Current reality as of 2026-06-25:
+## Standard Startup Path
 
-- the repository now contains an Android Gradle scaffold
-- the Gradle wrapper is checked in
-- the `app` module exists and launches the registration flow
-- `init.sh` is the standard local verification entry point
-- the backend already exists and can run locally on macOS
+Use the repository bootstrap script:
 
-## Current Repository State
+```bash
+./init.sh
+```
 
-What exists now:
+`init.sh` is the canonical startup path. It checks required harness files, selects the local JDK 17 path when possible, prints the current active or next feature, and runs the standard Gradle verification pack.
 
-- `AGENTS.MD`
-- `docs/PRODUCT.MD`
-- `docs/ARCHITECTURE.MD`
-- `requirements/mvp_requirements_ecommerce.md`
-- `requirements/ecommerce-android-plan.md`
-- `requirements/ecommerce-android-tech-design.md`
-- `requirements/zy-commerce-backend-business-baseline.md`
-- `feature_list.json`
-- `.harness/docs/SETUP.MD`
-- `.harness/docs/PROGRESS.MD`
-- `.harness/docs/HISTORY.MD`
-- `.harness/docs/SESSION_HANDOFF.MD`
-- `.harness/docs/DECISIONS.MD`
-- `.harness/docs/VERIFICATION.MD`
-- `.harness/docs/TESTING_STRATEGY.MD`
-- `.harness/docs/BACKEND_LOCAL.MD`
-- `.harness/docs/backend-installation-instructions.md`
-- Android Gradle scaffold with modules aligned to `docs/ARCHITECTURE.MD`
-- Gradle wrapper: `./gradlew`
-- bootstrap script: `./init.sh`
-- implemented and verified `ST-01` registration flow
-- implemented and verified `ST-02` duplicate-email registration handling
+For a lightweight startup-surface check before a longer verification run, use:
 
-Current module scaffold:
+```bash
+bash scripts/verify-fast.sh
+```
+
+## Required Local Tooling
+
+The currently verified local path uses:
+
+- Android SDK at `/Users/gustavo.sombra/Library/Android/sdk`
+- JDK 17
+- Gradle wrapper distribution `8.11.1`
+- Ruby with the standard `json` library for the startup feature summary in `init.sh`
+
+If `JAVA_HOME` is not set, `init.sh` will try:
+
+```text
+/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+```
+
+## Repository Shape Expected At Startup
+
+The startup path expects these categories to be present and aligned:
+
+- product and architecture docs in `docs/`
+- source requirements in `requirements/`
+- feature state in `feature_list.json`
+- harness operational docs in `.harness/docs/`
+- role prompts in `.harness/agents/`
+- Gradle wrapper and Android modules in the repository root
+
+Use `AGENTS.MD` for the operating contract, not this file.
+
+## Module Layout
+
+Current Android module layout:
 
 ```text
 app/
@@ -57,59 +68,21 @@ feature/catalog/
 feature/productadmin/
 ```
 
-## Required Local Tooling
+## Related Docs
 
-The verified local path uses:
+- `AGENTS.MD` — startup order, scope rules, and completion rules
+- `.harness/docs/BACKEND_LOCAL.MD` — backend startup and connection path
+- `.harness/docs/TESTING_STRATEGY.MD` — test coverage expectations
+- `.harness/docs/VERIFICATION.MD` — commands, evidence format, and failure reporting
+- `.harness/docs/clean-state-checklist.md` — end-of-session and pre-commit clean-state checks
+- `docs/RELIABILITY.MD` — lifecycle, benchmark, and cleanup expectations
 
-- Android SDK at `/Users/gustavo.sombra/Library/Android/sdk`
-- JDK 17
-- Gradle wrapper distribution `8.11.1`
+## Healthy Startup State
 
-If `JAVA_HOME` is not set, `init.sh` will use:
+The repository is in a healthy startup state when:
 
-```text
-/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
-```
-
-## Standard Verification Path
-
-Use `./init.sh` for the standard local verification path. Test coverage expectations live in `.harness/docs/TESTING_STRATEGY.MD`; command details, evidence format, and optional smoke checks live in `.harness/docs/VERIFICATION.MD`.
-
-## Backend Dependency
-
-The Android app depends on the local ZY-Commerce backend for the current MVP. Backend startup, URLs, emulator/device connection rules, and debug network security details live in `.harness/docs/BACKEND_LOCAL.MD`.
-
-## Current Feature State
-
-`ST-01` Register account and `ST-02` Prevent duplicate account registration are implemented and verified.
-
-Current registration behavior:
-
-- visitor enters email and password on `RegisterScreen`
-- registration posts to `POST /api/auth/users/register`
-- response maps `userId` and `email` into the auth domain model
-- success shows confirmation and navigates to the sign-in route placeholder
-- duplicate-email `409 Conflict` responses show readable email-specific feedback without clearing entered values
-- backend `Email` and `Password` validation errors render under the matching fields
-
-Out of current scope:
-
-- actual sign-in implementation (`ST-03`)
-- session persistence
-- catalog and product-management behavior
-
-## Definition Of A Healthy Startup State
-
-The project is in a healthy startup state when:
-
+- required harness files exist
 - docs are internally consistent
-- backend is reachable or startup path is known
-- current active feature is clear
-- `.harness/docs/PROGRESS.MD` only reflects the active feature or active harness task
-- completed work has been archived into `.harness/docs/HISTORY.MD` in newest-first order
-- architecture constraints are known
+- the active feature is clear from `feature_list.json`, `.harness/docs/PROGRESS.MD`, and `.harness/docs/SESSION_HANDOFF.MD`
 - `./init.sh` passes
-
-## Agent Workflow
-
-Use a single agent for small changes. Use Planner, Implementer, Reviewer, and Evaluator for risky, ambiguous, or quality-sensitive feature work. Role prompts live in `.harness/agents/`, and operating rules live in `.harness/docs/AGENT_WORKFLOW.MD`. Every role handoff requires human approval. Runtime handoff output files live under `.harness/agent_outputs/` and are ignored by git.
+- the next session can continue without reading prior chat history
