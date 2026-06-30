@@ -8,6 +8,24 @@ Use `.harness/docs/PROGRESS.MD` for the active feature only.
 
 ## Archived History
 
+### 2026-06-29 — ST-04 Show sign-in failure clearly
+
+Completed:
+
+- Delivered clear sign-in failure messaging for invalid credentials and inactive accounts, with repository and ViewModel coverage for the login error paths.
+
+Validation:
+
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test; JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./init.sh; bash scripts/verify-fast.sh`
+
+Notes:
+
+- Manual backend or emulator smoke testing for invalid-credentials and inactive-account flows was not run.
+
+Next feature:
+
+- ST-05 View current profile
+
 ### 2026-06-26 — Evaluator Cycle Closure Workflow
 
 Completed:

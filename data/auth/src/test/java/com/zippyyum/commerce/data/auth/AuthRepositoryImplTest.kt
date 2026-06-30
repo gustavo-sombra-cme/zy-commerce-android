@@ -146,6 +146,66 @@ class AuthRepositoryImplTest {
     }
 
     @Test
+    fun `login maps unauthorized response to unauthorized app error`() {
+        val repository = AuthRepositoryImpl(
+            authApi = object : AuthApi {
+                override suspend fun register(request: RegisterUserRequestDto): RegisterUserResponseDto {
+                    error("Not used in this test")
+                }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto {
+                    throw HttpException(
+                        Response.error<LoginUserResponseDto>(
+                            401,
+                            "{\"message\":\"Invalid credentials\"}".toResponseBody("application/json".toMediaType()),
+                        ),
+                    )
+                }
+            },
+            json = testJson,
+            sessionStorage = FakeSessionStorage(),
+        )
+
+        val result = runCatching {
+            kotlinx.coroutines.runBlocking {
+                repository.login("user@example.com", "WrongPassword123")
+            }
+        }.getOrThrow()
+
+        assertThat(result).isEqualTo(AppResult.Failure(AppError.Unauthorized))
+    }
+
+    @Test
+    fun `login maps forbidden response to forbidden app error`() {
+        val repository = AuthRepositoryImpl(
+            authApi = object : AuthApi {
+                override suspend fun register(request: RegisterUserRequestDto): RegisterUserResponseDto {
+                    error("Not used in this test")
+                }
+
+                override suspend fun login(request: LoginUserRequestDto): LoginUserResponseDto {
+                    throw HttpException(
+                        Response.error<LoginUserResponseDto>(
+                            403,
+                            "{\"message\":\"Inactive user\"}".toResponseBody("application/json".toMediaType()),
+                        ),
+                    )
+                }
+            },
+            json = testJson,
+            sessionStorage = FakeSessionStorage(),
+        )
+
+        val result = runCatching {
+            kotlinx.coroutines.runBlocking {
+                repository.login("inactive@example.com", "Password123")
+            }
+        }.getOrThrow()
+
+        assertThat(result).isEqualTo(AppResult.Failure(AppError.Forbidden))
+    }
+
+    @Test
     fun `get active session clears expired session`() {
         val sessionStorage = FakeSessionStorage(
             storedSession = StoredSession(

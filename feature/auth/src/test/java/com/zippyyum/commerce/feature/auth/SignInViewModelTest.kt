@@ -74,6 +74,42 @@ class SignInViewModelTest {
         }
     }
 
+    @Test
+    fun `submit shows invalid credentials message for unauthorized error`() = runTest(dispatcher) {
+        val repository = FakeAuthRepository(
+            result = AppResult.Failure(AppError.Unauthorized),
+        )
+        val viewModel = SignInViewModel(LoginUserUseCase(repository))
+
+        viewModel.onEmailChanged("user@example.com")
+        viewModel.onPasswordChanged("WrongPassword123")
+        viewModel.submit()
+        dispatcher.scheduler.advanceUntilIdle()
+
+        with(viewModel.uiState.value) {
+            assertThat(message).isEqualTo("The email or password is incorrect.")
+            assertThat(isSubmitting).isFalse()
+        }
+    }
+
+    @Test
+    fun `submit shows inactive account message for forbidden error`() = runTest(dispatcher) {
+        val repository = FakeAuthRepository(
+            result = AppResult.Failure(AppError.Forbidden),
+        )
+        val viewModel = SignInViewModel(LoginUserUseCase(repository))
+
+        viewModel.onEmailChanged("inactive@example.com")
+        viewModel.onPasswordChanged("Password123")
+        viewModel.submit()
+        dispatcher.scheduler.advanceUntilIdle()
+
+        with(viewModel.uiState.value) {
+            assertThat(message).isEqualTo("This account is inactive. Contact support or try another account.")
+            assertThat(isSubmitting).isFalse()
+        }
+    }
+
     private class FakeAuthRepository(
         private val result: AppResult<UserSession> = AppResult.Success(
             UserSession(

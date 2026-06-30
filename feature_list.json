@@ -2,7 +2,7 @@
   "project": "zy-commerce-android",
   "artifact": "feature_list",
   "version": 1,
-  "last_updated": "2026-06-26",
+  "last_updated": "2026-06-29",
   "source_documents": [
     "requirements/mvp_requirements_ecommerce.md",
     "requirements/ecommerce-android-plan.md",
@@ -52,7 +52,9 @@
         "story_points_without_ai": 5,
         "story_points_with_ai": 3
       },
-      "dependencies": [],
+      "dependencies": [
+
+      ],
       "screens": [
         "RegisterScreen"
       ],
@@ -162,7 +164,7 @@
       "id": "ST-04",
       "name": "Show sign-in failure clearly",
       "epic": "Authentication",
-      "status": "planned",
+      "status": "done",
       "priority": "high",
       "estimate": {
         "story_points_without_ai": 3,
@@ -181,7 +183,17 @@
         "Invalid credentials show clear error",
         "Inactive account shows clear error",
         "Error mapping is covered by unit or integration tests"
-      ]
+      ],
+      "implementation": {
+        "completed_on": "2026-06-29",
+        "summary": "Delivered clear sign-in failure messaging for invalid credentials and inactive accounts, with repository and ViewModel coverage for the login error paths.",
+        "verification": [
+          "JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test; JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./init.sh; bash scripts/verify-fast.sh"
+        ],
+        "notes": [
+          "Manual backend or emulator smoke testing for invalid-credentials and inactive-account flows was not run."
+        ]
+      }
     },
     {
       "id": "ST-05",
@@ -218,7 +230,9 @@
         "story_points_without_ai": 5,
         "story_points_with_ai": 3
       },
-      "dependencies": [],
+      "dependencies": [
+
+      ],
       "screens": [
         "CatalogScreen"
       ],
@@ -482,7 +496,9 @@
         "CreateProductScreen",
         "EditProductScreen"
       ],
-      "backend_endpoints": [],
+      "backend_endpoints": [
+
+      ],
       "definition_of_done": [
         "Unsigned user cannot enter protected product-management flows",
         "Protected action redirects or prompts for sign-in",

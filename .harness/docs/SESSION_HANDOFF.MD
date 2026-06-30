@@ -6,11 +6,11 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 
 ## Current Objective
 
-- Start `ST-04` show sign-in failure clearly.
+- Plan and implement `ST-05` View current profile.
 
 ## Current Status
 
-- `ST-03` accepted and closed out; harness drift cleanup and Evaluator cycle-closure workflow updates completed; ready for the next feature.
+- `ST-04` accepted and closed out; ready for the next feature.
 
 ## Active Feature
 
@@ -18,35 +18,25 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 
 ## Next Planned Feature
 
-- `ST-04` Show sign-in failure clearly
+- ST-05 View current profile
 
 ## What Changed Most Recently
 
-- Completed `ST-03` sign in through reviewer and evaluator workflow stages.
-- Hardened session restore so invalid persisted session data is cleared and treated as signed out.
-- Accepted the temporary authenticated placeholder copy and existing skipped smoke gaps as low residual risk.
-- Archived the active progress entry and reset `.harness/docs/PROGRESS.MD` for the next feature.
-- Refreshed quality/evaluator snapshots and added `.harness/harness_manifest.json` as the required-file source for harness scripts.
-- Updated cleanup scanning so the reset progress template and `None.` active-feature handoff are accepted as clean.
-- Added `scripts/close-cycle.sh` so future Evaluator-approved passes can close the cycle with one approved command.
-- Updated Evaluator and agent workflow docs to route feature completion through the closure script.
+- Delivered clear sign-in failure messaging for invalid credentials and inactive accounts, with repository and ViewModel coverage for the login error paths.
+- Updated `feature_list.json`, archived completion in `.harness/docs/HISTORY.MD`, and reset `.harness/docs/PROGRESS.MD`.
+- Cleared runtime agent outputs after approved Evaluator closure.
 
 ## Verification Snapshot
 
-- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test` passed.
-- `bash scripts/verify-fast.sh` passed with cleanup scanner clean and zero warnings.
-- `scripts/close-cycle.sh` without required arguments fails safely and prints usage.
-- `./init.sh` passed on 2026-06-26 after the harness cleanup, including full Gradle verification, lint, assemble, and cleanup scanner.
-- Manual backend/emulator smoke testing was still skipped for sign-in and session restoration when `ST-03` was accepted.
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradlew :domain:auth:test :data:auth:test :feature:auth:test; JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./init.sh; bash scripts/verify-fast.sh`
 
 ## Blockers / Risks
 
-- `ST-03` still has accepted residual risk: no backend/device smoke after sign-in implementation and placeholder authenticated copy that overstates current capability.
-- `ST-04` scope should stay focused on clearer sign-in failure messaging rather than protected-action gating or profile work.
+- Manual backend or emulator smoke testing for invalid-credentials and inactive-account flows was not run.
 
 ## Recommended Next Step
 
-- Plan and implement `ST-04` sign-in failure clarity, reusing the existing sign-in screen and ViewModel flow.
+- Plan and implement `ST-05` View current profile.
 
 ## Files Likely Needed Next
 
@@ -54,4 +44,3 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 - `.harness/docs/PROGRESS.MD`
 - `feature/auth/src/main/java/com/zippyyum/commerce/feature/auth/`
 - `data/auth/src/main/java/com/zippyyum/commerce/data/auth/`
-- `.harness/docs/HISTORY.MD`

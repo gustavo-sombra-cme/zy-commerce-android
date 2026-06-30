@@ -68,8 +68,14 @@ class SignInViewModel @Inject constructor(
                     isSubmitting = false,
                     message = "Cannot reach ZY-Commerce right now.",
                 )
-                AppError.Unauthorized,
-                AppError.Forbidden,
+                AppError.Unauthorized -> state.copy(
+                    isSubmitting = false,
+                    message = "The email or password is incorrect.",
+                )
+                AppError.Forbidden -> state.copy(
+                    isSubmitting = false,
+                    message = "This account is inactive. Contact support or try another account.",
+                )
                 AppError.NotFound,
                 is AppError.Conflict,
                 is AppError.Unknown -> state.copy(
