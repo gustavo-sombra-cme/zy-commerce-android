@@ -44,7 +44,7 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ./gradl
 
 A feature is not done until verification evidence is recorded in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
 
-When the feature is complete, move the finished progress summary to the top of `.harness/docs/HISTORY.MD` and reset `.harness/docs/PROGRESS.MD` to the active-feature template.
+After an Evaluator `pass` decision and explicit human approval, close the feature through `scripts/close-cycle.sh --approved ...`. The closure script owns the repeated state updates: durable feature evidence, history archive, progress reset, handoff rewrite, and runtime output cleanup.
 
 For Android features, record:
 

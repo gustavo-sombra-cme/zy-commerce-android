@@ -23,7 +23,7 @@ Keep it compact. Put durable completion history in `.harness/docs/HISTORY.MD` in
 ## What Changed Most Recently
 
 - Delivered clear sign-in failure messaging for invalid credentials and inactive accounts, with repository and ViewModel coverage for the login error paths.
-- Updated `feature_list.json`, archived completion in `.harness/docs/HISTORY.MD`, and reset `.harness/docs/PROGRESS.MD`.
+- Ran approved cycle closure to update `feature_list.json`, `.harness/docs/HISTORY.MD`, `.harness/docs/PROGRESS.MD`, and `.harness/docs/SESSION_HANDOFF.MD`.
 - Cleared runtime agent outputs after approved Evaluator closure.
 
 ## Verification Snapshot

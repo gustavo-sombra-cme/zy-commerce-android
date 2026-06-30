@@ -4,9 +4,9 @@ This file is for the active feature or active harness task only.
 
 When the active work is complete:
 
-1. move the completed progress summary to the top of `.harness/docs/HISTORY.MD`
+1. get an Evaluator `pass` decision and explicit human approval for closure
 2. keep the durable completion evidence in `feature_list.json`
-3. clear this file back to this template for the next feature
+3. run `scripts/close-cycle.sh --approved ...` so history, handoff, progress, and runtime outputs are updated together
 
 ## Active Item
 

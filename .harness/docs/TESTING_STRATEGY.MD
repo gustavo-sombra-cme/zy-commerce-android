@@ -73,7 +73,7 @@ For the current MVP backlog:
 - Catalog stories should prioritize repository integration, paging/search/filter state, cache behavior, empty/error states, and UI list behavior.
 - Product-admin stories should prioritize form validation, protected-action handling, create/update/deactivate repository behavior, and confirmation flows.
 
-A story can be complete without every test level when the missing level is not relevant yet, but the gap must be recorded in `feature_list.json` or the active feature notes in `.harness/docs/PROGRESS.MD`. When the story is done, keep the durable summary at the top of `.harness/docs/HISTORY.MD`.
+A story can be complete without every test level when the missing level is not relevant yet, but the gap must be recorded in `feature_list.json` or the active feature notes in `.harness/docs/PROGRESS.MD`. When the story is done, use the Evaluator-approved `scripts/close-cycle.sh` path so durable evidence and history are updated consistently.
 
 ## Regression Pack
 

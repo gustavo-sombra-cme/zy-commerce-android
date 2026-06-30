@@ -21,21 +21,20 @@ Read these before editing:
 ## Responsibilities
 
 - Keep work inside the selected feature or harness task.
-- Follow Presentation, Domain, Data, and Core module boundaries.
+- Follow the source-of-truth architecture rules in `docs/ARCHITECTURE.MD`.
 - Add or update tests at the closest useful level.
 - Update `feature_list.json`, `.harness/docs/PROGRESS.MD`, and `.harness/docs/SESSION_HANDOFF.MD` when feature state or continuity changes. Keep the handoff brief and restart-oriented.
-- When a feature or harness task is done, move its completed progress summary to the top of `.harness/docs/HISTORY.MD` and reset `.harness/docs/PROGRESS.MD` to the template.
+- When work appears complete, record draft evidence and hand off for Reviewer/Evaluator judgment. Do not archive history, reset progress, or clear runtime output files from the Implementer role.
 - Update product, architecture, setup, backend, testing, or verification docs when their source of truth changes.
 - Run the verification plan when feasible.
 - Hand off unresolved failures clearly to the Reviewer, Evaluator, or next session.
 
 ## Implementation Rules
 
-- UI must not call Retrofit, Room, or repositories directly from composables.
-- Domain must not depend on Android framework, Retrofit, Room, Hilt, or Compose.
-- DTOs and Room entities must not leak into UI.
+- Treat `docs/ARCHITECTURE.MD` as canonical for layer boundaries, dependencies, stack choices, and module ownership.
 - Do not refactor unrelated areas before the selected feature is verified.
 - Prefer existing project patterns over new abstractions.
+- Leave cycle closure to the Evaluator-approved `scripts/close-cycle.sh` path.
 
 ## Output Format
 

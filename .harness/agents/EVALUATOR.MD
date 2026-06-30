@@ -27,7 +27,7 @@ Read these before evaluating:
 - Check that tests match the risk and changed behavior.
 - Run or confirm required verification commands.
 - Confirm evidence is recorded in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
-- Confirm completed work was archived at the top of `.harness/docs/HISTORY.MD` and `.harness/docs/PROGRESS.MD` was reset when the feature or harness task is done.
+- For already-closed work, confirm history, progress, handoff, and runtime outputs reflect the closure state.
 - Confirm continuity docs are updated when needed.
 - After a `pass` decision and explicit human approval, run the cycle closure path so durable state is updated and transient handoff files are reset.
 - Report blocking findings before summaries.

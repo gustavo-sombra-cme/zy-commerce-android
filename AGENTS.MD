@@ -72,18 +72,9 @@ Do not restate or extend product scope in this file. If scope changes, update `d
 
 ## Architecture Rules
 
-The Android app follows the architecture in `docs/ARCHITECTURE.MD`.
+The Android app follows the architecture in `docs/ARCHITECTURE.MD`. Treat that file as the source of truth for layer ownership, dependency rules, stack choices, and module boundaries.
 
-Required boundaries:
-
-- Presentation owns Compose UI, screen state, navigation, and ViewModels.
-- Domain owns use cases, domain models, and repository interfaces.
-- Data owns repository implementations, Retrofit APIs, Room entities/DAOs, DataStore, and mappers.
-- Domain must not depend on Android framework, Retrofit, Room, Hilt, or Compose.
-- UI must not call Retrofit, Room, or repositories directly from composables.
-- DTOs and Room entities must not leak into UI.
-
-Required stack and rationale are recorded in `docs/ARCHITECTURE.MD` and summarized in `.harness/docs/DECISIONS.MD`. Do not introduce major new libraries or replace the stack without updating both documents.
+`.harness/docs/DECISIONS.MD` records durable decisions and rationale. Do not introduce major new libraries, replace the stack, or redesign module boundaries without updating both documents.
 
 ## Scope Control Rules
 
@@ -100,41 +91,9 @@ If scope is ambiguous:
 
 ## Required Artifacts
 
-The harness currently requires:
+`.harness/harness_manifest.json` is the canonical required-file inventory for startup, fast verification, cleanup, benchmark, closure, and runtime role-output checks. Scripts read that manifest directly, so update the manifest when the required harness surface changes.
 
-- `docs/PRODUCT.MD`
-- `docs/ARCHITECTURE.MD`
-- `docs/RELIABILITY.MD`
-- `requirements/mvp_requirements_ecommerce.md`
-- `requirements/ecommerce-android-plan.md`
-- `requirements/ecommerce-android-tech-design.md`
-- `requirements/zy-commerce-backend-business-baseline.md`
-- `feature_list.json`
-- `.harness/harness_manifest.json`
-- `.harness/docs/SETUP.MD`
-- `.harness/docs/BACKEND_LOCAL.MD`
-- `.harness/docs/backend-installation-instructions.md`
-- `.harness/docs/TESTING_STRATEGY.MD`
-- `.harness/docs/VERIFICATION.MD`
-- `.harness/docs/clean-state-checklist.md`
-- `evaluator-rubric.md`
-- `quality-document.md`
-- `.harness/docs/DECISIONS.MD`
-- `.harness/docs/AGENT_WORKFLOW.MD`
-- `.harness/agents/README.MD`
-- `.harness/agents/PLANNER.MD`
-- `.harness/agents/IMPLEMENTER.MD`
-- `.harness/agents/REVIEWER.MD`
-- `.harness/agents/EVALUATOR.MD`
-
-The following should exist before or during active implementation:
-
-- `.harness/docs/PROGRESS.MD` — active feature or active harness task tracker
-- `.harness/docs/HISTORY.MD` — completed feature and harness history, newest first
-- `.harness/docs/SESSION_HANDOFF.MD` — minimal restart note for the next session
-- `init.sh` or an equivalent setup/verification script once the Android project scaffold exists
-
-If these artifacts do not exist yet, create them when implementation begins or when they are needed to preserve continuity.
+Use this file for the operating map and ownership rules, not as a second required-file list.
 
 Current bootstrap rule:
 
@@ -152,7 +111,7 @@ A feature is done only when all of the following are true:
 - The implementation remains inside the selected feature scope.
 - Required verification actually ran.
 - Evidence is recorded in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
-- When a feature or harness task is done, its completed progress summary is archived at the top of `.harness/docs/HISTORY.MD` and `.harness/docs/PROGRESS.MD` is reset to the template for the next active item.
+- Evaluator-approved completion is closed through `scripts/close-cycle.sh`, which archives history, resets progress, updates handoff, and clears runtime role outputs.
 - Product and architecture docs were updated if the feature changed them.
 - The repository remains restartable for the next session.
 
@@ -178,8 +137,8 @@ Before ending a session:
 
 1. Update `feature_list.json`.
 2. Update `.harness/docs/PROGRESS.MD` for the active feature or task if it exists.
-3. If the feature or harness task is done, move its completed progress summary to the top of `.harness/docs/HISTORY.MD` and reset `.harness/docs/PROGRESS.MD` to the template.
-4. Update `.harness/docs/SESSION_HANDOFF.MD` if it exists.
+3. Update `.harness/docs/SESSION_HANDOFF.MD` if continuity changed.
+4. If the feature or harness task is ready to close, route closure through the Evaluator-approved `scripts/close-cycle.sh` path instead of hand-editing repeated state files.
 5. Record unresolved blockers, risks, or follow-ups.
 6. Leave the repository clean enough that the next session can start from the standard path immediately.
 

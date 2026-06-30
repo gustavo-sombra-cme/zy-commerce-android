@@ -58,7 +58,7 @@ Each role must write its stage output to a runtime file before asking for Human-
 
 The role must display the file contents to the human in the terminal, Codex app, or current conversation before asking for approval.
 
-These files are ignored by git. When a feature or harness task is finished, delete them or clear their contents so the next feature starts with empty handoff state.
+These files are ignored by git. Approved cycle closure clears them through `scripts/close-cycle.sh`. If a workflow is abandoned before closure, clear stale drafts before starting the next feature.
 
 ## Human In The Loop
 
@@ -128,7 +128,7 @@ After a `pass` decision, the Evaluator must request explicit human approval for 
 
 Feature completion evidence belongs in `feature_list.json` and the active feature notes in `.harness/docs/PROGRESS.MD`.
 
-When a feature or harness task is complete, archive its completed progress summary at the top of `.harness/docs/HISTORY.MD` and clear `.harness/docs/PROGRESS.MD` back to the template for the next active item.
+When a feature or harness task is complete, use the approved cycle-closure path below so the history archive, progress reset, handoff rewrite, and runtime-output cleanup happen consistently.
 
 Operational verification commands and failure reporting live in `.harness/docs/VERIFICATION.MD`.
 

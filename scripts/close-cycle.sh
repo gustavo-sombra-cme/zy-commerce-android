@@ -101,9 +101,9 @@ progress_template = <<~PROGRESS
 
   When the active work is complete:
 
-  1. move the completed progress summary to the top of `.harness/docs/HISTORY.MD`
+  1. get an Evaluator `pass` decision and explicit human approval for closure
   2. keep the durable completion evidence in `feature_list.json`
-  3. clear this file back to this template for the next feature
+  3. run `scripts/close-cycle.sh --approved ...` so history, handoff, progress, and runtime outputs are updated together
 
   ## Active Item
 
@@ -195,7 +195,7 @@ handoff = <<~HANDOFF
   ## What Changed Most Recently
 
   - #{summary}
-  - Updated `feature_list.json`, archived completion in `.harness/docs/HISTORY.MD`, and reset `.harness/docs/PROGRESS.MD`.
+  - Ran approved cycle closure to update `feature_list.json`, `.harness/docs/HISTORY.MD`, `.harness/docs/PROGRESS.MD`, and `.harness/docs/SESSION_HANDOFF.MD`.
   - Cleared runtime agent outputs after approved Evaluator closure.
 
   ## Verification Snapshot
