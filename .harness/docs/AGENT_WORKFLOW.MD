@@ -60,6 +60,14 @@ The role must display the file contents to the human in the terminal, Codex app,
 
 These files are ignored by git. Approved cycle closure clears them through `scripts/close-cycle.sh`. If a workflow is abandoned before closure, clear stale drafts before starting the next feature.
 
+## Durable Feature Contracts
+
+For high-risk multi-agent work, the Planner should create a durable feature contract before the Implementer starts. Use `.harness/docs/FEATURE_CONTRACT_TEMPLATE.MD` as the template and save the active contract as `.harness/docs/ACTIVE_FEATURE_CONTRACT.MD` while the feature is in progress.
+
+Use a durable contract when the work has backend uncertainty, auth/session risk, manual smoke expectations, broad architecture impact, or acceptance criteria that should survive runtime output cleanup. Runtime output files are stage notes; the feature contract is the stable agreement for scope, acceptance criteria, verification plan, risks, and role outcomes.
+
+When the feature closes, preserve the useful outcome in `feature_list.json` and `.harness/docs/HISTORY.MD`, then remove or reset `.harness/docs/ACTIVE_FEATURE_CONTRACT.MD` so the next session does not inherit stale acceptance criteria.
+
 ## Human In The Loop
 
 Every role handoff requires explicit human approval before the next role begins. Do not assume approval from silence or from a successful previous step.
@@ -82,6 +90,7 @@ The Planner should provide:
 - verification plan
 - documentation updates
 - risks or user questions
+- durable feature contract path, or a short reason one is not needed
 - explicit human approval request to continue to Implementer
 
 ## Implementer Handoff Requirements

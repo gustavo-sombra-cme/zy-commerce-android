@@ -92,14 +92,14 @@ Reliability expectations:
 
 ### DataStore And Session State
 
-DataStore or equivalent secure storage is expected to hold session-oriented values once sign-in work exists.
+DataStore-backed secure storage now holds session-oriented values for sign-in and splash restore.
 
 Reliability expectations:
 
 - access-token persistence rules must be documented before session restore is declared complete
 - sign-out or invalid-session handling must clear persisted session state intentionally
 - token expiration or invalid-token behavior must not leave the app in an ambiguous partially signed-in state
-- until session storage is implemented, completed auth stories must state that session persistence is not yet covered
+- auth and profile evidence should distinguish fresh sign-in, persisted restore, and token-failure behavior when those paths are relevant
 
 ### Tokens And Auth Boundaries
 
@@ -186,7 +186,7 @@ The repository does not yet have:
 - automated emulator smoke testing
 - automated backend contract replay
 - end-to-end Android UI regression automation
-- completed session persistence behavior
+- automated emulator or backend smoke coverage for persisted session restore and invalid-token recovery
 - completed Room-backed catalog cache behavior
 
 Until those exist, reliability depends on a combination of Gradle checks, targeted tests, backend availability checks, and explicit smoke or skip notes in `feature_list.json` or `.harness/docs/PROGRESS.MD`.

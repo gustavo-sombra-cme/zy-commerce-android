@@ -53,11 +53,11 @@ As of 2026-06-30:
 | Error Mapping Quality | 4 | Registration, duplicate-email, sign-in failure, and session-restore error handling are intentionally handled |
 | Test Depth | 4 | Domain, repository, ViewModel, login error, and session-restore coverage exist for the current auth slice |
 | User-Facing Behavior | 3 | Registration, sign-in, and sign-in failure paths are present; profile and broader catalog UX are still incomplete |
-| Session Persistence Readiness | 4 | Secure persisted session restore exists; backend/device smoke and invalid-token recovery paths still need deeper coverage |
+| Session Persistence Readiness | 4 | Secure persisted session restore exists and cleanup checks detect session artifacts after sign-in completion; backend/device smoke and invalid-token recovery paths still need deeper coverage |
 | Documentation Alignment | 4 | Product, architecture, reliability, and harness docs are present and better scoped |
 | Evidence Quality | 4 | `feature_list.json` includes real verification evidence for completed stories |
 | Restartability | 4 | Startup path, cleanup scanner, and continuity artifacts are in place |
-| Harness Completeness | 4 | Capstone-style evaluation artifacts, manifest-driven checks, and scripted cycle closure exist; later phases should deepen runtime-aware checks |
+| Harness Completeness | 4 | Capstone-style evaluation artifacts, manifest-driven checks, durable feature-contract template, and scripted cycle closure exist; later phases should deepen runtime-aware checks |
 
 ## Overall Baseline
 

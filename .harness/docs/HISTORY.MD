@@ -8,6 +8,26 @@ Use `.harness/docs/PROGRESS.MD` for the active feature only.
 
 ## Archived History
 
+### 2026-06-30 — Harness Follow-up Cleanup
+
+Completed:
+
+- updated `scripts/cleanup-scanner.sh` so session/token artifact checks continue after `ST-03` is complete and when current auth work depends on sign-in
+- refreshed reliability and verification guidance so session persistence is treated as implemented, while smoke and invalid-token recovery gaps remain explicit
+- added `.harness/docs/FEATURE_CONTRACT_TEMPLATE.MD` for durable high-risk multi-agent feature contracts
+- updated `.harness/docs/AGENT_WORKFLOW.MD` and `.harness/harness_manifest.json` to route optional feature-contract usage through the harness
+
+Validation:
+
+- `bash -n scripts/cleanup-scanner.sh && bash -n scripts/verify-fast.sh && bash -n scripts/harness-benchmark.sh && bash -n scripts/close-cycle.sh`
+- `ruby -rjson -e 'JSON.parse(File.read(".harness/harness_manifest.json")); puts "manifest json ok"'`
+- `git diff --check`
+- `bash scripts/verify-fast.sh`
+
+Next feature:
+
+- `ST-05` View current profile
+
 ### 2026-06-29 — ST-04 Show sign-in failure clearly
 
 Completed:

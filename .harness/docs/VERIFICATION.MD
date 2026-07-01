@@ -84,7 +84,7 @@ Use `.harness/docs/clean-state-checklist.md` before finishing risky sessions or 
 
 ## Current Manual Smoke Expectations
 
-Current backend-dependent smoke prerequisites and `ST-01` registration expectations live in `.harness/docs/BACKEND_LOCAL.MD`. Use `docs/RELIABILITY.MD` for what reliable smoke evidence should contain. Record results here only when the expected verification shape changes.
+Backend-dependent smoke prerequisites live in `.harness/docs/BACKEND_LOCAL.MD`. Story-specific smoke expectations belong in `feature_list.json` and the active notes in `.harness/docs/PROGRESS.MD`; for auth and profile work, include backend reachability, the endpoint exercised, session state, device target, and any skipped paths. Use `docs/RELIABILITY.MD` for what reliable smoke evidence should contain. Record results here only when the expected verification shape changes.
 
 ## Failure Reporting
 

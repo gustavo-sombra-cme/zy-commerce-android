@@ -37,16 +37,31 @@ from pathlib import Path
 data = json.loads(Path('feature_list.json').read_text())
 features = data['features']
 active = [feature['id'] for feature in features if feature['status'] == 'in_progress']
+done = [feature['id'] for feature in features if feature['status'] == 'done']
 next_feature = next((feature for feature in features if feature['status'] == 'planned'), None)
+active_dependencies = []
+for feature in features:
+    if feature['id'] in active:
+        active_dependencies.extend(feature.get('dependencies', []))
+next_dependencies = next_feature.get('dependencies', []) if next_feature else []
 print('|'.join([
     ','.join(active),
     str(len(active)),
     next_feature['id'] if next_feature else '',
     next_feature['name'] if next_feature else '',
+    ','.join(done),
+    ','.join(active_dependencies),
+    ','.join(next_dependencies),
 ]))
 PY2
 )"
-IFS='|' read -r active_ids_csv in_progress_count next_planned_id next_planned_name <<< "$feature_state"
+IFS='|' read -r active_ids_csv in_progress_count next_planned_id next_planned_name done_ids_csv active_dependency_ids_csv next_dependency_ids_csv <<< "$feature_state"
+
+contains_csv() {
+  local csv="$1"
+  local needle="$2"
+  [[ ",$csv," == *",$needle,"* ]]
+}
 
 if [[ "$in_progress_count" -le 1 ]]; then
   echo "[OK] In-progress feature count: $in_progress_count"
@@ -203,12 +218,24 @@ else
   issues=$((issues + 1))
 fi
 
-if [[ "$next_planned_id" == "ST-03" || "$active_ids_csv" == *"ST-03"* ]]; then
+session_check_reason=""
+if contains_csv "$active_ids_csv" "ST-03"; then
+  session_check_reason="active sign-in scope"
+elif [[ "$next_planned_id" == "ST-03" ]]; then
+  session_check_reason="next planned sign-in scope"
+elif contains_csv "$done_ids_csv" "ST-03"; then
+  session_check_reason="completed sign-in scope"
+elif contains_csv "$active_dependency_ids_csv" "ST-03" || contains_csv "$next_dependency_ids_csv" "ST-03"; then
+  session_check_reason="current auth dependency on sign-in"
+fi
+
+if [[ -n "$session_check_reason" ]]; then
   session_artifact_count="$( (rg -l 'DataStore|accessToken|tokenType|expiresAt|UserSession|Session' core/storage domain/auth data/auth feature/auth --glob '*.kt' --glob '*.kts' 2>/dev/null || true) | wc -l | tr -d ' ')"
   if [[ "$session_artifact_count" -gt 0 ]]; then
-    echo "[OK] Session-related auth artifacts detected for sign-in scope ($session_artifact_count files)"
+    echo "[OK] Session-related auth artifacts detected for $session_check_reason ($session_artifact_count files)"
   else
-    echo "[INFO] Session/token persistence checks skipped: sign-in is the next planned feature and repository storage artifacts are not implemented yet"
+    echo "[FAIL] ST-03/session-dependent scope requires session/token persistence artifacts, but none were detected"
+    issues=$((issues + 1))
   fi
 else
   echo "[INFO] Session/token persistence checks skipped: current scope does not require them yet"
